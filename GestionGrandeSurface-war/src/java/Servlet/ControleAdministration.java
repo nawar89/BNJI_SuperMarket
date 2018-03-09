@@ -92,11 +92,12 @@ public class ControleAdministration extends HttpServlet {
         String act=request.getParameter("action");
         if (act.equals("GoToDirectionNational")){
             DoActPageDirectionNational(request,response);
-            jspClient = "/JSP_Pages/DirectionNational.jsp";
+            request.setAttribute( "message", message );
         }
         else if (act.equals("FromDirectionNational")){
             DirectionNational(request,response); 
             jspClient = "/JSP_Pages/Page_Message.jsp";
+            request.setAttribute( "message", message );
         }
 
     }
@@ -147,8 +148,9 @@ HttpServletResponse response) throws ServletException, IOException
                     
             }
      }else message = "Role Direction National n'existe pas";
-    request.setAttribute( "message", message );
-}catch(Exception exe){message = exe.getMessage();}
+    
+}catch(Exception exe){
+    message = exe.getMessage();}
 
 }  
 
@@ -164,8 +166,11 @@ HttpServletResponse response) throws ServletException, IOException
               listeEmp = new ArrayList<Employe>(); 
               }
               request.setAttribute( "employes", listeEmp );
-              request.setAttribute( "message", message );
-}catch(Exception exe){message = exe.getMessage();}
+              jspClient = "/JSP_Pages/DirectionNational.jsp";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
 
 }  
 

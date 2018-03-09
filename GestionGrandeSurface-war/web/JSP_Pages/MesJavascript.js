@@ -51,16 +51,18 @@ var table = document.getElementById("myTable");
             function(row) 
             {
                 return function() { 
-                                        var cell = row.getElementsByTagName("td")[0];
-                                        var id = cell.innerHTML;
-                                        //alert("id:" + id);
-                                        if (confirm('Vous etes sur de vouloir faire employe '+id+' un direction general?')) {
-                                                document.getElementsByName("employe").value = id;
-                                         } else {
-                                                // Do nothing!
-                                         }
+                                 
+                                 var cell = row.getElementsByTagName("td")[0];
+                                 var id = cell.innerHTML;
+                                 //alert("id:" + id);
+                                 if (confirm('Vous etes sur de vouloir faire employe '+id+' un direction general?')) {
+                                              document.getElementsByName("employe").value = id;
+                                                
+                                } else {
+                                    // Do nothing!
+                                }
                                        
-                                 };
+                           };
             };
 
         currentRow.onclick = createClickHandler(currentRow);
@@ -101,3 +103,8 @@ function validerCreationEmploye() {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
+
+function modifierAffichageCategorie( nom) {     
+    document.getElementById(nom).style.visibility = "hidden";
+}
+///////////////////////////////////////////////////////////////////////////////////
