@@ -5,7 +5,9 @@
  */
 package BeanFacade;
 
+import EntityBean.Categorie;
 import EntityBean.ChefRyon_Categorie;
+import EntityBean.Employe;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +31,9 @@ public interface ChefRyon_CategorieFacadeLocal {
     List<ChefRyon_Categorie> findRange(int[] range);
 
     int count();
+
+    void creerRelationEmployeRayon(Employe employe, Categorie categorie);
+
+    void supprimerRelationEmployeCat(ChefRyon_Categorie relation);
     
 }
