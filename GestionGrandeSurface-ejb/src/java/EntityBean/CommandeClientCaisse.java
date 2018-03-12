@@ -26,6 +26,14 @@ public class CommandeClientCaisse implements Serializable {
     @OneToMany(mappedBy = "commandeCaisse")
     private List<ligneCommandeCaisse> ligneCommandeCaisses;
 
+    public List<ligneCommandeCaisse> getLigneCommandeCaisses() {
+        return ligneCommandeCaisses;
+    }
+
+    public void setLigneCommandeCaisses(List<ligneCommandeCaisse> ligneCommandeCaisses) {
+        this.ligneCommandeCaisses = ligneCommandeCaisses;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

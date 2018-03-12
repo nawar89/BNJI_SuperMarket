@@ -24,6 +24,14 @@ public class Role implements Serializable {
     @OneToMany(mappedBy = "role")
     private List<Employe> employes = new LinkedList<Employe>();
 
+    public List<Employe> getEmployes() {
+        return employes;
+    }
+
+    public void setEmployes(List<Employe> employes) {
+        this.employes = employes;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

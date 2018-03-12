@@ -24,6 +24,30 @@ public class ArticleMagasin implements Serializable {
     @OneToMany(mappedBy = "articleMagasin")
     private List<ligneCommandeCaisse> ligneCommandeCaisses;
 
+    public List<ligneCommandeCaisse> getLigneCommandeCaisses() {
+        return ligneCommandeCaisses;
+    }
+
+    public void setLigneCommandeCaisses(List<ligneCommandeCaisse> ligneCommandeCaisses) {
+        this.ligneCommandeCaisses = ligneCommandeCaisses;
+    }
+
+    public List<ligneCommandeEnLigne> getLigneCommandeEnLignes() {
+        return ligneCommandeEnLignes;
+    }
+
+    public void setLigneCommandeEnLignes(List<ligneCommandeEnLigne> ligneCommandeEnLignes) {
+        this.ligneCommandeEnLignes = ligneCommandeEnLignes;
+    }
+
+    public List<Lot> getLots() {
+        return lots;
+    }
+
+    public void setLots(List<Lot> lots) {
+        this.lots = lots;
+    }
+
     @OneToMany(mappedBy = "articleMagasin")
     private List<ligneCommandeEnLigne> ligneCommandeEnLignes;
 

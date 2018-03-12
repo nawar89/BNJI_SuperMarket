@@ -24,6 +24,14 @@ public class Ligne_livraison implements Serializable {
     @OneToMany(mappedBy = "ligneLivraison")
     private List<Reclamation> reclamations;
 
+    public List<Reclamation> getReclamations() {
+        return reclamations;
+    }
+
+    public void setReclamations(List<Reclamation> reclamations) {
+        this.reclamations = reclamations;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

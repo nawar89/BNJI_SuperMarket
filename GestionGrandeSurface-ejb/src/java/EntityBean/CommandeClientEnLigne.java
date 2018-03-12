@@ -26,6 +26,22 @@ public class CommandeClientEnLigne implements Serializable {
     @OneToMany(mappedBy = "commandeClient")
     private List<Livraison_Client> livraison_Clients;
 
+    public List<Livraison_Client> getLivraison_Clients() {
+        return livraison_Clients;
+    }
+
+    public void setLivraison_Clients(List<Livraison_Client> livraison_Clients) {
+        this.livraison_Clients = livraison_Clients;
+    }
+
+    public List<ligneCommandeEnLigne> getLigneCommandeEnLignes() {
+        return ligneCommandeEnLignes;
+    }
+
+    public void setLigneCommandeEnLignes(List<ligneCommandeEnLigne> ligneCommandeEnLignes) {
+        this.ligneCommandeEnLignes = ligneCommandeEnLignes;
+    }
+
     @OneToMany(mappedBy = "commandeClient")
     private List<ligneCommandeEnLigne> ligneCommandeEnLignes;
 

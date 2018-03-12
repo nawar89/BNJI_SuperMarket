@@ -26,6 +26,22 @@ public class BonCommande implements Serializable {
     @OneToMany(mappedBy = "bonCommande")
     private List<Livraison> livraisons;
 
+    public List<Livraison> getLivraisons() {
+        return livraisons;
+    }
+
+    public void setLivraisons(List<Livraison> livraisons) {
+        this.livraisons = livraisons;
+    }
+
+    public List<LigneCommande> getLigneCommandes() {
+        return ligneCommandes;
+    }
+
+    public void setLigneCommandes(List<LigneCommande> ligneCommandes) {
+        this.ligneCommandes = ligneCommandes;
+    }
+
     @OneToMany(mappedBy = "bonCommande")
     private List<LigneCommande> ligneCommandes;
 

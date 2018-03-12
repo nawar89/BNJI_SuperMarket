@@ -21,7 +21,26 @@ import javax.persistence.OneToMany;
 public class Categorie implements Serializable {
 
     @OneToMany(mappedBy = "categorie")
+    private List<ChefRyon_Categorie> chefRyon_Categories;
+
+    public List<ChefRyon_Categorie> getChefRyon_Categories() {
+        return chefRyon_Categories;
+    }
+
+    public void setChefRyon_Categories(List<ChefRyon_Categorie> chefRyon_Categories) {
+        this.chefRyon_Categories = chefRyon_Categories;
+    }
+
+    @OneToMany(mappedBy = "categorie")
     private List<SousCategorie> sousCategories;
+
+    public List<SousCategorie> getSousCategories() {
+        return sousCategories;
+    }
+
+    public void setSousCategories(List<SousCategorie> sousCategories) {
+        this.sousCategories = sousCategories;
+    }
 
     private static final long serialVersionUID = 1L;
     @Id

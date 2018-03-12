@@ -26,6 +26,54 @@ public class Employe implements Serializable {
     @OneToMany(mappedBy = "employeCaisse")
     private List<CommandeClientCaisse> commandeClientCaisses;
 
+    public List<CommandeClientCaisse> getCommandeClientCaisses() {
+        return commandeClientCaisses;
+    }
+
+    public void setCommandeClientCaisses(List<CommandeClientCaisse> commandeClientCaisses) {
+        this.commandeClientCaisses = commandeClientCaisses;
+    }
+
+    public List<Livraison> getLivraisons() {
+        return livraisons;
+    }
+
+    public void setLivraisons(List<Livraison> livraisons) {
+        this.livraisons = livraisons;
+    }
+
+    public List<BonCommande> getBonCommandes() {
+        return bonCommandes;
+    }
+
+    public void setBonCommandes(List<BonCommande> bonCommandes) {
+        this.bonCommandes = bonCommandes;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
+
+    public List<ChefRyon_Categorie> getChefRyon_Categories() {
+        return chefRyon_Categories;
+    }
+
+    public void setChefRyon_Categories(List<ChefRyon_Categorie> chefRyon_Categories) {
+        this.chefRyon_Categories = chefRyon_Categories;
+    }
+
+    public List<Promotion> getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(List<Promotion> promotions) {
+        this.promotions = promotions;
+    }
+
     @OneToMany(mappedBy = "agentLivraison")
     private List<Livraison> livraisons;
 

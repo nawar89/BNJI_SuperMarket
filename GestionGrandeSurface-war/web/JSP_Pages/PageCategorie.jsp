@@ -4,6 +4,7 @@
     Author     : Nawar
 --%>
 
+<%@page import="EntityBean.SousCategorie"%>
 <%@page import="EntityBean.Categorie"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,17 +27,28 @@
          <div class="form-group"> 
         <fieldset>
         <legend> Categorie</legend>
-            <label for="nom" >Nom <span class="requis" >*</span></label>
-            <select id = "catsel" name="CategorieSelect">
+            <label for="nom" >Categorie <span class="requis" >*</span></label>
+            <select id = "catsel" name="CategorieSelect" onchange="RefreshSousCat('souscatsel')">
             <% List<Categorie> listeCat = categories ;
             for(Categorie cat : listeCat) {%>
                  <option value ="<%=cat.getId()%>"> <%=cat.getLibelle() %>  </option>
             <% }%>
              </select>
+             <br />
+             <label for="nom" >Sous Categorie <span class="requis" >*</span></label>
+              <select id = "souscatsel" name="SousCategorieSelect">
+           
+            <% if (!listeCat.isEmpty())  {
+                Categorie cat = listeCat.get(0);
+                for(SousCategorie s : cat.getSousCategories() ) {%>
+                    <option value ="<%=s.getId()%>"> <%=s.getLibelle() %>  </option>
+                <% }}%>
+                
+             </select>
              
           <button type="button" onclick="modifierAffichageCategorie('nom')" style="display: none">Ajouter</button>
          
-        <input type="text" id = "catnom" name="nom"  onkeyup="LectureSeulCategorie('catsel')" class="form-control" placeholder="Saisir nom Categorie" />
+        <input type="text" id = "catnom" name="nom"  onkeyup="LectureSeulCategorie('catsel'); LectureSeulCategorie('souscatsel');" class="form-control" placeholder="Saisir nom Categorie" />
         <br />
         </fieldset>
 

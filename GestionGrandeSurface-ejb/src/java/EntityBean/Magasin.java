@@ -23,6 +23,22 @@ public class Magasin implements Serializable {
     @OneToMany(mappedBy = "magasin")
     private List<ArticleMagasin> articleMagasins;
 
+    public List<ArticleMagasin> getArticleMagasins() {
+        return articleMagasins;
+    }
+
+    public void setArticleMagasins(List<ArticleMagasin> articleMagasins) {
+        this.articleMagasins = articleMagasins;
+    }
+
+    public List<Employe> getEmployes() {
+        return employes;
+    }
+
+    public void setEmployes(List<Employe> employes) {
+        this.employes = employes;
+    }
+
     @OneToMany(mappedBy = "magasin")
     private List<Employe> employes;
 

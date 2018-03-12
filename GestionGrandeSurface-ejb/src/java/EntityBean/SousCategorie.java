@@ -24,6 +24,14 @@ public class SousCategorie implements Serializable {
     @OneToMany(mappedBy = "sousCategorie")
     private List<Article> articles;
 
+    public List<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

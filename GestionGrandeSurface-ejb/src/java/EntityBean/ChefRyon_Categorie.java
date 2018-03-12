@@ -79,6 +79,7 @@ public class ChefRyon_Categorie implements Serializable {
     }
 
     
+    @ManyToOne
         private Categorie categorie;
 
     /**

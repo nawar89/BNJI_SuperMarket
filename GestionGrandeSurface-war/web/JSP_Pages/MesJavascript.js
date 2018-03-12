@@ -112,7 +112,13 @@ function modifierAffichageCategorie( nom) {
 function LectureSeulCategorie(nom) {
     var x = document.getElementById(nom).innerHTML;
     if (x==""){
-        document.getElementById(nom).readOnly = false;
-    }else document.getElementById(nom).readOnly = true;
+        document.getElementById(nom).disabled = false;
+    }else document.getElementById(nom).disabled = true;
 }   
 ///////////////////////////////////////////////////////////////////////////////////
+
+function RefreshSousCat(nom) {
+    
+} 
+
+//////////////////////////////////////////////////////////////////////

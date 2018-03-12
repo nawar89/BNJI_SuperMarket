@@ -23,6 +23,30 @@ public class Fournisseur implements Serializable {
     @OneToMany(mappedBy = "fournisseur")
     private List<Livraison> livraisons;
 
+    public List<Livraison> getLivraisons() {
+        return livraisons;
+    }
+
+    public void setLivraisons(List<Livraison> livraisons) {
+        this.livraisons = livraisons;
+    }
+
+    public List<BonCommande> getBonCommandes() {
+        return bonCommandes;
+    }
+
+    public void setBonCommandes(List<BonCommande> bonCommandes) {
+        this.bonCommandes = bonCommandes;
+    }
+
+    public List<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
+
     @OneToMany(mappedBy = "fournisseur")
     private List<BonCommande> bonCommandes;
 

@@ -25,6 +25,22 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "client")
     private List<CommandeClientCaisse> commandeClientCaisses;
 
+    public List<CommandeClientCaisse> getCommandeClientCaisses() {
+        return commandeClientCaisses;
+    }
+
+    public void setCommandeClientCaisses(List<CommandeClientCaisse> commandeClientCaisses) {
+        this.commandeClientCaisses = commandeClientCaisses;
+    }
+
+    public List<CommandeClientEnLigne> getCommandeClientEnLignes() {
+        return commandeClientEnLignes;
+    }
+
+    public void setCommandeClientEnLignes(List<CommandeClientEnLigne> commandeClientEnLignes) {
+        this.commandeClientEnLignes = commandeClientEnLignes;
+    }
+
     @OneToMany(mappedBy = "client")
     private List<CommandeClientEnLigne> commandeClientEnLignes;
 
