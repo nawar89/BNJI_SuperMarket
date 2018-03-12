@@ -141,3 +141,27 @@ function createOption(ddl, text, value) {
     }
 
 //////////////////////////////////////////
+
+
+
+function RefreshTableEmployee(ddl1,Mytable) {
+   
+            var row = ddl3.getElementsByTagName("option");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].text;
+             console.log(selectedValue)
+             var input, filter, table, tr, td, i;
+             
+            filter = selectedValue.toUpperCase();
+            table = document.getElementById(Mytable);
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[3];
+              if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+                } else {
+                  tr[i].style.display = "none";
+                }
+              }       
+            }
+    }

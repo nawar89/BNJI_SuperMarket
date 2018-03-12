@@ -13,4 +13,5 @@ public abstract class Requete {
     public static String getRoles = "SELECT r FROM Role AS r WHERE 1=1";
     public static String getEmployes = "SELECT e FROM Employe AS e WHERE 1=1";
     public static String getCategories = "SELECT c FROM Categorie AS c WHERE 1=1";
+    public static String getMagasins = "SELECT m FROM Magasin AS m WHERE 1=1";
 }

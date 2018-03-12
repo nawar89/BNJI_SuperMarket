@@ -8,6 +8,7 @@ package Servlet;
 import BeanSession.AdministrationLocal;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Magasin;
 import EntityBean.Role;
 import Structure.Aide;
 import Structure.Parametre;
@@ -108,6 +109,16 @@ public class ControleAdministration extends HttpServlet {
         
         else if (act.equals("FromCategorie")){
             FromCategorie(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("GoToCreationDirecteurMagasin")){
+            GoTOCreationDirecteurMagasin(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("FromCreationDirecteurMagasin")){
+            //FromCreationDirecteurMagasin(request,response); 
             request.setAttribute( "message", message );
         }
     }
@@ -276,8 +287,32 @@ HttpServletResponse response) throws ServletException, IOException
 
 }
 
+protected void GoTOCreationDirecteurMagasin(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   
+    try{
+        //Construire requete SQL        
+              requete = Requete.getEmployes;
+              List<Employe> listeEmps = administration.getEmploye(requete, null);
+              if (listeEmps == null){
+              listeEmps = new ArrayList<Employe>(); 
+              }
+              requete = Requete.getMagasins;
+              List<Magasin> listeMags = administration.getMagasins(requete, null);
+              if (listeMags == null){
+              listeMags = new ArrayList<Magasin>(); 
+              }
+              request.setAttribute( "magasins", listeMags );
+              request.setAttribute( "employes", listeEmps );
+              jspClient = "/JSP_Pages/CreationDirecteurMagasin.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
 
-
+} 
    
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
