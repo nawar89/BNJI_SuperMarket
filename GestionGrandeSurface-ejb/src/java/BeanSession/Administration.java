@@ -5,8 +5,10 @@
  */
 package BeanSession;
 
+import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
+import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
 import Structure.Parametre;
@@ -23,11 +25,15 @@ import javax.ejb.Stateless;
 public class Administration implements AdministrationLocal {
 
     @EJB
+    private CategorieFacadeLocal categorieFacade;
+
+    @EJB
     private RoleFacadeLocal roleFacade;
 
     @EJB
     private EmployeFacadeLocal employeFacade;
-
+    
+    
     
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -47,4 +53,16 @@ public class Administration implements AdministrationLocal {
       public List<Role> getRoles(String query, List<Parametre> params) throws Exception{
           return roleFacade.getRoles(query, params);
       }
+
+    @Override
+    public void creerCategorie(String libelle) {
+        categorieFacade.creerCategorie(libelle);
+    }
+    
+    @Override
+    public List<Categorie> getCategories(String query, ArrayList<Parametre> params) throws Exception{
+        return categorieFacade.getCategories(query, params);
+    }
+    
+      
 }

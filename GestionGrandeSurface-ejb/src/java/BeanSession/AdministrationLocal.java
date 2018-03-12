@@ -5,6 +5,7 @@
  */
 package BeanSession;
 
+import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
 import Structure.Parametre;
@@ -22,6 +23,10 @@ public interface AdministrationLocal {
     void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role);
     void employeModifierRole(Employe emp, Role role);
     List<Role> getRoles(String query, List<Parametre> params) throws Exception;
+
+    void creerCategorie(String libelle);
+    
+    List<Categorie> getCategories(String query, ArrayList<Parametre> params) throws Exception;
     
     
 }

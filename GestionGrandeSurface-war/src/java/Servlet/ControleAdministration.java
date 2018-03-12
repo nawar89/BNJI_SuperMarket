@@ -6,6 +6,7 @@
 package Servlet;
 
 import BeanSession.AdministrationLocal;
+import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
 import Structure.Aide;
@@ -56,7 +57,8 @@ public class ControleAdministration extends HttpServlet {
             String act=request.getParameter("action");
             if ((act == null)||(act.equals("null")))
             {
-                 jspClient="/JSP_Pages/MenuAdmin.jsp";
+                 jspClient="/JSP_Pages/MenuDirectionNational.jsp";
+                 //jspClient="/JSP_Pages/MenuAdmin.jsp";
             }else {
             
                   verifierConnexion(request, response);
@@ -97,6 +99,10 @@ public class ControleAdministration extends HttpServlet {
         else if (act.equals("FromDirectionNational")){
             DirectionNational(request,response); 
             jspClient = "/JSP_Pages/Page_Message.jsp";
+            request.setAttribute( "message", message );
+            
+        } else if (act.equals("GoToCartegorie")){
+            GoTOCategorie(request,response); 
             request.setAttribute( "message", message );
         }
 
@@ -172,8 +178,28 @@ HttpServletResponse response) throws ServletException, IOException
     jspClient = "/JSP_Pages/Page_Message.jsp";
 }
 
-}  
+} 
 
+
+protected void GoTOCategorie(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   
+    try{
+        //Construire requete SQL        
+              requete = Requete.getCategories;
+              List<Categorie> listeCat = administration.getCategories(requete, null);
+              if (listeCat == null){
+              listeCat = new ArrayList<Categorie>(); 
+              }
+              request.setAttribute( "categories", listeCat );
+              jspClient = "/JSP_Pages/PageCategorie.jsp";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+} 
 
    
     ////////////////////////////////////////////////////////////////////////////////////////////////////

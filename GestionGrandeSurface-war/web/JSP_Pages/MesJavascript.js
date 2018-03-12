@@ -106,5 +106,13 @@ function validerCreationEmploye() {
 
 function modifierAffichageCategorie( nom) {     
     document.getElementById(nom).style.visibility = "hidden";
-}
+}   
+///////////////////////////////////////////////////////////////////////////////////
+
+function LectureSeulCategorie(nom) {
+    var x = document.getElementById(nom).innerHTML;
+    if (x==""){
+        document.getElementById(nom).readOnly = false;
+    }else document.getElementById(nom).readOnly = true;
+}   
 ///////////////////////////////////////////////////////////////////////////////////

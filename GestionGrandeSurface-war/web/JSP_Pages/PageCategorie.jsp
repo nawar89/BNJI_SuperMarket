@@ -27,21 +27,21 @@
         <fieldset>
         <legend> Categorie</legend>
             <label for="nom" >Nom <span class="requis" >*</span></label>
-            <select name="CategorieSelect">
+            <select id = "catsel" name="CategorieSelect">
             <% List<Categorie> listeCat = categories ;
             for(Categorie cat : listeCat) {%>
                  <option value ="<%=cat.getId()%>"> <%=cat.getLibelle() %>  </option>
             <% }%>
              </select>
              
-          <button type="button" onclick="modifierAffichageCategorie('nom')">Ajouter</button>
+          <button type="button" onclick="modifierAffichageCategorie('nom')" style="display: none">Ajouter</button>
          
-        <input type="text" name="nom" class="form-control" placeholder="Saisir nom Categorie" style="display: none"/>
+        <input type="text" id = "catnom" name="nom"  onkeyup="LectureSeulCategorie('catsel')" class="form-control" placeholder="Saisir nom Categorie" />
         <br />
         </fieldset>
 
             </div>
-            <input type="hidden" name="employe" class="form-control" />
+            <input type="hidden" name="category" class="form-control" />
             <input type="hidden" name="action" value="FromCategorie">
            <input type="submit"  class="btn btn-primary" value="Valider" />
         <input type="reset"   class="btn btn-primary"  value="Remettre à zéro" /> <br />

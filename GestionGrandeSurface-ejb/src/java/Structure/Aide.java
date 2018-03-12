@@ -5,6 +5,7 @@
  */
 package Structure;
 
+import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
 import java.security.DigestException;
@@ -35,6 +36,9 @@ public abstract class Aide {
                
            case "Employe":
                 o = (Employe)o;
+               break;
+            case "Categorie":
+                o = (Categorie)o;
                break;
        }
       }catch(Exception exe){ throw  exe;}
