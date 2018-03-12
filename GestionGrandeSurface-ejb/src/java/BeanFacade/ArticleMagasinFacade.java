@@ -6,12 +6,11 @@
 package BeanFacade;
 
 import EntityBean.Article;
-import EntityBean.Fournisseur;
-import EntityBean.SousCategorie;
+import EntityBean.ArticleMagasin;
+import EntityBean.Magasin;
 import Structure.Aide;
 import Structure.Parametre;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,10 +19,10 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Nawar
+ * @author Jihane
  */
 @Stateless
-public class ArticleFacade extends AbstractFacade<Article> implements ArticleFacadeLocal {
+public class ArticleMagasinFacade extends AbstractFacade<ArticleMagasin> implements ArticleMagasinFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -33,29 +32,27 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
         return em;
     }
 
-    public ArticleFacade() {
-        super(Article.class);
+    public ArticleMagasinFacade() {
+        super(ArticleMagasin.class);
     }
-    
-   //Creation article
+    // Creer article du magasin
     @Override
-    public void creerArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception {
+    public void creerArticleMag(int quantite, float prix_vente_actuel, Article article, Magasin magasin) throws Exception{
         try {
-        Article article = new Article();
-        article.setLibelle(libelle);
-        article.setReference(reference);
-        article.setPrix_achat_actuel(prix_achat_actuel);
-        article.setDate_creation(date_de_creation);
-        article.setSousCategorie(sous_categorie);
-        article.setFournisseur(fournisseur);
-        em.persist(article);  
-    } catch(Exception exe){throw exe;}
+            ArticleMagasin a = new ArticleMagasin();
+            a.setQuantite(quantite);
+            a.setPrix_vente_actuel(prix_vente_actuel);
+            a.setArticle(article);
+            a.setMagasin(magasin);
+            em.persist(a);
+            
+        }catch(Exception ex){throw ex;}
     }
     
-   //Recherche d'aticle 
-    @Override
-    public List<Article> getArticle(String query, ArrayList<Parametre> params) throws Exception{
-        List<Article> articles = null;
+    //Rechercher un article de magasin
+     @Override
+    public List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception{
+        List<ArticleMagasin> articles = null;
         try{
          
             Query q = em.createQuery(query);
@@ -69,8 +66,13 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
         }catch(Exception exe){throw exe;}
         return articles;
     }
-    
+    //Modifier Prix de vente : 
+
+    @Override
+    public void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix) {
+        articleMagasin.setPrix_vente_actuel(nouveauPrix);
+        em.merge(articleMagasin);
+    }
    
-    
     
 }
