@@ -11,6 +11,7 @@ import BeanFacade.RoleFacadeLocal;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
+import EntityBean.Magasin;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +43,8 @@ public class Administration implements AdministrationLocal {
              return employeFacade.getEmploye(query, params);
      }
       @Override
-     public void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role) {
-          employeFacade.creerEmployee(nom, prenom, adresse, telephone, email, login, mdp, role);
+     public void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role, Magasin magasin) {
+          employeFacade.creerEmployee(nom, prenom, adresse, telephone, email, login, mdp, role, magasin );
      }
      @Override
      public void employeModifierRole(Employe emp, Role role){

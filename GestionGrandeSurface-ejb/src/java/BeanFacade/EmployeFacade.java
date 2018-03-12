@@ -7,6 +7,7 @@ package BeanFacade;
 
 import EntityBean.Employe;
 import EntityBean.Role;
+import EntityBean.Magasin;
 import Structure.Aide;
 import Structure.Parametre;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class EmployeFacade extends AbstractFacade<Employe> implements EmployeFac
     }
 
     @Override
-    public void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role) {
+    public void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role, Magasin magasin) {
         Employe emp = new Employe();
         emp.setNom(nom);
         emp.setPrenom(prenom);
@@ -46,6 +47,7 @@ public class EmployeFacade extends AbstractFacade<Employe> implements EmployeFac
         emp.setLogin(login);
         emp.setMdp(mdp);
         emp.setRole(role);
+        emp.setMagasin(magasin);
         em.persist(emp);
     }
     
