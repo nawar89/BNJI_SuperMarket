@@ -109,16 +109,35 @@ function modifierAffichageCategorie( nom) {
 }   
 ///////////////////////////////////////////////////////////////////////////////////
 
-function LectureSeulCategorie(nom) {
-    var x = document.getElementById(nom).innerHTML;
+function LectureSeulCategorie(nom,champ) {
+    var x = champ.innerHTML;
+    console.log("TEXXXXt "+x);x 
     if (x==""){
         document.getElementById(nom).disabled = false;
     }else document.getElementById(nom).disabled = true;
 }   
 ///////////////////////////////////////////////////////////////////////////////////
 
-function RefreshSousCat(nom) {
-    
-} 
+function RefreshComboBox(ddl1,ddl2,ddl3) {
+   
+            var row = ddl3.getElementsByTagName("option");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+             console.log(selectedValue)
+            ddl2.options.length = 0;
+            for (i = 0; i < row.length; i++) {
+                if (selectedValue == row[i].value){
+                    createOption(ddl2, row[i].text, selectedValue);
+                    
+                }
+            }      
+    }
 
 //////////////////////////////////////////////////////////////////////
+function createOption(ddl, text, value) {
+        var opt = document.createElement('option');
+        opt.value = value;
+        opt.text = text;
+        ddl.options.add(opt);
+    }
+
+//////////////////////////////////////////

@@ -29,5 +29,7 @@ public interface AdministrationLocal {
     
     List<Categorie> getCategories(String query, ArrayList<Parametre> params) throws Exception;
     
+    void creerSousCategorie(String libelle, Categorie categorie);
+    
     
 }

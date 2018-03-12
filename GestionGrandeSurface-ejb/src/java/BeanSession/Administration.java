@@ -8,6 +8,7 @@ package BeanSession;
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
+import BeanFacade.SousCategorieFacadeLocal;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
@@ -24,6 +25,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private SousCategorieFacadeLocal sousCategorieFacade;
 
     @EJB
     private CategorieFacadeLocal categorieFacade;
@@ -63,6 +67,11 @@ public class Administration implements AdministrationLocal {
     @Override
     public List<Categorie> getCategories(String query, ArrayList<Parametre> params) throws Exception{
         return categorieFacade.getCategories(query, params);
+    }
+    
+     @Override
+    public void creerSousCategorie(String libelle, Categorie categorie) {
+        sousCategorieFacade.creerSousCategorie(libelle, categorie);
     }
     
       
