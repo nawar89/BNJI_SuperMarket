@@ -60,7 +60,7 @@ public class ControleAdministration extends HttpServlet {
                  jspClient="/JSP_Pages/MenuDirectionNational.jsp";
                  //jspClient="/JSP_Pages/MenuAdmin.jsp";
             }else {  
-                
+                    
                   verifierConnexion(request, response);
             }
             
