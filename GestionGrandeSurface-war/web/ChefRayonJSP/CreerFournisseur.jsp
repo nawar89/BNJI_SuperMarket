@@ -19,18 +19,18 @@
     <title>Gestion Grande Surface</title>
 
     <!-- Bootstrap -->
-    <link href="../Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../Template/nprogress/nprogress.css" rel="stylesheet">
+    <link href="./Template/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
-    <link href="../Template/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
-    <link href="../Template/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="./Template/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     
     <!-- Custom Theme Style -->
-    <link href="../Template/css/custom.min.css" rel="stylesheet">
+    <link href="./Template/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="nav-md">
@@ -50,7 +50,7 @@
        <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Form Design <small>different form elements</small></h2>
+                    <h2>Création de Fournisseur<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -70,54 +70,45 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControlChef">
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nom">Nom <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="nom" name="nom" required="required" class="form-control col-md-7 col-xs-12">
+                           <span class="fa fa-user form-control-feedback  right" aria-hidden="true"></span>
                         </div>
+                          
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="adresse">Adresse <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="adresse" name="adresse" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name / Initial</label>
+                        <label for="telephone" class="control-label col-md-3 col-sm-3 col-xs-12">Telephone</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                          <input id="telephone" class="form-control col-md-7 col-xs-12" type="text" name="telephone">
+                          <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
+                         <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <div id="gender" class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                              <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
-                            </label>
-                            <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                              <input type="radio" name="gender" value="female"> Female
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                          <input id="email" class="form-control col-md-7 col-xs-12" type="text" name="email">
+                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
                         </div>
                       </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button class="btn btn-primary" type="button">Cancel</button>
-						  <button class="btn btn-primary" type="reset">Reset</button>
-                          <button type="submit" class="btn btn-success">Submit</button>
+                          <button class="btn btn-primary" type="button">Annuler</button>
+		          <button class="btn btn-primary" type="reset">Reset</button>
+                          <input type="hidden" name="action" value="CreerF"/>
+                          <button type="submit" class="btn btn-success">Ajouter</button>
                         </div>
                       </div>
 
@@ -132,17 +123,17 @@
     </div>
 
     <!-- jQuery -->
-    <script src="../Template/jquery/dist/jquery.min.js"></script>
+    <script src="./Template/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="../Template/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./Template/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
-    <script src="../Template/fastclick/lib/fastclick.js"></script>
+    <script src="./Template/fastclick/lib/fastclick.js"></script>
     <!-- bootstrap-progressbar -->
-    <script src="../Template/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="./Template/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
-    <script src="../Template/iCheck/icheck.min.js"></script>
+    <script src="./Template/iCheck/icheck.min.js"></script>
     <!-- Custom Theme Scripts -->
-    <script src="../Template/js/custom.min.js"></script>
+    <script src="./Template/js/custom.min.js"></script>
 	
   </body>
 </html>

@@ -1,5 +1,5 @@
  <div class="navbar nav_title" style="border: 0;">
-              <a href="MenuChefRayon.jsp" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
+              <a href="Menu.jsp" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -22,9 +22,7 @@
              <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="MenuChefRayon.jsp">Dashboard</a></li>
-                      <li><a href="MenuChefRayon.jsp">Dashboard2</a></li>
-                      <li><a href="MenuChefRayon.jsp">Dashboard3</a></li>
+                      <li><a href="Menu.jsp">Analyse des ventes</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Fournisseurs <span class="fa fa-chevron-down"></span></a>
