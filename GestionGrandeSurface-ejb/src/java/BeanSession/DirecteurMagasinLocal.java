@@ -5,6 +5,10 @@
  */
 package BeanSession;
 
+import EntityBean.Categorie;
+import EntityBean.Magasin;
+import EntityBean.Role;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,6 +17,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface DirecteurMagasinLocal {
+    public void creerEmployeMagasin(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp, Role role, Magasin magasin, List<Categorie> listeCat )throws  Exception ;    
 
     
 }
