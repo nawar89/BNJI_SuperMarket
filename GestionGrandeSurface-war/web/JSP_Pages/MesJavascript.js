@@ -209,3 +209,40 @@ function RefreshTableEmployee(ddl1,Mytable) {
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+function validerCreationMagasin(magasin) {
+    
+        var selectedValue = magasin.options[magasin.selectedIndex].text;
+        console.log("selectedValue"+ selectedValue);
+        if (selectedValue == "" || selectedValue == "0" || selectedValue == 0 ){
+            
+            alert("Il faur choisir un magasin");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["nom"].value;
+        if (x==""){
+            alert("Il faur remplir le nom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["prenom"].value;
+        if (x==""){
+            alert("Il faur remplir le prenom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["adresse"].value;
+        if (x==""){
+            alert("Il faur remplir le adresse");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["email"].value;
+        if (x==""){
+            alert("Il faur remplir l'email");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["telephone"].value;
+        if (x==""){
+            alert("Il faur remplir le telephone");
+            return false;
+        }
+    return true;
+}
