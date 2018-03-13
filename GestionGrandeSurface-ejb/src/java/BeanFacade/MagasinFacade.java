@@ -5,8 +5,6 @@
  */
 package BeanFacade;
 
-import EntityBean.Employe;
-import EntityBean.Role;
 import EntityBean.Magasin;
 import Structure.Aide;
 import Structure.Parametre;
@@ -22,7 +20,7 @@ import javax.persistence.Query;
  * @author Nawar
  */
 @Stateless
-public class EmployeFacade extends AbstractFacade<Employe> implements EmployeFacadeLocal {
+public class MagasinFacade extends AbstractFacade<Magasin> implements MagasinFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -32,28 +30,26 @@ public class EmployeFacade extends AbstractFacade<Employe> implements EmployeFac
         return em;
     }
 
-    public EmployeFacade() {
-        super(Employe.class);
+    public MagasinFacade() {
+        super(Magasin.class);
     }
 
     @Override
-    public void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role, Magasin magasin) {
-        Employe emp = new Employe();
-        emp.setNom(nom);
-        emp.setPrenom(prenom);
-        emp.setAdresse(adresse);
-        emp.setTelephone(telephone);
-        emp.setEmail(email);
-        emp.setLogin(login);
-        emp.setMdp(mdp);
-        emp.setRole(role);
-        emp.setMagasin(magasin);
-        em.persist(emp);
+    public void creerMagasin(String adresse, String nom, String code, String ville,String horaireOuverture,String horaireFermeture,String gps) {
+        Magasin m = new Magasin();
+        m.setAdresse(adresse);
+        m.setNom(nom);
+        m.setCode_postal(code);
+        m.setVille(ville);
+        m.setHoraire_fermeture(horaireFermeture);
+        m.setHoraire_ouverteur(horaireOuverture);
+        m.setGps(gps);
+        em.persist(m);
     }
     
-    @Override
-    public List<Employe> getEmploye(String query, ArrayList<Parametre> params) throws Exception{
-        List<Employe> employes = null;
+     @Override
+    public List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception{
+        List<Magasin> magasins = null;
         try{
          
             Query q = em.createQuery(query);
@@ -63,14 +59,9 @@ public class EmployeFacade extends AbstractFacade<Employe> implements EmployeFac
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            employes = q.getResultList();
+            magasins = q.getResultList();
         }catch(Exception exe){throw exe;}
-        return employes;
-    }
-     @Override
-    public void employeModifierRole(Employe emp, Role role){
-        emp.setRole(role);
-        em.merge(emp);
+        return magasins;
     }
     
 }

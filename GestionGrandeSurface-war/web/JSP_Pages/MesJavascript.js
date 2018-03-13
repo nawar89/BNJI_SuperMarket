@@ -55,7 +55,7 @@ var table = document.getElementById("myTable");
                                  var cell = row.getElementsByTagName("td")[0];
                                  var id = cell.innerHTML;
                                  //alert("id:" + id);
-                                 if (confirm('Vous etes sur de vouloir faire employe '+id+' un direction general?')) {
+                                 if (confirm('Vous etes sur de vouloir changer le role demploye '+id+'?')) {
                                               document.getElementsByName("employe").value = id;
                                                 
                                 } else {
@@ -109,16 +109,140 @@ function modifierAffichageCategorie( nom) {
 }   
 ///////////////////////////////////////////////////////////////////////////////////
 
-function LectureSeulCategorie(nom) {
-    var x = document.getElementById(nom).innerHTML;
+function LectureSeulCategorie(nom,champ) {
+    var x = champ.innerHTML;
+    console.log("TEXXXXt "+x);x 
     if (x==""){
         document.getElementById(nom).disabled = false;
     }else document.getElementById(nom).disabled = true;
 }   
 ///////////////////////////////////////////////////////////////////////////////////
 
-function RefreshSousCat(nom) {
-    
-} 
+function RefreshComboBox(ddl1,ddl2,ddl3) {
+   
+            var row = ddl3.getElementsByTagName("option");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+             console.log(selectedValue)
+            ddl2.options.length = 0;
+            for (i = 0; i < row.length; i++) {
+                if (selectedValue == row[i].value){
+                    createOption(ddl2, row[i].text, selectedValue);
+                    
+                }
+            }      
+    }
 
 //////////////////////////////////////////////////////////////////////
+function createOption(ddl, text, value) {
+        var opt = document.createElement('option');
+        opt.value = value;
+        opt.text = text;
+        ddl.options.add(opt);
+    }
+
+//////////////////////////////////////////
+
+
+
+function RefreshTableEmployee(ddl1,Mytable) {
+   
+            var row = ddl1.getElementsByTagName("option");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].text;
+             console.log(selectedValue)
+             var input, filter, table, tr, td, i;
+             
+            filter = selectedValue.toUpperCase();
+            table = document.getElementById(Mytable);
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[3];
+              if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+                } else {
+                  tr[i].style.display = "none";
+                }
+              }       
+            }
+    }
+    
+    
+ /////////////////////////////////////////////////////////////////////////////////
+ 
+ function validerCreationDirectureMagasin(magasin) {
+    var x = document.forms["EmployeForm"]["employe"].value;
+    if (x == "") {
+        var selectedValue = magasin.options[magasin.selectedIndex].text;
+        console.log("selectedValue"+ selectedValue);
+        if (selectedValue == "" || selectedValue == "0" || selectedValue == 0 ){
+            
+            alert("Il faur choisir un magasin");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["nom"].value;
+        if (x==""){
+            alert("Il faur remplir le nom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["prenom"].value;
+        if (x==""){
+            alert("Il faur remplir le prenom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["adresse"].value;
+        if (x==""){
+            alert("Il faur remplir le adresse");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["email"].value;
+        if (x==""){
+            alert("Il faur remplir l'email");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["telephone"].value;
+        if (x==""){
+            alert("Il faur remplir le telephone");
+            return false;
+        }
+    }
+    return true;
+}
+
+////////////////////////////////////////////////////////////////////////
+
+function validerCreationMagasin(magasin) {
+    
+        var selectedValue = magasin.options[magasin.selectedIndex].text;
+        console.log("selectedValue"+ selectedValue);
+        if (selectedValue == "" || selectedValue == "0" || selectedValue == 0 ){
+            
+            alert("Il faur choisir un magasin");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["nom"].value;
+        if (x==""){
+            alert("Il faur remplir le nom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["prenom"].value;
+        if (x==""){
+            alert("Il faur remplir le prenom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["adresse"].value;
+        if (x==""){
+            alert("Il faur remplir le adresse");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["email"].value;
+        if (x==""){
+            alert("Il faur remplir l'email");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["telephone"].value;
+        if (x==""){
+            alert("Il faur remplir le telephone");
+            return false;
+        }
+    return true;
+}

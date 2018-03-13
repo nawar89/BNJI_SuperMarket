@@ -6,6 +6,7 @@
 package BeanFacade;
 
 import EntityBean.Employe;
+import EntityBean.Magasin;
 import EntityBean.Role;
 import Structure.Parametre;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public interface EmployeFacadeLocal {
 
     int count();
 
-    void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role);
+    void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role, Magasin magasin);
     
     List<Employe> getEmploye(String query, ArrayList<Parametre> params) throws Exception;
     
