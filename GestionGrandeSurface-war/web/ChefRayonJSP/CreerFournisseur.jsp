@@ -95,7 +95,7 @@
                           <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
                          
                         </div>
-                   
+                       
                       </div>
                       <div class="form-group">
                          <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
@@ -134,7 +134,6 @@
     <script src="./Template/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="./Template/iCheck/icheck.min.js"></script>
-    <!--input Mask-->
      <!-- jquery.inputmask -->
     <script src="./Template/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     <!-- Custom Theme Scripts -->
