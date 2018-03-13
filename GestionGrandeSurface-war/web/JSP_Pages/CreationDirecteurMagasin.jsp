@@ -35,7 +35,7 @@
                <option value ="<%=0%>"> <%= "" %>  </option>
              <% }%>
             <%for(Magasin mag : listeMag) {%>
-            <option value ="<%=mag.getId()%>"> <%=mag.getNom()+"("+mag.getVille()+")"%>  </option>
+            <option value ="<%=mag.getId()%>"> <%=mag.getNom()%>  </option>
             <% }%>
              </select>
              <br />
