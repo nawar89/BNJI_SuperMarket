@@ -39,6 +39,7 @@ public class ControleAdministration extends HttpServlet {
     public String message   = null; 
     public String requete   = null;
     public String DirNAT = "DirNat";
+    public String DirMAG = "DirMag";
     ArrayList <Parametre> mesParam = null;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -117,8 +118,8 @@ public class ControleAdministration extends HttpServlet {
             request.setAttribute( "message", message );
         }
         
-        else if (act.equals("FromCreationDirecteurMagasin")){
-            //FromCreationDirecteurMagasin(request,response); 
+        else if (act.equals("FromDirectionMagasin")){
+            FromCreationDirecteurMagasin(request,response); 
             request.setAttribute( "message", message );
         }
     }
@@ -293,24 +294,106 @@ HttpServletResponse response) throws ServletException, IOException
    
     try{
         //Construire requete SQL        
-              requete = Requete.getEmployes;
+              requete = Requete.getEmployes+" and e.magasin is not null";
               List<Employe> listeEmps = administration.getEmploye(requete, null);
               if (listeEmps == null){
               listeEmps = new ArrayList<Employe>(); 
               }
+              request.setAttribute( "mesEmployes", listeEmps );
               requete = Requete.getMagasins;
               List<Magasin> listeMags = administration.getMagasins(requete, null);
               if (listeMags == null){
               listeMags = new ArrayList<Magasin>(); 
               }
               request.setAttribute( "magasins", listeMags );
-              request.setAttribute( "employes", listeEmps );
+              
               jspClient = "/JSP_Pages/CreationDirecteurMagasin.jsp";
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
     jspClient = "/JSP_Pages/Page_Message.jsp";
 }
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            
+protected void FromCreationDirecteurMagasin(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    requete = null;
+    mesParam = new ArrayList<Parametre>();
+    String employe = null; 
+    try{
+        employe = request.getParameter( "employe" );
+        //Construire requete SQL
+         requete = Requete.getRoles + " AND r.nom =:nom";
+         Parametre p = new Parametre("nom", "String", DirMAG);
+         mesParam.add(p);
+         List<Role> listRole = administration.getRoles(requete, mesParam);
+         Role role = (Role)Aide.getObjectDeListe(listRole.toArray());
+         if (role != null){
+                if (!employe.isEmpty()){
+                    mesParam = new ArrayList<Parametre>();
+                    Integer idEmp = Integer.parseInt(employe);
+                    p = new Parametre("id","int",idEmp);
+                    requete = Requete.getEmployes + " AND e.id =:id"; 
+                    mesParam.add(p);
+                    List<Employe> listeEmp = administration.getEmploye(Requete.getEmployes, mesParam);
+                    Employe emp = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
+                    if (emp !=null)
+                    {
+                        
+                        administration.employeModifierRole(emp,role);  
+                        message = "Employe Modifié";
+                        jspClient = "/JSP_Pages/Page_Message.jsp";
+                     }else {message = "Employe n'existe pas";
+                            jspClient = "/JSP_Pages/Page_Message.jsp";
+                    }
+                }else{
+                
+                
+                String magasin     = request.getParameter( "magasinselect" );
+                if (!magasin.isEmpty()){
+                    Integer magID =  Integer.parseInt(magasin);
+                    requete = Requete.getMagasins+" and m.id=:id";
+                    mesParam = new ArrayList<Parametre>();
+                    p = new Parametre("id", "int", magID);
+                    mesParam.add(p);
+                    List<Magasin> listeMags = administration.getMagasins(requete, mesParam);
+                    if (listeMags !=null){
+                        Magasin ma = (Magasin)Aide.getObjectDeListe(listeMags.toArray());
+                        String nom     = request.getParameter( "nom" );
+                        String prenom  = request.getParameter( "prenom" );
+                        String adresse = request.getParameter( "adresse" );
+                        String tel     = request.getParameter( "telephone" );
+                        String email   = request.getParameter( "email" );
+                        String login   = Aide.GenererLogin(nom,prenom);
+                      
+                        String mdp     = Aide.GenererMDP();
+                        //Aide.envoyerEmail(email,mdp);  il faut envoyer l'email
+                        String EncryptedMdp = Aide.encrypterMdp(mdp);
+                        administration.creerEmployee(nom, prenom, adresse,tel, email,login,EncryptedMdp,role, ma);
+                        
+                       message = "Employe est créé";
+                       jspClient = "/JSP_Pages/Page_Message.jsp";
+                   }else {message = "magasin n'existe pas";
+                            jspClient = "/JSP_Pages/Page_Message.jsp";
+                    }
+                }else {
+                    jspClient = "/JSP_Pages/Page_Message.jsp";
+                    message = "il faut choisir magasin";}
+                    
+            }
+     }else {
+             jspClient = "/JSP_Pages/Page_Message.jsp";
+             message = "Role "+DirMAG+" n'existe pas";}
+    
+}catch(Exception exe){
+    message = exe.getMessage();}
 
 } 
    

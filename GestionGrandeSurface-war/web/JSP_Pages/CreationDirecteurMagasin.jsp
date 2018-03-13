@@ -16,19 +16,19 @@
         <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> </script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-         <jsp:useBean id="employes" scope="request" class="java.util.List"></jsp:useBean>
           <jsp:useBean id="magasins" scope="request" class="java.util.List"></jsp:useBean>
+           <jsp:useBean id="mesEmployes" scope="request" class="java.util.List"></jsp:useBean>
            <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
         <title>Creation Direction Magasin</title>
     </head>
     <body>
         <h1><%= message %></h1>
-        <form name="EmployeForm" onsubmit="return validerCreationEmploye()" method="post" action="ControleAdministration">
+    <form name="EmployeForm" onsubmit="return validerCreationDirectureMagasin(document.getElementById('mag'))" method="post" action="ControleAdministration">
          <div class="form-group"> 
         <fieldset>
         <legend>Nouveau Directeur Magasin</legend>
         
-            <label for="nom" >Categorie <span class="requis" >*</span></label>
+            <label for="nom" >Magasin <span class="requis" >*</span></label>
             <select id = "mag" name="magasinselect" onchange="RefreshTableEmployee(this,'myTable')">
             <% List<Magasin> listeMag = magasins ;
             if (!listeMag.isEmpty()){%>
@@ -73,15 +73,18 @@
                 <th style="width:10%;">ID</th>
                 <th style="width:40%;">Employé</th>
                 <th style="width:25%;">Role</th>
-                <th style="width:25%;">Role</th>
+                <th style="width:25%;">Magasin</th>
               </tr>
-            <% List<Employe> listeEmployes = employes ;
+            <% List<Employe> listeEmployes = mesEmployes ;
+            
             for(Employe em : listeEmployes) {%>
                    <tr onclick="addRowHandlersDirectionGeneral()">
                      <td><%=em.getId()%></td>
                      <td><%=em.getNom()%></td>
                      <td><%=em.getRole().getNom()  %></td>
-                     <td><%=em.getMagasin().getNom()  %></td>
+                     <% String maga = "-";
+                         if (em.getMagasin() != null){ maga = em.getMagasin().getNom();} %>
+                     <td><%=maga  %></td>
                    </tr>
             <% }%>
              </tbody>

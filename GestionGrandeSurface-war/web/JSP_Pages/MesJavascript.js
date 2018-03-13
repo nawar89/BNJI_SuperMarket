@@ -55,7 +55,7 @@ var table = document.getElementById("myTable");
                                  var cell = row.getElementsByTagName("td")[0];
                                  var id = cell.innerHTML;
                                  //alert("id:" + id);
-                                 if (confirm('Vous etes sur de vouloir faire employe '+id+' un direction general?')) {
+                                 if (confirm('Vous etes sur de vouloir changer le role demploye '+id+'?')) {
                                               document.getElementsByName("employe").value = id;
                                                 
                                 } else {
@@ -146,7 +146,7 @@ function createOption(ddl, text, value) {
 
 function RefreshTableEmployee(ddl1,Mytable) {
    
-            var row = ddl3.getElementsByTagName("option");
+            var row = ddl1.getElementsByTagName("option");
             var selectedValue = ddl1.options[ddl1.selectedIndex].text;
              console.log(selectedValue)
              var input, filter, table, tr, td, i;
@@ -165,3 +165,47 @@ function RefreshTableEmployee(ddl1,Mytable) {
               }       
             }
     }
+    
+    
+ /////////////////////////////////////////////////////////////////////////////////
+ 
+ function validerCreationDirectureMagasin(magasin) {
+    var x = document.forms["EmployeForm"]["employe"].value;
+    if (x == "") {
+        var selectedValue = magasin.options[magasin.selectedIndex].text;
+        console.log("selectedValue"+ selectedValue);
+        if (selectedValue == "" || selectedValue == "0" || selectedValue == 0 ){
+            
+            alert("Il faur choisir un magasin");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["nom"].value;
+        if (x==""){
+            alert("Il faur remplir le nom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["prenom"].value;
+        if (x==""){
+            alert("Il faur remplir le prenom");
+            return false;
+        }
+        x = document.forms["EmployeForm"]["adresse"].value;
+        if (x==""){
+            alert("Il faur remplir le adresse");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["email"].value;
+        if (x==""){
+            alert("Il faur remplir l'email");
+            return false;
+        }
+         x = document.forms["EmployeForm"]["telephone"].value;
+        if (x==""){
+            alert("Il faur remplir le telephone");
+            return false;
+        }
+    }
+    return true;
+}
+
+////////////////////////////////////////////////////////////////////////
