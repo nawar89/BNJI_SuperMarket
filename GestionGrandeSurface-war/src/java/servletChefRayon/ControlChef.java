@@ -38,16 +38,26 @@ public class ControlChef extends HttpServlet {
         if(null!=act){
             switch (act) {
                 case "null":
+                    jspClient="/ChefRayonJSP/Accueil.jsp";
+                    break;
+                case "CreerFour":
                     jspClient="/ChefRayonJSP/CreerFournisseur.jsp";
                     break;
                 case "CreerF":
                     doActionCreerF(request,response);
                     request.setAttribute( "message", message );
-                     break;
+                    break;
+                case "Accueil":
+                    jspClient="/ChefRayonJSP/Accueil.jsp";
+                    break;
+                case "CreerArticle":
+                    jspClient="/ChefRayonJSP/CreerArticle.jsp";
+                    break;
                 }
+            
         }
         else {
-            jspClient="/ChefRayonJSP/CreerFournisseur.jsp";
+            jspClient="/ChefRayonJSP/Accueil.jsp";
         }        
     RequestDispatcher Rd;
     Rd = getServletContext().getRequestDispatcher(jspClient);

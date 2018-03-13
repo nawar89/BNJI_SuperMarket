@@ -1,10 +1,8 @@
 <%-- 
-    Document   : CreerFournisseur
-    Created on : Mar 12, 2018, 4:27:11 PM
+    Document   : CreerArticle
+    Created on : Mar 13, 2018, 2:03:27 PM
     Author     : Jihane
 --%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +48,7 @@
        <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>CrÃ©ation de Fournisseur<small></small></h2>
+                    <h2>Création d'Article<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -73,29 +71,27 @@
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControlChef">
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nom">Nom <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="libelle">Libellé <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="nom" name="nom" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="libelle" name="libelle" required="required" class="form-control col-md-7 col-xs-12">
                            <span class="fa fa-user form-control-feedback  right" aria-hidden="true"></span>
                         </div>
                           
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="adresse">Adresse <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="reference">Référence <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="adresse" name="adresse" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="reference" name="reference" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="telephone" class="control-label col-md-3 col-sm-3 col-xs-12">Telephone</label>
+                        <label for="prix_achat_actuel" class="control-label col-md-3 col-sm-3 col-xs-12">Prix d'achat</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="telephone" class="form-control col-md-7 col-xs-12" type="text" name="telephone" data-inputmask="'mask' : '(999) 999-9999'">
+                          <input id="prix_achat_actuel" class="form-control col-md-7 col-xs-12" type="text" name="prix_achat_actuel">
                           <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
-                         
                         </div>
-                   
                       </div>
                       <div class="form-group">
                          <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
@@ -134,11 +130,8 @@
     <script src="./Template/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="./Template/iCheck/icheck.min.js"></script>
-    <!--input Mask-->
-     <!-- jquery.inputmask -->
-    <script src="./Template/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     <!-- Custom Theme Scripts -->
-    <script src="./Template/js/custom-min.js"></script>
-    
+    <script src="./Template/js/custom.min.js"></script>
+	
   </body>
 </html>

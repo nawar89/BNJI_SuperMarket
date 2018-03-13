@@ -1,5 +1,5 @@
  <div class="navbar nav_title" style="border: 0;">
-              <a href="Menu.jsp" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
+              <a href="ControlChef?action=Accueil" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -7,7 +7,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="../Template/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="./Template/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
@@ -22,20 +22,20 @@
              <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="Menu.jsp">Analyse des ventes</a></li>
+                      <li><a href="ControlChef?action=Accueil">Analyse des ventes</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Fournisseurs <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="creerFournisseur.jsp">Creer un Fournisseur </a></li>
-                      <li><a href="MainServlet?action=listerFour">Afficher Fournisseurs</a></li>
+                      <li><a href="ControlChef?action=CreerFour">Creer un Fournisseur </a></li>
+                      <li><a href="ControlChef?action=listerFour">Afficher Fournisseurs</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-desktop"></i> Articles <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="creerArticle.jsp">Créer un Article</a></li>
+                      <li><a href="ControlChef?action=CreerArticle">Créer un Article</a></li>
                       <li><a href="modifierArticle">Modifier le prix de vente d'un article du magasin</a></li>
-                      <li><a href="MainServlet?action=listerArticle">Consulter les articles de votre rayon</a></li>
+                      <li><a href="ControlChef?action=listerArticle">Consulter les articles de votre rayon</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> Livraisons <span class="fa fa-chevron-down"></span></a>
