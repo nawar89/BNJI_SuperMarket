@@ -29,5 +29,10 @@ public interface AdministrationLocal {
     
     List<Categorie> getCategories(String query, ArrayList<Parametre> params) throws Exception;
     
+    void creerSousCategorie(String libelle, Categorie categorie);
+    
+    void creerMagasin(String adresse, String nom, String code, String ville,String horaireOuverture,String horaireFermeture,String gps);
+    List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception;
+    
     
 }

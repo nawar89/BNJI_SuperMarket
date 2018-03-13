@@ -7,7 +7,9 @@ package BeanSession;
 
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
+import BeanFacade.MagasinFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
+import BeanFacade.SousCategorieFacadeLocal;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
@@ -24,6 +26,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private MagasinFacadeLocal magasinFacade;
+
+    @EJB
+    private SousCategorieFacadeLocal sousCategorieFacade;
 
     @EJB
     private CategorieFacadeLocal categorieFacade;
@@ -63,6 +71,21 @@ public class Administration implements AdministrationLocal {
     @Override
     public List<Categorie> getCategories(String query, ArrayList<Parametre> params) throws Exception{
         return categorieFacade.getCategories(query, params);
+    }
+    
+     @Override
+    public void creerSousCategorie(String libelle, Categorie categorie) {
+        sousCategorieFacade.creerSousCategorie(libelle, categorie);
+    }
+    
+     @Override
+    public void creerMagasin(String adresse, String nom, String code, String ville,String horaireOuverture,String horaireFermeture,String gps) {
+        magasinFacade.creerMagasin(adresse, nom, code, ville, horaireOuverture, horaireFermeture, gps);
+    }
+    
+     @Override
+    public List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception{
+        return magasinFacade.getMagasins(query, params);
     }
     
       
