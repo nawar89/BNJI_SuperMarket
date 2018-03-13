@@ -210,39 +210,86 @@ function RefreshTableEmployee(ddl1,Mytable) {
 
 ////////////////////////////////////////////////////////////////////////
 
-function validerCreationMagasin(magasin) {
+function validerCreationMagasin() {
     
-        var selectedValue = magasin.options[magasin.selectedIndex].text;
-        console.log("selectedValue"+ selectedValue);
-        if (selectedValue == "" || selectedValue == "0" || selectedValue == 0 ){
-            
-            alert("Il faur choisir un magasin");
-            return false;
-        }
-        x = document.forms["EmployeForm"]["nom"].value;
+    
+       var  x = document.forms["MagasinForm"]["nom"].value;
         if (x==""){
             alert("Il faur remplir le nom");
             return false;
         }
-        x = document.forms["EmployeForm"]["prenom"].value;
-        if (x==""){
-            alert("Il faur remplir le prenom");
-            return false;
-        }
-        x = document.forms["EmployeForm"]["adresse"].value;
+        x = document.forms["MagasinForm"]["adresse"].value;
         if (x==""){
             alert("Il faur remplir le adresse");
             return false;
         }
-         x = document.forms["EmployeForm"]["email"].value;
+        x = document.forms["MagasinForm"]["code"].value;
         if (x==""){
-            alert("Il faur remplir l'email");
+            alert("Il faur remplir le code");
             return false;
         }
-         x = document.forms["EmployeForm"]["telephone"].value;
+         x = document.forms["MagasinForm"]["ville"].value;
         if (x==""){
-            alert("Il faur remplir le telephone");
+            alert("Il faur remplir ville");
+            return false;
+        }
+         x = document.forms["MagasinForm"]["ho"].value;
+        if (x==""){
+            alert("Il faur remplir les horarire ouvertures");
+            return false;
+        }
+        
+         x = document.forms["MagasinForm"]["hf"].value;
+        if (x==""){
+            alert("Il faur remplir le horaires fermetures");
+            return false;
+        }
+         x = document.forms["MagasinForm"]["gps"].value;
+        if (x==""){
+            alert("Il faur remplir le gps");
             return false;
         }
     return true;
 }
+////////////////////////////////////////////////////////////////////////////////////
+
+function AffictuerMagasinInfo(ddl1,magsin) {
+   
+            var row = ddl1.getElementsByTagName("option");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+             console.log(selectedValue)
+             var input, filter, table, tr, td, i;
+            magsin.value =  selectedValue;
+            if (selectedValue == 0){
+                document.forms["MagasinForm"]["nom"].value = "";
+                  document.forms["MagasinForm"]["adresse"].value = "";
+                  document.forms["MagasinForm"]["ville"].value = "";
+                  document.forms["MagasinForm"]["code"].value = "";
+                  document.forms["MagasinForm"]["ho"].value = "";
+                  document.forms["MagasinForm"]["hf"].value = "";
+                  document.forms["MagasinForm"]["gps"].value = "";
+                
+            }else {
+            filter = selectedValue.toUpperCase();
+            table = document.getElementById('myTable');
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[0];
+              if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                  //tr[i].style.display = "";
+                  document.forms["MagasinForm"]["nom"].value = tr[i].getElementsByTagName("td")[1].innerHTML;
+                  document.forms["MagasinForm"]["adresse"].value = tr[i].getElementsByTagName("td")[2].innerHTML;
+                  document.forms["MagasinForm"]["ville"].value = tr[i].getElementsByTagName("td")[3].innerHTML;
+                  document.forms["MagasinForm"]["code"].value = tr[i].getElementsByTagName("td")[4].innerHTML;
+                  document.forms["MagasinForm"]["ho"].value = tr[i].getElementsByTagName("td")[5].innerHTML;
+                  document.forms["MagasinForm"]["hf"].value = tr[i].getElementsByTagName("td")[6].innerHTML;
+                  document.forms["MagasinForm"]["gps"].value = tr[i].getElementsByTagName("td")[7].innerHTML;
+                    
+                } 
+              }       
+            }
+            
+        }
+            
+    }

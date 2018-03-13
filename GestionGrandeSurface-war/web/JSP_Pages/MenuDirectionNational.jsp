@@ -14,6 +14,7 @@
     <body>
         <a class="btn btn-lg btn-primary btn-block" href="ControleAdministration?action=GoToCartegorie" role="button">Page Categorie</a>
         <a class="btn btn-lg btn-primary btn-block" href="ControleAdministration?action=GoToCreationDirecteurMagasin" role="button">Creation Directeur Magasin</a>
+        <a class="btn btn-lg btn-primary btn-block" href="ControleAdministration?action=GoToMagasin" role="button">Creation Magasin</a>
         
     </body>
 </html>

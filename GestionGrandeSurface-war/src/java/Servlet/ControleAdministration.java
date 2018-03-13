@@ -122,6 +122,16 @@ public class ControleAdministration extends HttpServlet {
             FromCreationDirecteurMagasin(request,response); 
             request.setAttribute( "message", message );
         }
+         else if (act.equals("GoToMagasin")){
+            GoTOCreationMagasin(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("FromMagasin")){
+            FromCreationMagasin(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
     }
     
             
@@ -398,6 +408,76 @@ HttpServletResponse response) throws ServletException, IOException
 } 
    
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+protected void GoTOCreationMagasin(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    
+    try{
+        //Construire requete SQL        
+              
+              requete = Requete.getMagasins;
+              List<Magasin> listeMags = administration.getMagasins(requete, null);
+              if (listeMags == null){
+              listeMags = new ArrayList<Magasin>(); 
+              }
+              request.setAttribute( "magasins", listeMags );
+              
+              jspClient = "/JSP_Pages/CreationMagasin.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+protected void FromCreationMagasin(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL        
+              String magasin     = request.getParameter( "magasinselect" );
+              String nom         = request.getParameter( "nom" );
+              String adresse         = request.getParameter( "adresse" );
+              String ville         = request.getParameter( "ville" );
+              String code         = request.getParameter( "code" );
+              String ho       = request.getParameter( "ho" );
+              String hf       = request.getParameter( "hf" );
+              String gps       = request.getParameter( "gps" );
+              if (!magasin.isEmpty()){
+                  if (!magasin.equals("0")){
+                      Integer magID =  Integer.parseInt(magasin);
+                      Parametre p = new Parametre("id", "int", magID);
+                      mesParam.add(p);
+                      List<Magasin> listeMags = administration.getMagasins(requete, mesParam);
+                    if (listeMags !=null){
+                        Magasin ma = (Magasin)Aide.getObjectDeListe(listeMags.toArray());
+                        administration.modifierMagasin(nom, adresse, ville, code, ho, hf, gps, ma);
+                        message = "Magasin est modifié";
+                    }
+                  }else {
+                      administration.creerMagasin(adresse, nom, code, ville, ho, hf, gps);
+                      message = "Magasin est créé";
+                   }
+                  
+              }else message = "magasin n'existe pas";
+              jspClient = "/JSP_Pages/Page_Message.jsp";
+              
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

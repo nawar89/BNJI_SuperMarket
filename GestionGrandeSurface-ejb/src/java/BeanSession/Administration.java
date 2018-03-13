@@ -88,5 +88,10 @@ public class Administration implements AdministrationLocal {
         return magasinFacade.getMagasins(query, params);
     }
     
+    @Override
+    public void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin) {
+        magasinFacade.modifierMagasin(nom, adresse, ville, code, horaire_ouver, horaire_ferm, gps, magasin);
+    }
+    
       
 }
