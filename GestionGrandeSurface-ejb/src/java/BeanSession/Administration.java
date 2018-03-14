@@ -5,17 +5,22 @@
  */
 package BeanSession;
 
+import BeanFacade.ArticleFacadeLocal;
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.MagasinFacadeLocal;
+import BeanFacade.PromotionFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
 import BeanFacade.SousCategorieFacadeLocal;
+import EntityBean.Article;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
 import EntityBean.Magasin;
+import EntityBean.Promotion;
 import Structure.Parametre;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -26,6 +31,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private PromotionFacadeLocal promotionFacade;
+
+    @EJB
+    private ArticleFacadeLocal articleFacade;
 
     @EJB
     private MagasinFacadeLocal magasinFacade;
@@ -92,6 +103,24 @@ public class Administration implements AdministrationLocal {
     public void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin) {
         magasinFacade.modifierMagasin(nom, adresse, ville, code, horaire_ouver, horaire_ferm, gps, magasin);
     }
+     @Override
+    public List<Article> getArticle(String query, ArrayList<Parametre> params) throws Exception{
+      return articleFacade.getArticle(query, params);
+    }
     
+    @Override
+    public void creerPromotion(Date datedeb, Date dateFin, float prix_promo, Employe dirNat, Article article) {
+        promotionFacade.creerPromotion(datedeb, dateFin, prix_promo, dirNat, article);
+    }
+    
+     @Override
+    public void modifierPromotion(Date datedeb, Date dateFin, float prix_promo, Employe dirNat, Article article,Promotion p) {
+        promotionFacade.creerPromotion(datedeb, dateFin, prix_promo, dirNat, article);
+    }
+    
+      @Override
+    public List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception{
+        return promotionFacade.getPromotions(query, params);
+    }
       
 }

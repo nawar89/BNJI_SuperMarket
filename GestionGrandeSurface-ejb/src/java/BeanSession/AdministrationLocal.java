@@ -5,12 +5,15 @@
  */
 package BeanSession;
 
+import EntityBean.Article;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Magasin;
+import EntityBean.Promotion;
 import EntityBean.Role;
 import Structure.Parametre;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -35,6 +38,14 @@ public interface AdministrationLocal {
     List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception;
     
     void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin);
+    
+    List<Article> getArticle(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void creerPromotion(Date datedeb, Date dateFin, float prix_promo, Employe dirNat, Article article);
+    
+    void modifierPromotion(Date datedeb, Date dateFin, float prix_promo, Employe dirNat, Article article,Promotion p);
+    
+    List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception;
     
     
 }

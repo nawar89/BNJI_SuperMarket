@@ -296,3 +296,91 @@ function AffictuerMagasinInfo(ddl1,magsin) {
     /////////////////////////////////////////////////////////////////////////////////////
     
     
+function AffictuerPromoInfo(ddl1,ddl2,table) {
+   
+            var row = ddl1.getElementsByTagName("option");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+            var date = ddl2.value;
+             console.log(selectedValue)
+             var input, filter1,filtre2, tr, td, i;
+             
+            filter1 = selectedValue.toUpperCase();
+            filtre2 = date;
+            //table = document.getElementById(Mytable);
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[1];
+              if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter1) > -1 || td.innerHTML.toUpperCase().indexOf(filtre2) > -1 ) {
+                  tr[i].style.display = "";
+                } else {
+                  tr[i].style.display = "none";
+                }
+              }       
+            }
+    }
+    
+    
+    /////////////////////////////////////////////////////////////////////////////////////
+    
+    function validerCreationPromotion() {
+    
+        var x = document.forms["PromotionForm"]["Articleselect"].value;
+        if (x == "" || x == "0" || x == 0) {
+        
+            alert("Il faur choisir un article");
+            return false;
+        }
+         x = document.forms["PromotionForm"]["datedeb"].value;
+        if (x==""){
+            alert("Il faur remplir le date debut");
+            return false;
+        }
+        x = document.forms["PromotionForm"]["datefin"].value;
+        if (x==""){
+            alert("Il faur remplir le datefin");
+            return false;
+        }
+        x = document.forms["PromotionForm"]["prixpromo"].value;
+        if (x==""){
+            alert("Il faur remplir le prix promo");
+            return false;
+        }
+        
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+function addRowHandlersPromotion() {
+    
+var table = document.getElementById("myTable");
+    var rows = table.getElementsByTagName("tr");
+    document.getElementsByName('promo').value = "";
+    document.forms["PromotionForm"]["datedeb"].value = "";
+    document.forms["PromotionForm"]["datefin"].value = "";
+    document.forms["PromotionForm"]["prixpromo"].value = "";
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                                 
+                                 var cell = row.getElementsByTagName("td")[0];
+                                 var id = cell.innerHTML;
+                                 //alert("id:" + id);
+                                 document.getElementsByName('promo').value = row.getElementsByTagName("td")[0].innerHTML;;
+                                 document.forms["PromotionForm"]["datedeb"].value = row.getElementsByTagName("td")[4].innerHTML;
+                                 document.forms["PromotionForm"]["datefin"].value = row.getElementsByTagName("td")[5].innerHTML;
+                                 document.forms["PromotionForm"]["prixpromo"].value = row.getElementsByTagName("td")[7].innerHTML;
+                                       
+                           };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+    }
+  // alert("koko");
+}
+
+/////////////////////////////////////////////////////////
