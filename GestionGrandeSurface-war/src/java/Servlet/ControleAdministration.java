@@ -59,8 +59,8 @@ public class ControleAdministration extends HttpServlet {
             String act=request.getParameter("action");
             if ((act == null)||(act.equals("null")))
             {
-                 jspClient="/JSP_Pages/MenuDirectionNational.jsp";
-                 //jspClient="/JSP_Pages/MenuAdmin.jsp";
+                // jspClient="/JSP_Pages/MenuDirectionNational.jsp";
+                jspClient="/JSP_Pages/MenuAdmin.jsp";
             }else {
             
                   verifierConnexion(request, response);
