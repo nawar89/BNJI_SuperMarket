@@ -3,10 +3,14 @@
     Created on : Mar 13, 2018, 2:03:27 PM
     Author     : Jihane
 --%>
-
+<%@page import="EntityBean.SousCategorie"%>
+<%@page import="EntityBean.Categorie"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <jsp:useBean id="categories" scope="request" class="java.util.List"></jsp:useBean>
+    <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -94,18 +98,51 @@
                         </div>
                       </div>
                       <div class="form-group">
-                         <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
+                         <label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Description</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="email" class="form-control col-md-7 col-xs-12" type="text" name="email">
-                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
+                       <textarea class="resizable_textarea form-control" id="description" name="description"></textarea>
+                       </div>
+                      </div>
+                      <div class="form-group">
+                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Catégorie</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" id = "catsel" name="CategorieSelect" onchange="RefreshComboBox(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
+                            <% List<Categorie> listeCat = categories ;
+                            for(Categorie cat : listeCat) {%>
+                            <option value ="<%=cat.getId()%>"> <%=cat.getLibelle() %>  </option>
+                            <% }%>
+                            </select>
                         </div>
                       </div>
+                       <div class="form-group">
+                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Sous Catégorie</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select id = "souscatsel" name="SousCategorieSelect">
+                        <% if (!listeCat.isEmpty())  {
+                        Categorie cat = listeCat.get(0);
+                        for(SousCategorie s : cat.getSousCategories() ) {%>
+                        <option class="filterOption" value ="<%= cat.getId()%>"> <%=s.getLibelle() %>  </option>
+                            <% }}%>
+                        </select>
+                        
+                         <select id = "souscatseltemp" style="display: none" >
+           
+                      <% if (!listeCat.isEmpty())  {
+                      for (Categorie cat : listeCat){
+                      for(SousCategorie s : cat.getSousCategories() ) {%>
+                      <option class="filterOption" value ="<%= cat.getId()%>"> <%=s.getLibelle() %>  </option>
+                      <% }}}%>
+                      </select>
+                      </div>
+                      </div>
+                       
+                        
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <button class="btn btn-primary" type="button">Annuler</button>
 		          <button class="btn btn-primary" type="reset">Reset</button>
-                          <input type="hidden" name="action" value="CreerF"/>
+                          <input type="hidden" name="action" value="CreerA"/>
                           <button type="submit" class="btn btn-success">Ajouter</button>
                         </div>
                       </div>

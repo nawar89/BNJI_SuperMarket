@@ -6,10 +6,16 @@
 package servletChefRayon;
 
 import BeanFacade.FournisseurFacadeLocal;
+import BeanSession.AdministrationLocal;
+import BeanSession.ChefRayonLocal;
+import EntityBean.Categorie;
+import Structure.Aide;
 import Structure.Parametre;
+import Structure.Requete;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,7 +30,11 @@ import javax.servlet.http.HttpServletResponse;
 public class ControlChef extends HttpServlet {
 
     @EJB
-     private FournisseurFacadeLocal fournisseurFacade;
+    private AdministrationLocal administration;
+
+    @EJB
+    private ChefRayonLocal chefRayon;
+    
      public String jspClient=null;
      public String message   = null; 
      public String requete   = null;
@@ -52,6 +62,10 @@ public class ControlChef extends HttpServlet {
                     break;
                 case "CreerArticle":
                     jspClient="/ChefRayonJSP/CreerArticle.jsp";
+                    break;
+                case "CreerA":
+                    doActionCreerA(request,response);
+                    request.setAttribute( "message", message );
                     break;
                 }
             
@@ -83,7 +97,64 @@ public class ControlChef extends HttpServlet {
        } 
        else {
           
-           fournisseurFacade.creerFournisseur(nom, adresse, telephone, email);
+          chefRayon.creationFournisseur(nom, adresse, telephone, email);
+           message = "Fournisseur créé avec succès !";  
+           jspClient = "/ChefRayonJSP/Page_message.jsp";
+        }
+         }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/ChefRayonJSP/Page_message.jsp";
+         }
+      }
+      
+      
+        protected void doActionCreerA(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+           
+       String libelle= request.getParameter("libelle");
+       String reference = request.getParameter("reference");
+       String description=request.getParameter("description");
+       String prix=request.getParameter("prix_achat_actuel");
+       String category = request.getParameter( "CategorieSelect" );
+       String souscategoryLibelle = request.getParameter( "souscatnom" );
+   
+       if ( libelle.trim().isEmpty() || reference.trim().isEmpty() || prix.trim().isEmpty())
+       {
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"CreerFournisseur.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
+       } 
+       else {
+              //Récupérer la catégorie choisi
+               
+                Integer catID = Integer.parseInt(category);
+                requete = Requete.getCategories + " And c.id=:id";
+                Parametre p = new Parametre("id", "int", catID);
+                mesParam.add(p);
+                List<Categorie> listeCat = administration.getCategories(requete, mesParam);
+                if (listeCat != null){
+                    Categorie cat = (Categorie)Aide.getObjectDeListe(listeCat.toArray());
+                    if (!souscategoryLibelle.isEmpty()){
+                        administration.creerSousCategorie(souscategoryLibelle, cat);
+                    }
+
+                    message = "Categorie est créé";
+                    jspClient = "/JSP_Pages/PageCategorie.jsp";
+                    mesParam = new ArrayList<Parametre>();
+                     requete = Requete.getCategories;
+                    listeCat = administration.getCategories(requete, null);
+                    if (listeCat == null){
+                    listeCat = new ArrayList<Categorie>(); 
+                    }
+                    request.setAttribute( "categories", listeCat );
+                    
+                    
+                }else  {message = "Categorie n'existe pas";
+                     jspClient = "/JSP_Pages/Page_Message.jsp";
+                }
+              
+          
+           //chefRayon.creationArticle(libelle, reference, 0, date_de_creation, description, sous_categorie, fournisseur);
            message = "Fournisseur créé avec succès !";  
            jspClient = "/ChefRayonJSP/Page_message.jsp";
         }
