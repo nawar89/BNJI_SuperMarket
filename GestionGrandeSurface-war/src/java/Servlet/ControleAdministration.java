@@ -62,7 +62,7 @@ public class ControleAdministration extends HttpServlet {
         
         try {
         
-            HttpSession session=request.getSession(true);
+            session=request.getSession(true);
 
             String act=request.getParameter("action");
             if ((act == null)||(act.equals("null")))
@@ -102,6 +102,9 @@ public class ControleAdministration extends HttpServlet {
         throws ServletException, IOException {
         
         employeConnecte = (Employe) session.getAttribute("employeCo");
+        
+        session.setAttribute("employeCo", employeConnecte);
+        
         if (employeConnecte ==null){
             jspClient="/JSP_Isa/PageConnexion.jsp";
         

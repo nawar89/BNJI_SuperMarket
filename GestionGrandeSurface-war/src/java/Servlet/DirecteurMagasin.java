@@ -149,12 +149,12 @@ HttpServletResponse response) throws ServletException, IOException
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case DirNAT:
-                             jspClient = "/JSP_Page/MenuDirectionNational.jsp";
+                             jspClient = "/JSP_Pages/MenuDirectionNational.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case ChefRayon:
-                             jspClient = "/JSP_Page/MenuDirectionNational.jsp";
+                             jspClient = "/JSP_Pages/MenuChefRayon.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;

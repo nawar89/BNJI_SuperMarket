@@ -384,3 +384,38 @@ var table = document.getElementById("myTable");
 }
 
 /////////////////////////////////////////////////////////
+
+function AjouterDansTable(ddl1,table) {
+   
+            //var row = ddl1.getElementsByTagName("option");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+            var selectedText = ddl1.options[ddl1.selectedIndex].text;
+             console.log(selectedValue)
+             var input, filter1,filtre2, tr, td, i;
+             var ok = true;
+            filter1 = selectedValue.toUpperCase();
+            //table = document.getElementById(Mytable);
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[1];
+              if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter1) > -1 || td.innerHTML.toUpperCase().indexOf(filtre2) > -1 ) {
+                  ok = false;
+                  break;
+                } 
+              }       
+            }
+            if (ok){
+                var row = table.insertRow(0);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                cell1.innerHTML = selectedValue;
+                cell2.innerHTML = selectedText;
+                cell3.innerHTML = "";
+                cell4.innerHTML = "1";
+  
+            }
+            
+    }
