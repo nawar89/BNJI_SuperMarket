@@ -452,6 +452,7 @@ HttpServletResponse response) throws ServletException, IOException
                       Integer magID =  Integer.parseInt(magasin);
                       Parametre p = new Parametre("id", "int", magID);
                       mesParam.add(p);
+                      requete = Requete.getMagasins+" and m.id=:id";
                       List<Magasin> listeMags = administration.getMagasins(requete, mesParam);
                     if (listeMags !=null){
                         Magasin ma = (Magasin)Aide.getObjectDeListe(listeMags.toArray());
