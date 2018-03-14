@@ -6,16 +6,20 @@
 package Servlet;
 
 import BeanSession.AdministrationLocal;
+import EntityBean.Article;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Magasin;
+import EntityBean.Promotion;
 import EntityBean.Role;
 import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Parameter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -25,6 +29,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,6 +45,8 @@ public class ControleAdministration extends HttpServlet {
     public String requete   = null;
     public String DirNAT = "DirNat";
     public String DirMAG = "DirMag";
+    Employe employeConnecte = null;
+    HttpSession session=null;   
     ArrayList <Parametre> mesParam = null;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,15 +61,16 @@ public class ControleAdministration extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            
-            
+        
+            HttpSession session=request.getSession(true);
+
             String act=request.getParameter("action");
             if ((act == null)||(act.equals("null")))
             {
-                 jspClient="/JSP_Pages/MenuDirectionNational.jsp";
-                 //jspClient="/JSP_Pages/MenuAdmin.jsp";
+                // jspClient="/JSP_Pages/MenuDirectionNational.jsp";
+                jspClient="/JSP_Isa/PageConnexion.jsp";
             }else {  
-                    
+
                   verifierConnexion(request, response);
             }
             
@@ -92,7 +100,12 @@ public class ControleAdministration extends HttpServlet {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
    public void verifierConnexion(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-     
+        
+        employeConnecte = (Employe) session.getAttribute("employeCo");
+        if (employeConnecte ==null){
+            jspClient="/JSP_Isa/PageConnexion.jsp";
+        
+        }else {
         String act=request.getParameter("action");
         if (act.equals("GoToDirectionNational")){
             DoActPageDirectionNational(request,response);
@@ -122,6 +135,26 @@ public class ControleAdministration extends HttpServlet {
             FromCreationDirecteurMagasin(request,response); 
             request.setAttribute( "message", message );
         }
+         else if (act.equals("GoToMagasin")){
+            GoTOCreationMagasin(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("FromMagasin")){
+            FromCreationMagasin(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("GoToPromotion")){
+            GoTOCreationPromotion(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+         else if (act.equals("FromPromotion")){
+            FromCreationPromotion(request,response); 
+            request.setAttribute( "message", message );
+        }
+      }
     }
     
             
@@ -398,6 +431,168 @@ HttpServletResponse response) throws ServletException, IOException
 } 
    
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+protected void GoTOCreationMagasin(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    
+    try{
+        //Construire requete SQL        
+              
+              requete = Requete.getMagasins;
+              List<Magasin> listeMags = administration.getMagasins(requete, null);
+              if (listeMags == null){
+              listeMags = new ArrayList<Magasin>(); 
+              }
+              request.setAttribute( "magasins", listeMags );
+              
+              jspClient = "/JSP_Pages/CreationMagasin.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+protected void FromCreationMagasin(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL        
+              String magasin     = request.getParameter( "magasinselect" );
+              String nom         = request.getParameter( "nom" );
+              String adresse         = request.getParameter( "adresse" );
+              String ville         = request.getParameter( "ville" );
+              String code         = request.getParameter( "code" );
+              String ho       = request.getParameter( "ho" );
+              String hf       = request.getParameter( "hf" );
+              String gps       = request.getParameter( "gps" );
+              if (!magasin.isEmpty()){
+                  if (!magasin.equals("0")){
+                      Integer magID =  Integer.parseInt(magasin);
+                      Parametre p = new Parametre("id", "int", magID);
+                      mesParam.add(p);
+                      requete = Requete.getMagasins+" and m.id=:id";
+                      List<Magasin> listeMags = administration.getMagasins(requete, mesParam);
+                    if (listeMags !=null){
+                        Magasin ma = (Magasin)Aide.getObjectDeListe(listeMags.toArray());
+                        administration.modifierMagasin(nom, adresse, ville, code, ho, hf, gps, ma);
+                        message = "Magasin est modifié";
+                    }
+                  }else {
+                      administration.creerMagasin(adresse, nom, code, ville, ho, hf, gps);
+                      message = "Magasin est créé";
+                   }
+                  
+              }else message = "magasin n'existe pas";
+              jspClient = "/JSP_Pages/Page_Message.jsp";
+              
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+protected void GoTOCreationPromotion(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    
+    try{
+        //Construire requete SQL        
+              
+              requete = Requete.getArticles;
+              List<Article> listeArts = administration.getArticle(requete, null);
+              if (listeArts == null){
+              listeArts = new ArrayList<Article>(); 
+              }
+              request.setAttribute( "articles", listeArts );
+              
+              requete = Requete.getPromotions;
+              List<Promotion> listePrs = administration.getPromotions(requete, null);
+              if (listePrs == null){
+              listePrs = new ArrayList<Promotion>(); 
+              }
+              request.setAttribute( "promotions", listePrs );
+              
+              jspClient = "/JSP_Pages/CreerPromotion.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+protected void FromCreationPromotion(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL        
+              String promo     = request.getParameter( "promo" );
+              String Articleselect         = request.getParameter( "Articleselect" );
+              String datedeb         = request.getParameter( "datedeb" );
+              String datefin         = request.getParameter( "datefin" );
+              String prixpromo         = request.getParameter( "prixpromo" );
+             
+              if (!Articleselect.isEmpty()){
+                  if (!Articleselect.equals("0")){
+                      Date dated = Date.valueOf(datedeb);
+                      Date datef = Date.valueOf(datefin);
+                      float prix = Float.parseFloat(prixpromo);
+                      Integer artId =  Integer.parseInt(Articleselect);
+                      Parametre p = new Parametre("id", "int", artId);
+                      mesParam.add(p);
+                      requete = Requete.getArticles+" and a.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        Article article = (Article)Aide.getObjectDeListe(listearts.toArray());
+                        //Employe monEmp = (Employe) session.getAttribute("session");
+                        //Employe monEmp = null;
+                        if (!promo.isEmpty()){ //modifier promotion
+                          mesParam = new ArrayList<Parametre>(); 
+                          Integer proID =  Integer.parseInt(promo);
+                          p = new Parametre("id", "int", proID);
+                          mesParam.add(p);
+                          requete = Requete.getPromotions+" and p.id=:id";
+                          List<Promotion> listpro = administration.getPromotions(requete, mesParam);
+                                if (listpro !=null){
+                                   Promotion pro = (Promotion)Aide.getObjectDeListe(listpro.toArray());
+                                   administration.modifierPromotion(dated, datef, prix, employeConnecte, article, pro);
+                                   message = "Promotion est moifié";
+                                }
+                            
+                        }else { //nouveau promotion
+                                administration.creerPromotion(dated, datef, prix, employeConnecte, article);
+                                message = "Promotion est créé";
+                        }
+                    }
+                  }else {
+                      
+                      message = "Article n'existe pas";
+                   }
+                  
+              }else message = "il faut choisir un article";
+              jspClient = "/JSP_Pages/Page_Message.jsp";
+              
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -63,5 +63,19 @@ public class MagasinFacade extends AbstractFacade<Magasin> implements MagasinFac
         }catch(Exception exe){throw exe;}
         return magasins;
     }
+
+    @Override
+    public void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin) {
+        magasin.setNom(nom);
+        magasin.setAdresse(adresse);
+        magasin.setVille(ville);
+        magasin.setCode_postal(code);
+        magasin.setGps(gps);
+        magasin.setHoraire_fermeture(horaire_ferm);
+        magasin.setHoraire_ouverteur(horaire_ouver);
+        em.merge(magasin);
+    }
+    
+    
     
 }

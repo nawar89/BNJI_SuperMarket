@@ -16,4 +16,5 @@ public abstract class Requete {
     public static String getArticleMagasin = "SELECT a FROM ArticleMagasin AS a WHERE 1=1";
     public static String getCategories = "SELECT c FROM Categorie AS c WHERE 1=1";
     public static String getMagasins = "SELECT m FROM Magasin AS m WHERE 1=1";
+    public static String getPromotions = "SELECT p FROM Promotion AS p WHERE 1=1";
 }
