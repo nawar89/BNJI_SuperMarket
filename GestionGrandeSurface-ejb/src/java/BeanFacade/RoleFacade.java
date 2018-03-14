@@ -48,6 +48,7 @@ public class RoleFacade extends AbstractFacade<Role> implements RoleFacadeLocal 
                 }
             }
             roles = q.getResultList();
+            
         }catch(Exception exe){throw exe;}
         return roles;
     }

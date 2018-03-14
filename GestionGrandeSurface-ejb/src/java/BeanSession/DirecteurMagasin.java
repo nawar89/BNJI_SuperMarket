@@ -11,6 +11,7 @@ import EntityBean.Magasin;
 import EntityBean.Employe ;
 import EntityBean.Categorie;
 import EntityBean.Role;
+import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
 import java.util.ArrayList;
@@ -44,17 +45,19 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
         {
             try {
                 ArrayList<Parametre> mesParam = new ArrayList<>();
-                String requete = Requete.getEmployes + " AND e.login = :login AND e.mdp = :mdp";
                 Parametre p = new Parametre("login", "String", login);
                 mesParam.add(p);
                 p = new Parametre("mdp", "String", mdp);
                 mesParam.add(p);
                 
-                List<Employe> listeEmp = getEmploye(requete, mesParam);
-                
-                for( Categorie cat: listeCat)
+                List<Employe> listeEmp = getEmploye(Requete.getEmployes + " AND e.login = :login AND e.mdp = :mdp", mesParam);
+                if(!listeEmp.isEmpty() && listeEmp.size()==1)
                 {
-                    chefRyon_CategorieFacade.creerRelationEmployeRayon(listeEmp.get(0), cat);
+                    Employe employe = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
+                
+                    listeCat.forEach((cat) -> {
+                        chefRyon_CategorieFacade.creerRelationEmployeRayon(employe, cat);
+                    });
                 }
                 
                 
