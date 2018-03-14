@@ -62,19 +62,19 @@ public class ControleAdministration extends HttpServlet {
         try {
         
             HttpSession session=request.getSession(true);
-            
+
             String act=request.getParameter("action");
             if ((act == null)||(act.equals("null")))
             {
                 // jspClient="/JSP_Pages/MenuDirectionNational.jsp";
                 jspClient="/JSP_Pages/MenuAdmin.jsp";
-            }else {
-            
+            }else {  
+
                   verifierConnexion(request, response);
             }
             
             
-
+            
             RequestDispatcher Rd;
             Rd = getServletContext().getRequestDispatcher(jspClient);
             Rd.forward(request, response);

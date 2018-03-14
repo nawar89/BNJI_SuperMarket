@@ -35,7 +35,6 @@ public class EmployeFacade extends AbstractFacade<Employe> implements EmployeFac
     public EmployeFacade() {
         super(Employe.class);
     }
-
     @Override
     public void creerEmployee(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp,Role role, Magasin magasin) {
         Employe emp = new Employe();

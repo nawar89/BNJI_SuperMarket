@@ -88,5 +88,36 @@ public abstract class Aide {
             throw new DigestException("couldn't make digest of partial content");
         }
      }
+     public static List<String> rolesToTitles (List<Role> listRoles)
+     {
+        List<String> listeTitres = null;
+         for (Role role : listRoles)
+         {
+             switch(role.getNom()){
+                 case "DirNat" : listeTitres.add("Direction Nationale");
+                 case "DirMag" : listeTitres.add("Directeur Magasin");
+                 case "AgRayon" :listeTitres.add("Agent de Rayon");
+                 case "ChefRayon": listeTitres.add("Chef de Rayon");
+                 case "AgLivraison": listeTitres.add("Agent de Livraison");
+                 case "AgCaisse" : listeTitres.add("Agent de Caisse");
+             }
+             
+         }
+         return listeTitres ;
+     }
+     public static String aTitletoRoleName (String title)
+     {
+         String nomRole = null;
+         switch (title)
+         {
+             case "Direction Nationale" : nomRole = "DirNat";
+             case "Directeur Magasin" : nomRole ="DirMag"; 
+             case "Agent de Rayon":  nomRole = "AgRayon" ;
+             case "Chef de Rayon": nomRole = "ChefRayon" ;
+             case  "Agent de Livraison": nomRole = "AgLivraison";
+             case  "Agent de Caisse": nomRole = "AgCaisse";
+         }
+         return nomRole; 
+     }
     
 }
