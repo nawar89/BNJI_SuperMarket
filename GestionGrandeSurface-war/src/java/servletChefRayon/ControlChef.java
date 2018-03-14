@@ -8,6 +8,7 @@ package servletChefRayon;
 import BeanFacade.FournisseurFacadeLocal;
 import BeanSession.AdministrationLocal;
 import BeanSession.ChefRayonLocal;
+import EntityBean.ArticleMagasin;
 import EntityBean.Categorie;
 import EntityBean.Fournisseur;
 import EntityBean.SousCategorie;
@@ -71,7 +72,17 @@ public class ControlChef extends HttpServlet {
                     doActionCreerA(request,response);
                     request.setAttribute( "message", message );
                     break;
-                }
+                
+            case "ModifierArticleMag" :
+                GoTOArticleMag(request,response);
+                 break;
+            
+            case "ModifA" : 
+                 doActionModifArticleMag(request,response);
+                 request.setAttribute( "message", message );
+                   break;
+            }
+            
             
         }
         else {
@@ -140,6 +151,25 @@ public class ControlChef extends HttpServlet {
 }
 
 } 
+      protected void GoTOArticleMag(HttpServletRequest request, HttpServletResponse response) 
+              throws ServletException, IOException
+      {
+          
+          try{
+              requete=Requete.getArticleMagasin;
+              List<ArticleMagasin> listeart = chefRayon.getArticleMagasin(requete, null);
+              if (listeart == null){
+              listeart = new ArrayList<>(); 
+              }
+              request.setAttribute( "articles", listeart );
+              jspClient="/ChefRayonJSP/modifierPrixArticle.jsp";
+              message = "";
+            }catch(Exception exe){
+             message = exe.getMessage();
+            jspClient = "/ChefRayonJSP/Page_message.jsp";
+}
+
+} 
         protected void doActionCreerA(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        try
@@ -154,7 +184,7 @@ public class ControlChef extends HttpServlet {
    
        if ( libelle.trim().isEmpty() || reference.trim().isEmpty() || prix.trim().isEmpty())
        {
-          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"CreerFournisseur.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"CreerArticle.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
        } 
        else 
        {
@@ -162,18 +192,17 @@ public class ControlChef extends HttpServlet {
                 Integer fourniID = Integer.parseInt(fourni);
                 Integer prix_actuel = Integer.parseInt(prix);
                 //Récupérer la sous-categorie
-                 mesParam = new ArrayList<Parametre>();
+                mesParam = new ArrayList<Parametre>();
                 requete= Requete.getSousCategories + " And s.id=:id";
                 Parametre s = new Parametre("id", "int", souscatID);
                 mesParam.add(s);
                 List<SousCategorie> listeSousCat=administration.getSousCategories(requete, mesParam);
                 //Récupérer le fournisseur
-                String reque= "";
                 mesParam = new ArrayList<Parametre>();
-                reque=Requete.getFournisseurs + " And f.id=:id";
+                requete=Requete.getFournisseurs + " And f.id=:id";
                 Parametre f = new Parametre("id", "int", fourniID);
                 mesParam.add(f);
-                List<Fournisseur> listeFour=chefRayon.getFournisseur(reque, mesParam);
+                List<Fournisseur> listeFour=chefRayon.getFournisseur(requete, mesParam);
                 chefRayon.creationArticle(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0));
                 message = "Article créé avec succès !";  
                 jspClient = "/ChefRayonJSP/Page_message.jsp";
@@ -183,6 +212,34 @@ public class ControlChef extends HttpServlet {
            jspClient = "/ChefRayonJSP/Page_message.jsp";
          }
       } 
+        
+         protected void doActionModifArticleMag(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+           
+       String prix= request.getParameter("nouveauPrix");
+       String article= request.getParameter("ArticleSelect");
+       if ( prix.trim().isEmpty())
+       {
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"modifierPrixArticle.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
+       } 
+       else {
+          Integer newPrice = Integer.parseInt(prix);
+          Integer articleID = Integer.parseInt(prix);
+           requete= Requete.getArticleMagasin + " And a.id=:id";
+           Parametre a = new Parametre("id", "int", articleID);
+           mesParam.add(a);
+           List<ArticleMagasin> listearticle=chefRayon.getArticleMagasin(requete, mesParam);
+           chefRayon.modifierPrixVente(listearticle.get(0), newPrice);
+           message = "Prix modifié avec succès !";  
+           jspClient = "/ChefRayonJSP/Page_message.jsp";
+        }
+        }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/ChefRayonJSP/Page_message.jsp";
+         }
+      }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
