@@ -43,9 +43,14 @@ public class DirecteurMagasin extends HttpServlet {
     public String jspClient = null;
     public String message   = null; 
     public String requete   = null;
-    public String DirNAT = "DirNat";
-    public String DirMag = "DirMag";
-
+    public final String DirNAT = "DirNat";
+    public final String DirMag = "DirMag";
+    public final String ChefRayon = "ChefRayon";
+    public final String agentRayon = "AgRayon";
+    public final String agentLivraison = "AgLivraison";
+    public final String agentCaisse = "AgCaisse";
+    
+    
     ArrayList <Parametre> mesParam = null;
 
     /**
@@ -136,14 +141,26 @@ HttpServletResponse response) throws ServletException, IOException
               mesParam.add(p);
               List<Employe> listeEmp = administration.getEmploye(requete, mesParam);
               if (listeEmp != null && listeEmp.size()== 1){
-                           
-              if ("DirMag".equals(listeEmp.get(0).getRole().getNom()))
-                      {
-                          jspClient = "/JSP_Isa/MenuDirecteurMagasin.jsp";
-                          sess.setAttribute("employeCo", listeEmp.get(0));
-                          message = "Bonjour "+listeEmp.get(0).getPrenom()+" "+listeEmp.get(0).getNom() ;
-                      }
-                  }              
+                  Employe emp = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
+                     switch (emp.getRole().getNom()){
+                         case DirMag:
+                             jspClient = "/JSP_Isa/MenuDirecteurMagasin.jsp";
+                             sess.setAttribute("employeCo", emp);
+                             message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
+                             break;
+                         case DirNAT:
+                             jspClient = "/JSP_Page/MenuDirectionNational.jsp";
+                             sess.setAttribute("employeCo", emp);
+                             message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
+                             break;
+                         case ChefRayon:
+                             jspClient = "/JSP_Page/MenuDirectionNational.jsp";
+                             sess.setAttribute("employeCo", emp);
+                             message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
+                             break;
+     
+                     }     
+              }        
     }catch(Exception exe){
     message = exe.getMessage();
     jspClient = "/JSP_Pages/Page_Message.jsp";

@@ -45,6 +45,7 @@ public class ControleAdministration extends HttpServlet {
     public String requete   = null;
     public String DirNAT = "DirNat";
     public String DirMAG = "DirMag";
+    Employe employeConnecte = null;
     HttpSession session=null;   
     ArrayList <Parametre> mesParam = null;
     /**
@@ -67,7 +68,7 @@ public class ControleAdministration extends HttpServlet {
             if ((act == null)||(act.equals("null")))
             {
                 // jspClient="/JSP_Pages/MenuDirectionNational.jsp";
-                jspClient="/JSP_Pages/MenuAdmin.jsp";
+                jspClient="/JSP_Isa/PageConnexion.jsp";
             }else {  
 
                   verifierConnexion(request, response);
@@ -99,7 +100,12 @@ public class ControleAdministration extends HttpServlet {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
    public void verifierConnexion(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-     
+        
+        employeConnecte = (Employe) session.getAttribute("employeCo");
+        if (employeConnecte ==null){
+            jspClient="/JSP_Isa/PageConnexion.jsp";
+        
+        }else {
         String act=request.getParameter("action");
         if (act.equals("GoToDirectionNational")){
             DoActPageDirectionNational(request,response);
@@ -148,7 +154,7 @@ public class ControleAdministration extends HttpServlet {
             FromCreationPromotion(request,response); 
             request.setAttribute( "message", message );
         }
-        
+      }
     }
     
             
@@ -547,7 +553,7 @@ HttpServletResponse response) throws ServletException, IOException
                       List<Article> listearts = administration.getArticle(requete, mesParam);
                     if (listearts !=null){
                         Article article = (Article)Aide.getObjectDeListe(listearts.toArray());
-                        Employe monEmp = (Employe) session.getAttribute("session");
+                        //Employe monEmp = (Employe) session.getAttribute("session");
                         //Employe monEmp = null;
                         if (!promo.isEmpty()){ //modifier promotion
                           mesParam = new ArrayList<Parametre>(); 
@@ -558,12 +564,12 @@ HttpServletResponse response) throws ServletException, IOException
                           List<Promotion> listpro = administration.getPromotions(requete, mesParam);
                                 if (listpro !=null){
                                    Promotion pro = (Promotion)Aide.getObjectDeListe(listpro.toArray());
-                                   administration.modifierPromotion(dated, datef, prix, monEmp, article, pro);
+                                   administration.modifierPromotion(dated, datef, prix, employeConnecte, article, pro);
                                    message = "Promotion est moifié";
                                 }
                             
                         }else { //nouveau promotion
-                                administration.creerPromotion(dated, datef, prix, monEmp, article);
+                                administration.creerPromotion(dated, datef, prix, employeConnecte, article);
                                 message = "Promotion est créé";
                         }
                     }
