@@ -14,6 +14,7 @@ import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
 import EntityBean.Magasin;
+import EntityBean.SousCategorie;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +88,9 @@ public class Administration implements AdministrationLocal {
     public List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception{
         return magasinFacade.getMagasins(query, params);
     }
-    
+    @Override
+    public List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception{
+        return sousCategorieFacade.getSousCategories(query, params);
+    }
       
 }

@@ -1,24 +1,30 @@
 <%-- 
-    Document   : CreerArticle
-    Created on : Mar 13, 2018, 2:03:27 PM
+    Document   : Accueil
+    Created on : Mar 13, 2018, 11:34:11 AM
     Author     : Jihane
 --%>
+
+<%@page import="EntityBean.Fournisseur"%>
 <%@page import="EntityBean.SousCategorie"%>
-<%@page import="EntityBean.Categorie"%>
 <%@page import="java.util.List"%>
+<%@page import="EntityBean.Categorie"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <jsp:useBean id="categories" scope="request" class="java.util.List"></jsp:useBean>
-    <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
+      
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
-
+    <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> </script>
+    <jsp:useBean id="categories" scope="request" class="java.util.List"></jsp:useBean>
+    <jsp:useBean id="fournisseurs" scope="request" class="java.util.List"></jsp:useBean>
+    <link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
     <title>Gestion Grande Surface</title>
+    
 
     <!-- Bootstrap -->
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,20 +55,20 @@
  
         <!-- page content -->
         <div class="right_col" role="main">
-       <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>CrÈation d'Article<small></small></h2>
+                    <h2>Cr√©ation d'Article<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
+                         <li><a href="#">Settings 1</a>
+                         </li>
+                         <li><a href="#">Settings 2</a>
+                         </li>
                         </ul>
                       </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -75,7 +81,7 @@
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControlChef">
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="libelle">LibellÈ <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="libelle">Libell√© <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="libelle" name="libelle" required="required" class="form-control col-md-7 col-xs-12">
@@ -84,7 +90,7 @@
                           
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="reference">RÈfÈrence <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="reference">R√©f√©rence <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="reference" name="reference" required="required" class="form-control col-md-7 col-xs-12">
@@ -102,9 +108,9 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                        <textarea class="resizable_textarea form-control" id="description" name="description"></textarea>
                        </div>
-                      </div>
+                      </div> 
                       <div class="form-group">
-                       <label class="control-label col-md-3 col-sm-3 col-xs-12">CatÈgorie</label>
+                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Cat√©gorie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control" id = "catsel" name="CategorieSelect" onchange="RefreshComboBox(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
                             <% List<Categorie> listeCat = categories ;
@@ -114,10 +120,10 @@
                             </select>
                         </div>
                       </div>
-                       <div class="form-group">
-                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Sous CatÈgorie</label>
+                      <div class="form-group">
+                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Sous Cat√©gorie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select id = "souscatsel" name="SousCategorieSelect">
+                        <select class="form-control" id = "souscatsel" name="SousCategorieSelect">
                         <% if (!listeCat.isEmpty())  {
                         Categorie cat = listeCat.get(0);
                         for(SousCategorie s : cat.getSousCategories() ) {%>
@@ -125,32 +131,40 @@
                             <% }}%>
                         </select>
                         
-                         <select id = "souscatseltemp" style="display: none" >
-           
-                      <% if (!listeCat.isEmpty())  {
-                      for (Categorie cat : listeCat){
-                      for(SousCategorie s : cat.getSousCategories() ) {%>
-                      <option class="filterOption" value ="<%= cat.getId()%>"> <%=s.getLibelle() %>  </option>
-                      <% }}}%>
-                      </select>
+                         <select class="form-control" id = "souscatseltemp" style="display: none" >
+                         <% if (!listeCat.isEmpty())  {
+                         for (Categorie cat : listeCat){
+                         for(SousCategorie s : cat.getSousCategories() ) {%>
+                         <option class="filterOption" value ="<%= cat.getId()%>"> <%=s.getLibelle() %>  </option>
+                         <% }}}%>
+                          </select>
+                       </div>
+                       </div>
+                       <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Fournisseurs</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="FournisseurSelect">
+                        <% List<Fournisseur> listeFour = fournisseurs ;
+                        for(Fournisseur four : listeFour) {%>
+                        <option value ="<%=four.getId()%>"> <%=four.getNom() %>  </option>
+                        <% }%>
+                        </select>
+                        </div>
                       </div>
-                      </div>
-                       
-                        
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <button class="btn btn-primary" type="button">Annuler</button>
 		          <button class="btn btn-primary" type="reset">Reset</button>
                           <input type="hidden" name="action" value="CreerA"/>
-                          <button type="submit" class="btn btn-success">Ajouter</button>
+                          <button type="submit" class="btn btn-success">Cr√©er</button>
                         </div>
                       </div>
-
                     </form>
                   </div>
                 </div>
               </div>
+
             
         </div>
         <%@include file="footer.jsp" %>

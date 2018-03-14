@@ -9,6 +9,7 @@ import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Magasin;
 import EntityBean.Role;
+import EntityBean.SousCategorie;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,6 @@ public interface AdministrationLocal {
     
     void creerMagasin(String adresse, String nom, String code, String ville,String horaireOuverture,String horaireFermeture,String gps);
     List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception;
-    
+    List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
     
 }

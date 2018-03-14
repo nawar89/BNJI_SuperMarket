@@ -1,9 +1,3 @@
-<%-- 
-    Document   : CreerFournisseur
-    Created on : Mar 12, 2018, 4:27:11 PM
-    Author     : Jihane
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -47,7 +41,7 @@
  
         <!-- page content -->
         <div class="right_col" role="main">
-       <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Création de Fournisseur<small></small></h2>
@@ -95,7 +89,7 @@
                           <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
                          
                         </div>
-                       
+                   
                       </div>
                       <div class="form-group">
                          <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
@@ -118,7 +112,6 @@
                   </div>
                 </div>
               </div>
-            
         </div>
         <%@include file="footer.jsp" %>
       </div>
@@ -134,10 +127,8 @@
     <script src="./Template/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="./Template/iCheck/icheck.min.js"></script>
-     <!-- jquery.inputmask -->
-    <script src="./Template/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     <!-- Custom Theme Scripts -->
-    <script src="./Template/js/custom-min.js"></script>
-    
+    <script src="./Template/js/custom.min.js"></script>
+	
   </body>
 </html>
