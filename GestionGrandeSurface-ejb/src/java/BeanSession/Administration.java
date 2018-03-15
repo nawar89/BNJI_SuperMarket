@@ -17,7 +17,11 @@ import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Role;
 import EntityBean.Magasin;
+
 import EntityBean.Promotion;
+
+import EntityBean.SousCategorie;
+
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,6 +102,7 @@ public class Administration implements AdministrationLocal {
     public List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception{
         return magasinFacade.getMagasins(query, params);
     }
+
     
     @Override
     public void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin) {
@@ -122,5 +127,11 @@ public class Administration implements AdministrationLocal {
     public List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception{
         return promotionFacade.getPromotions(query, params);
     }
+    @Override
+    public List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception{
+        return sousCategorieFacade.getSousCategories(query, params);
+
+    }
       
+
 }

@@ -51,7 +51,7 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
     }
 
    
-    //Rechercher un article de magasin
+    //Rechercher livraison
      @Override
     public List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception{
         List<Livraison> livraisons= null;

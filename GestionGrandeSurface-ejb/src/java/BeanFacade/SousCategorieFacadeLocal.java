@@ -7,6 +7,8 @@ package BeanFacade;
 
 import EntityBean.Categorie;
 import EntityBean.SousCategorie;
+import Structure.Parametre;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -32,5 +34,5 @@ public interface SousCategorieFacadeLocal {
     int count();
 
     void creerSousCategorie(String libelle, Categorie categorie);
-    
+    List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
 }

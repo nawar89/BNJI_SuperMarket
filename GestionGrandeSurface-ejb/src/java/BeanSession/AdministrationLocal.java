@@ -11,6 +11,7 @@ import EntityBean.Employe;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
+import EntityBean.SousCategorie;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +37,7 @@ public interface AdministrationLocal {
     
     void creerMagasin(String adresse, String nom, String code, String ville,String horaireOuverture,String horaireFermeture,String gps);
     List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception;
+
     
     void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin);
     
@@ -47,5 +49,8 @@ public interface AdministrationLocal {
     
     List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception;
     
+
+    List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
+
     
 }
