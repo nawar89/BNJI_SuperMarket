@@ -7,9 +7,11 @@ package Servlet;
 
 import BeanSession.AdministrationLocal;
 import EntityBean.Article;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -20,7 +22,7 @@ import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Parameter;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -557,8 +559,8 @@ HttpServletResponse response) throws ServletException, IOException
              
               if (!Articleselect.isEmpty()){
                   if (!Articleselect.equals("0")){
-                      Date dated = Date.valueOf(datedeb);
-                      Date datef = Date.valueOf(datefin);
+                      Date dated = java.sql.Date.valueOf(datedeb);
+                      Date datef = java.sql.Date.valueOf(datefin);
                       float prix = Float.parseFloat(prixpromo);
                       Integer artId =  Integer.parseInt(Articleselect);
                       Parametre p = new Parametre("id", "int", artId);
@@ -630,13 +632,25 @@ HttpServletResponse response) throws ServletException, IOException
 protected void FromCreationBonCommande(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-    
+    mesParam = new ArrayList<Parametre>();
     try{
         //Construire requete SQL        
-              String [] lignes = request.getParameterValues("test");
+              String  lignes = request.getParameter("lignes");
+              String fourni  = request.getParameter("FourniSelect");
+              Integer forId =  Integer.parseInt(fourni);
+                      Parametre p = new Parametre("id", "int", forId);
+                      mesParam.add(p);
+                      requete = Requete.getFournisseurs+" and f.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        Fournisseur fournisseur = (Fournisseur)Aide.getObjectDeListe(listearts.toArray());
+                        BonCommande monCommande = administration.creerBonCommande(employeConnecte, new Date(), fournisseur, null, null);
+                        if (!lignes.isEmpty()){
+                            List<LigneCommande> commandeLignes = Aide.ParserLignesCommandes(lignes,monCommande);
+                        }
+                    }
               
-
-              jspClient = "/JSP_Pages/CreateBonCommande.jsp";
+              jspClient = "/JSP_Pages/Page_Message.jsp";
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();

@@ -5,12 +5,15 @@
  */
 package Structure;
 
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.LigneCommande;
 import EntityBean.Role;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -118,6 +121,30 @@ public abstract class Aide {
              case  "Agent de Caisse": nomRole = "AgCaisse";
          }
          return nomRole; 
+     }
+     
+     public static List<LigneCommande> ParserLignesCommandes(String input,BonCommande com){
+         List<LigneCommande> lignes = new ArrayList<LigneCommande>();
+            String [] temp  = input.split(",");
+            int count = 0;
+            int quantite = 0;
+            float prix = 0;
+            LigneCommande l = new LigneCommande();
+            for (int i=0;i<temp.length;i++){
+                if ((i)%5==0 || i==0){
+                    count = 1;
+                }
+                if (count==3){
+                       prix = Float.parseFloat(temp[i]); 
+                 }else if (count==4){
+                       quantite = Integer.parseInt(temp[i]);
+                 }else if (count==5){
+                        //creerLigneCommande
+                  }
+                    
+                
+            }
+         return lignes;
      }
     
 }

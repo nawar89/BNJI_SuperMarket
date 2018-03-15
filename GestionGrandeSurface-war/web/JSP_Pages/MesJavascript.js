@@ -475,4 +475,36 @@ function RefreshComboBoxTable(ddl1,ddl2,ddl3) {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     
- 
+ function doSave(table) {
+            var ok = false;
+            document.forms["CommandeForm"]["lignes"].value = "";
+            var myTableArray = [];
+            var tr = table.getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+            //document.getElementsByName('lignes').innerHTML = document.getElementsByName('lignes').innerHTML+"Ligne,"
+            var arrayOfThisRow = [];
+            var tableData = tr[i].getElementsByTagName("td");
+            if (tableData.length > 0) {
+              for (var j=0;j < tableData.length;j++){
+                 arrayOfThisRow.push(tableData[j].innerHTML);
+                 //alert(tableData[j].innerHTML);
+                 ok = true;
+                 document.forms["CommandeForm"]["lignes"].value= document.forms["CommandeForm"]["lignes"].value + tableData[j].innerHTML+",";
+                 
+              }
+            myTableArray.push(arrayOfThisRow);
+             }
+           }
+          
+           console.log("lignes: " +document.forms["CommandeForm"]["lignes"].value);
+           //document.forms["CommandeForm"]["lignes"].value = "1";
+         //myTableArray = myTableArray.join(", ");
+         if (!ok){
+             alert("Il faut choisir au moins une article");
+         }
+         return ok;
+            
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+

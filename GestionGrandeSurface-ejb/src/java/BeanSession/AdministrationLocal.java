@@ -58,7 +58,7 @@ public interface AdministrationLocal {
     
     List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
     
-    void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) ;
+    BonCommande creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) ;
     
     List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception;
 

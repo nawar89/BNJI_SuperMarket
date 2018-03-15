@@ -151,8 +151,8 @@ public class Administration implements AdministrationLocal {
     }
       
     @Override
-    public void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) {
-        bonCommandeFacade.creerBonCommande(chefRayon, datecommand, Fournisseur, livrs, listeLignes);
+    public BonCommande creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) {
+        return bonCommandeFacade.creerBonCommande(chefRayon, datecommand, Fournisseur, livrs, listeLignes);
     }
     
      @Override
