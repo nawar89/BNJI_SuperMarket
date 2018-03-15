@@ -29,7 +29,7 @@
        
         
           <label for="nom" >Fournisseur <span class="requis" >*</span></label>
-            <select id = "forsel" name="FourniSelect" onchange="RefreshComboBox(this,document.getElementById('artsel'),document.getElementById('artseltemp'))">
+            <select id = "forsel" name="FourniSelect" onchange="RefreshComboBoxTable(this,document.getElementById('artsel'),document.getElementById('artseltemp'))">
             <% List<Fournisseur> listefor = fournisseurs ;
             for(Fournisseur cat : listefor) {%>
                  <option value ="<%=cat.getId()%>"> <%=cat.getNom()%>  </option>
@@ -47,25 +47,44 @@
                 
              </select>
                 
-            <button type="button" onclick="AjouterDansTable(document.getElementById('myTable'))">Ajouter!</button>
+            <button type="button" onclick="AjouterDansTable(document.getElementById('artsel'),document.getElementById('myTable'))">Ajouter!</button>
                 
-          <select id = "artseltemp" style="display: none" >
-           
-            <% if (!listefor.isEmpty())  {
+                
+            <table id="artseltemp"  style="display: none">
+                <tbody style="cursor:pointer">
+              <tr class="header">
+                <th >ID for</th>
+                <th >Id article</th>
+                <th >libelle</th>
+                <th >Prix article</th>
+                 
+              </tr>
+              
+              <tr >
+                  <% if (!listefor.isEmpty())  {
                 for (Fournisseur f : listefor){
                 for(Article a : f.getArticles() ) {%>
-                <option class="filterOption" value ="<%= f.getId()%>"> <%=a.getLibelle() %>  </option>
-                <% }}}%>
+                <td><%= f.getId()%>"></td>
+                <td><%=a.getId()%></td>
+                <td><%=a.getLibelle() %></td>
+                <td><%=a.getPrix_achat_actuel()%></td>
                 
-         </select>  
+                <% }}}%>
+                    
+              </tr>
+                
+             </tbody>
+            </table>   
+         
         <br /> 
           <table id="myTable" >
                 <tbody style="cursor:pointer">
               <tr class="header">
                 <th >ID Aricle</th>
                 <th >Aricle</th>
-                <th >Prix</th>
+                <th >Prix achat</th>
                 <th >Quantité</th>
+                <th >Prix total</th>
                 
               </tr>
               

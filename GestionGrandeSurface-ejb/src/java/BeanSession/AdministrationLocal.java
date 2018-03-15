@@ -8,6 +8,7 @@ package BeanSession;
 import EntityBean.Article;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Fournisseur;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -51,6 +52,8 @@ public interface AdministrationLocal {
     
 
     List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
+    
+    List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
 
     
 }

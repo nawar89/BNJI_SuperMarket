@@ -390,23 +390,24 @@ function AjouterDansTable(ddl1,table) {
             //var row = ddl1.getElementsByTagName("option");
             var selectedValue = ddl1.options[ddl1.selectedIndex].value;
             var selectedText = ddl1.options[ddl1.selectedIndex].text;
-             console.log(selectedValue)
+             console.log("selected val"+selectedValue)
              var input, filter1,filtre2, tr, td, i;
              var ok = true;
             filter1 = selectedValue.toUpperCase();
             //table = document.getElementById(Mytable);
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
-              td = tr[i].getElementsByTagName("td")[1];
+              td = tr[i].getElementsByTagName("td")[0];
               if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter1) > -1 || td.innerHTML.toUpperCase().indexOf(filtre2) > -1 ) {
+                if (td.innerHTML.toUpperCase().indexOf(filter1) > -1 ) {
                   ok = false;
                   break;
                 } 
               }       
             }
+            console.log(ok);
             if (ok){
-                var row = table.insertRow(0);
+                var row = table.insertRow(1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
@@ -415,7 +416,31 @@ function AjouterDansTable(ddl1,table) {
                 cell2.innerHTML = selectedText;
                 cell3.innerHTML = "";
                 cell4.innerHTML = "1";
+                cell4.contentEditable = true;
   
             }
             
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////
+    
+    
+function RefreshComboBoxTable(ddl1,ddl2,ddl3) {
+            
+            var tr = ddl3.getElementsByTagName("tr");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+             var filter = selectedValue.toUpperCase();
+             console.log("for id selected "+selectedValue);
+            ddl2.options.length = 0;
+            for (var i = 0; i < tr.length; i++) {
+                var td = tr[i].getElementsByTagName("td")[0];
+                console.log("for id row "+td.innerHTML.toUpperCase());
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        console.log(tr[i].getElementsByTagName("td")[1]);
+                        console.log(tr[i].getElementsByTagName("td")[2]);
+                        createOption(ddl2, tr[i].getElementsByTagName("td")[2], tr[i].getElementsByTagName("td")[1]);
+                    }
+                }       
+            } 
     }

@@ -9,6 +9,7 @@ import BeanSession.AdministrationLocal;
 import EntityBean.Article;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Fournisseur;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -158,7 +159,7 @@ public class ControleAdministration extends HttpServlet {
             request.setAttribute( "message", message );
         }
         
-         else if (act.equals("GoToGoToCreationBonCommande")){
+         else if (act.equals("GoToCreationBonCommande")){
             GoToGoToCreationBonCommande(request,response); 
             request.setAttribute( "message", message );
         }
@@ -603,21 +604,14 @@ HttpServletResponse response) throws ServletException, IOException
     try{
         //Construire requete SQL        
               
-              requete = Requete.get;
-              List<Article> listeArts = administration.getArticle(requete, null);
-              if (listeArts == null){
-              listeArts = new ArrayList<Article>(); 
+              requete = Requete.getFournisseurs;
+              List<Fournisseur> listeFor = administration.getFournisseur(requete, null);
+              if (listeFor == null){
+              listeFor = new ArrayList<Fournisseur>(); 
               }
-              request.setAttribute( "fournisseurs", listeArts );
-              
-              requete = Requete.getPromotions;
-              List<Promotion> listePrs = administration.getPromotions(requete, null);
-              if (listePrs == null){
-              listePrs = new ArrayList<Promotion>(); 
-              }
-              request.setAttribute( "promotions", listePrs );
-              
-              jspClient = "/JSP_Pages/CreerPromotion.jsp";
+              request.setAttribute( "fournisseurs", listeFor );
+
+              jspClient = "/JSP_Pages/CreateBonCommande.jsp";
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
