@@ -157,6 +157,11 @@ public class ControleAdministration extends HttpServlet {
             FromCreationPromotion(request,response); 
             request.setAttribute( "message", message );
         }
+        
+         else if (act.equals("GoToGoToCreationBonCommande")){
+            GoToGoToCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
       }
     }
     
@@ -584,6 +589,36 @@ HttpServletResponse response) throws ServletException, IOException
               }else message = "il faut choisir un article";
               jspClient = "/JSP_Pages/Page_Message.jsp";
               
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+protected void GoToGoToCreationBonCommande(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    
+    try{
+        //Construire requete SQL        
+              
+              requete = Requete.get;
+              List<Article> listeArts = administration.getArticle(requete, null);
+              if (listeArts == null){
+              listeArts = new ArrayList<Article>(); 
+              }
+              request.setAttribute( "fournisseurs", listeArts );
+              
+              requete = Requete.getPromotions;
+              List<Promotion> listePrs = administration.getPromotions(requete, null);
+              if (listePrs == null){
+              listePrs = new ArrayList<Promotion>(); 
+              }
+              request.setAttribute( "promotions", listePrs );
+              
+              jspClient = "/JSP_Pages/CreerPromotion.jsp";
+              message = "";
 }catch(Exception exe){
     message = exe.getMessage();
     jspClient = "/JSP_Pages/Page_Message.jsp";
