@@ -6,18 +6,28 @@
 package BeanSession;
 
 import BeanFacade.ArticleFacadeLocal;
+import BeanFacade.BonCommandeFacadeLocal;
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
+import BeanFacade.FournisseurFacadeLocal;
 import BeanFacade.MagasinFacadeLocal;
 import BeanFacade.PromotionFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
 import BeanFacade.SousCategorieFacadeLocal;
 import EntityBean.Article;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
+import EntityBean.Livraison;
 import EntityBean.Role;
 import EntityBean.Magasin;
+
 import EntityBean.Promotion;
+
+import EntityBean.SousCategorie;
+
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +41,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private BonCommandeFacadeLocal bonCommandeFacade;
+
+    @EJB
+    private FournisseurFacadeLocal fournisseurFacade;
 
     @EJB
     private PromotionFacadeLocal promotionFacade;
@@ -98,6 +114,7 @@ public class Administration implements AdministrationLocal {
     public List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception{
         return magasinFacade.getMagasins(query, params);
     }
+
     
     @Override
     public void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin) {
@@ -122,5 +139,25 @@ public class Administration implements AdministrationLocal {
     public List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception{
         return promotionFacade.getPromotions(query, params);
     }
+    @Override
+    public List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception{
+        return sousCategorieFacade.getSousCategories(query, params);
+
+    }
+    
+    @Override
+    public List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception {
+        return fournisseurFacade.getFournisseur(query, params);
+    }
       
+    @Override
+    public void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) {
+        bonCommandeFacade.creerBonCommande(chefRayon, datecommand, Fournisseur, livrs, listeLignes);
+    }
+    
+     @Override
+    public List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception{
+        return bonCommandeFacade.getBonCommande(query, params);
+    }
+
 }

@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 package BeanFacade;
+
 import EntityBean.BonCommande;
-import EntityBean.Etat_Livraison;
+import EntityBean.Employe;
 import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
 import EntityBean.Livraison;
 import Structure.Aide;
 import Structure.Parametre;
@@ -20,10 +22,10 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Jihane
+ * @author Nawar
  */
 @Stateless
-public class LivraisonFacade extends AbstractFacade<Livraison> implements LivraisonFacadeLocal {
+public class BonCommandeFacade extends AbstractFacade<BonCommande> implements BonCommandeFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -33,28 +35,25 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
         return em;
     }
 
-    public LivraisonFacade() {
-        super(Livraison.class);
+    public BonCommandeFacade() {
+        super(BonCommande.class);
     }
 
     @Override
-    public void creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception {
-        try {
-            Livraison livraison = new Livraison();
-            livraison.setDate_livraison(date_livraison);
-            livraison.setDate_livraison_prevu(date_livraison_prevu);
-            livraison.setFournisseur(fournisseur);
-            livraison.setBonCommande(bon_commande);
-            livraison.setMention(mension);
-            em.persist(livraison);
-        }catch(Exception ex){throw ex;} 
+    public void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) {
+        BonCommande b = new BonCommande();
+        b.setChefRyon(chefRayon);
+        b.setDate_commande(datecommand);
+        b.setFournisseur(Fournisseur);
+        b.setLigneCommandes(listeLignes);
+        b.setLivraisons(livrs);
+        em.persist(b);
     }
-
-   
-    //Rechercher livraison
-     @Override
-    public List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception{
-        List<Livraison> livraisons= null;
+    
+    
+    @Override
+    public List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception{
+        List<BonCommande> commandes = null;
         try{
          
             Query q = em.createQuery(query);
@@ -64,10 +63,9 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            livraisons = q.getResultList();
+            commandes = q.getResultList();
         }catch(Exception exe){throw exe;}
-        return livraisons;
-    } 
-    
+        return commandes;
+    }
     
 }

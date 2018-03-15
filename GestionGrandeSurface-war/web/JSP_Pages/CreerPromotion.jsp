@@ -20,7 +20,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
          <jsp:useBean id="promotions" scope="request" class="java.util.List"></jsp:useBean>
          <jsp:useBean id="articles" scope="request" class="java.util.List"></jsp:useBean>
-         <jsp:useBean id ="session" scope="session" class="EntityBean.Employe"></jsp:useBean>
+         <jsp:useBean id ="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
         <title>Creation Promo</title>
     </head>
     <body>

@@ -7,9 +7,14 @@ package BeanFacade;
 
 import EntityBean.Categorie;
 import EntityBean.SousCategorie;
+import Structure.Aide;
+import Structure.Parametre;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -36,6 +41,23 @@ public class SousCategorieFacade extends AbstractFacade<SousCategorie> implement
         s.setLibelle(libelle);
         s.setCategorie(categorie);
         em.persist(s);
+    }
+    
+    @Override
+    public List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception{
+        List<SousCategorie> cats = null;
+        try{
+         
+            Query q = em.createQuery(query);
+            if (params !=null){
+                for (Parametre p : params){
+                    Aide.Casting(p.type,p.valeur);
+                    q.setParameter(p.nom,p.valeur );
+                }
+            }
+            cats = q.getResultList();
+        }catch(Exception exe){throw exe;}
+        return cats;
     }
     
     
