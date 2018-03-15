@@ -4,6 +4,7 @@
     Author     : i.silvestre
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.util.List"%>
 <%@page import="EntityBean.Employe"%>
@@ -115,13 +116,6 @@
                                 </div>
                                     
                             </div>
-                            <div class="col-sm-6">
-                                <div id="datatable-checkbox_filter" class="dataTables_filter">
-                                    <label>Search:
-                                        <input type="search" class="form-control input-sm" placeholder="" aria-controls="datatable-checkbox">
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
@@ -133,9 +127,7 @@
                                                              
                             </th>
                             <th class="sorting_asc" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 46px;">
-                                <div class="icheckbox_flat-green" style="position: relative;">
-                                    <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                </div>
+                                
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">Nom Chef de rayon</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Nom fournisseur</th>
@@ -145,11 +137,12 @@
                         </tr>
                       </thead>
                       <tbody>
-                          <% float total = 0.1f ;
+                          <% float total = 0.01f ;
                               List<BonCommande> lesCommandes = listCommandes;
                         for( BonCommande r : lesCommandes){ 
                         for (LigneCommande l : r.getLigneCommandes()) {
-                            total = total + (l.getPrix_achat()*l.getQuantite()) ;}%>
+                            total = total + (l.getPrix_achat()*l.getQuantite()) ;}
+                          total = total - 0.01f ;%>
                           
                       <tr role="row" class="odd">
                         <td>
@@ -162,9 +155,9 @@
 						  
                           <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
                           <td><%= r.getFournisseur().getNom()%></td>
-                          <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie()%></td>
-                          <td><%=r.getDate_commande() %></td>
-                          <td><%=total %></td>
+                          <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
+                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
+                          <td><%=total %> € </td>
                         </tr>
                         <%;}%>
                       </tbody>
@@ -176,42 +169,6 @@
                                   
                           </div>
                           <div class="col-sm-7">
-                              <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
-                                  <ul class="pagination">
-                                      <li class="paginate_button previous disabled" id="datatable-checkbox_previous">
-                                          <a href="#" aria-controls="datatable-checkbox" data-dt-idx="0" tabindex="0">Previous
-                                          </a>
-                                      </li>
-                                      <li class="paginate_button active">
-                                          <a href="#" aria-controls="datatable-checkbox" data-dt-idx="1" tabindex="0">1
-                                          </a>
-                                      </li>
-                                      <li class="paginate_button ">
-                                          <a href="#" aria-controls="datatable-checkbox" data-dt-idx="2" tabindex="0">2
-                                          </a>
-                                      </li>
-                                      <li class="paginate_button ">
-                                              <a href="#" aria-controls="datatable-checkbox" data-dt-idx="3" tabindex="0">3
-                                              </a>
-                                          </li>
-                                          <li class="paginate_button ">
-                                              <a href="#" aria-controls="datatable-checkbox" data-dt-idx="4" tabindex="0">4
-                                              </a>
-                                          </li>
-                                          <li class="paginate_button ">
-                                              <a href="#" aria-controls="datatable-checkbox" data-dt-idx="5" tabindex="0">5
-                                              </a>
-                                          </li>
-                                          <li class="paginate_button ">
-                                              <a href="#" aria-controls="datatable-checkbox" data-dt-idx="6" tabindex="0">6
-                                              </a>
-                                          </li>
-                                          <li class="paginate_button next" id="datatable-checkbox_next">
-                                              <a href="#" aria-controls="datatable-checkbox" data-dt-idx="7" tabindex="0">Next
-                                              </a>
-                                          </li>
-                                  </ul>
-                              </div>
                           </div>
                       </div>
                     </div>
@@ -254,6 +211,6 @@
     <script src="./Template/pdfmake/build/vfs_fonts.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    <script src="./Template/js/custom.min.js"></script>
     </body> 
 </html>

@@ -55,7 +55,7 @@ public class BonCommandeFacade extends AbstractFacade<BonCommande> implements Bo
     public List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception{
         List<BonCommande> commandes = null;
         try{
-         
+         //Query pi = em.createQuery("select b from BonCommande b join b.chefRyon cr join cr.magasin m where m.id=:");
             Query q = em.createQuery(query);
             if (params !=null){
                 for (Parametre p : params){
