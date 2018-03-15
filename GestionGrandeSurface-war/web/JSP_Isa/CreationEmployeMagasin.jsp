@@ -32,7 +32,7 @@
     <!-- Switchery -->
     <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
     <!-- starrr -->
-    <link href="../vendors/starrr/dist/starrr.css" rel="stylesheet">
+    <link href="./Template/starrr/dist/starrr.css" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
     <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

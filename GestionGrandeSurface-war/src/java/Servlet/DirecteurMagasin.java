@@ -7,6 +7,7 @@ package Servlet;
 
 import BeanSession.AdministrationLocal;
 import BeanSession.DirecteurMagasinLocal;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Magasin;
@@ -121,7 +122,9 @@ public class DirecteurMagasin extends HttpServlet {
             creerEmployeMagasin(request, response);
             request.setAttribute( "message", message );
             
-        } else if (act.equals("")){
+        } else if (act.equals("consulterCommandes")){
+            chargerPageConsultationCommandes(request,response);
+            request.setAttribute("message", message);
 
         }
 
@@ -256,7 +259,21 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 }
+      ////////////////////////////////////////////////////////////////////////////
+      protected void chargerPageConsultationCommandes(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   HttpSession sess=request.getSession(true);
+   mesParam = new ArrayList<Parametre>();
+   Parametre p = null;
+   Employe employeCo = (Employe) sess.getAttribute("employeCo");
+   
+   jspClient = "/JSP_Isa/ConsulterCommandes.jsp";
+    sess.setAttribute("employeCo", employeCo); 
+
+   
     
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
