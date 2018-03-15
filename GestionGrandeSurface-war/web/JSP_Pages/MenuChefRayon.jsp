@@ -1,6 +1,6 @@
 <%-- 
-    Document   : MenuChefRayon
-    Created on : 14 mars 2018, 14:28:52
+    Document   : MenuDirectionNational
+    Created on : 12 mars 2018, 09:01:43
     Author     : Nawar
 --%>
 
@@ -9,9 +9,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
+        <jsp:useBean id ="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
+        <title>Menu Chef Rayon</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1><%=message %></h1>
+        <a class="btn btn-lg btn-primary btn-block" href="ControleAdministration?action=GoToCreationBonCommande" role="button">Create Bon commande </a>
+      
     </body>
 </html>

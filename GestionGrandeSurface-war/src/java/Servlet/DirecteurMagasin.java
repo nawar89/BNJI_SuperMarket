@@ -154,12 +154,12 @@ HttpServletResponse response) throws ServletException, IOException
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case DirNAT:
-                             jspClient = "/JSP_Page/MenuDirectionNational.jsp";
+                             jspClient = "/JSP_Pages/MenuDirectionNational.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case ChefRayon:
-                             jspClient = "/JSP_Page/MenuDirectionNational.jsp";
+                             jspClient = "/JSP_Pages/MenuChefRayon.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
@@ -263,13 +263,24 @@ HttpServletResponse response) throws ServletException, IOException
       protected void chargerPageConsultationCommandes(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-   HttpSession sess=request.getSession(true);
-   mesParam = new ArrayList<Parametre>();
-   Parametre p = null;
-   Employe employeCo = (Employe) sess.getAttribute("employeCo");
-   
-   jspClient = "/JSP_Isa/ConsulterCommandes.jsp";
-    sess.setAttribute("employeCo", employeCo); 
+        try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Employe employeCo = (Employe) sess.getAttribute("employeCo");
+            Magasin mag = employeCo.getMagasin();
+            p = new Parametre("1", "long", mag.getId());
+            mesParam.add(p);
+            List<BonCommande> listeCommandes = administration.getBonCommande(Requete.getCommandesParMagasin+ " AND m.id = ?1", mesParam);
+            
+            jspClient = "/JSP_Isa/ConsulterCommandes.jsp"; 
+            sess.setAttribute("employeCo", employeCo);
+            request.setAttribute("listCommandes", listeCommandes);
+            message = "";
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }
 
    
     

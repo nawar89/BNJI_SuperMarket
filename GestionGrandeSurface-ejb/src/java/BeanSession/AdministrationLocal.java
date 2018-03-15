@@ -6,8 +6,12 @@
 package BeanSession;
 
 import EntityBean.Article;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
+import EntityBean.Livraison;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -38,8 +42,6 @@ public interface AdministrationLocal {
     void creerMagasin(String adresse, String nom, String code, String ville,String horaireOuverture,String horaireFermeture,String gps);
     List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception;
 
-    List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
-
     
     void modifierMagasin(String nom, String adresse, String ville, String code, String horaire_ouver, String horaire_ferm, String gps, Magasin magasin);
     
@@ -50,5 +52,18 @@ public interface AdministrationLocal {
     void modifierPromotion(Date datedeb, Date dateFin, float prix_promo, Employe dirNat, Article article,Promotion p);
     
     List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception;
+    
+
+    List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
+
+    
+   
+    
+    List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) ;
+    
+    List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception;
+
     
 }

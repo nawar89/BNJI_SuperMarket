@@ -9,6 +9,7 @@ import BeanSession.AdministrationLocal;
 import EntityBean.Article;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Fournisseur;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -102,6 +103,10 @@ public class ControleAdministration extends HttpServlet {
         throws ServletException, IOException {
         
         employeConnecte = (Employe) session.getAttribute("employeCo");
+
+        session.setAttribute("employeCo", employeConnecte);
+        
+
         if (employeConnecte ==null){
             jspClient="/JSP_Isa/PageConnexion.jsp";
         
@@ -154,6 +159,12 @@ public class ControleAdministration extends HttpServlet {
             FromCreationPromotion(request,response); 
             request.setAttribute( "message", message );
         }
+
+         else if (act.equals("GoToCreationBonCommande")){
+            GoToGoToCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
+
       }
     }
     
@@ -587,6 +598,29 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 }
+protected void GoToGoToCreationBonCommande(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    
+    try{
+        //Construire requete SQL        
+              
+              requete = Requete.getFournisseurs;
+              List<Fournisseur> listeFor = administration.getFournisseur(requete, null);
+              if (listeFor == null){
+              listeFor = new ArrayList<Fournisseur>(); 
+              }
+              request.setAttribute( "fournisseurs", listeFor );
+
+              jspClient = "/JSP_Pages/CreateBonCommande.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
