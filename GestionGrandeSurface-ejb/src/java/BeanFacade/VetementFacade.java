@@ -5,10 +5,10 @@
  */
 package BeanFacade;
 
-import EntityBean.Article;
 import EntityBean.Fournisseur;
 import EntityBean.Produit_Frais;
 import EntityBean.SousCategorie;
+import EntityBean.Vetement;
 import Structure.Aide;
 import Structure.Parametre;
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Nawar
+ * @author Jihane
  */
 @Stateless
-public class ArticleFacade extends AbstractFacade<Article> implements ArticleFacadeLocal {
+public class VetementFacade extends AbstractFacade<Vetement> implements VetementFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -34,29 +34,30 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
         return em;
     }
 
-    public ArticleFacade() {
-        super(Article.class);
+    public VetementFacade() {
+        super(Vetement.class);
     }
-    
-   //Creation article
+    //Creation article
     @Override
-    public void creerArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception {
+    public void creerVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, String taille,String coloris) throws Exception {
         try {
-        Article article = new Article();
-        article.setLibelle(libelle);
-        article.setReference(reference);
-        article.setPrix_achat_actuel(prix_achat_actuel);
-        article.setDate_creation(date_de_creation);
-        article.setSousCategorie(sous_categorie);
-        article.setFournisseur(fournisseur);
-        em.persist(article);  
+        Vetement vetement = new Vetement();
+        vetement.setLibelle(libelle);
+        vetement.setReference(reference);
+        vetement.setPrix_achat_actuel(prix_achat_actuel);
+        vetement.setDate_creation(date_de_creation);
+        vetement.setSousCategorie(sous_categorie);
+        vetement.setFournisseur(fournisseur);
+        vetement.setTaille(taille);
+        vetement.setColoris(coloris);
+        em.persist(vetement);  
     } catch(Exception exe){throw exe;}
     }
     
    //Recherche d'aticle 
     @Override
-    public List<Article> getArticle(String query, ArrayList<Parametre> params) throws Exception{
-        List<Article> articles = null;
+    public List<Vetement> getVetement(String query, ArrayList<Parametre> params) throws Exception{
+        List<Vetement> vetement = null;
         try{
          
             Query q = em.createQuery(query);
@@ -66,12 +67,9 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            articles = q.getResultList();
+            vetement = q.getResultList();
         }catch(Exception exe){throw exe;}
-        return articles;
+        return vetement;
     }
-    
-   
-    
     
 }
