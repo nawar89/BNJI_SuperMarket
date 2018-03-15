@@ -6,6 +6,7 @@
 package BeanSession;
 
 import BeanFacade.ArticleFacadeLocal;
+import BeanFacade.BonCommandeFacadeLocal;
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.FournisseurFacadeLocal;
@@ -14,9 +15,12 @@ import BeanFacade.PromotionFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
 import BeanFacade.SousCategorieFacadeLocal;
 import EntityBean.Article;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
+import EntityBean.Livraison;
 import EntityBean.Role;
 import EntityBean.Magasin;
 
@@ -37,6 +41,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private BonCommandeFacadeLocal bonCommandeFacade;
 
     @EJB
     private FournisseurFacadeLocal fournisseurFacade;
@@ -143,5 +150,14 @@ public class Administration implements AdministrationLocal {
         return fournisseurFacade.getFournisseur(query, params);
     }
       
+    @Override
+    public void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) {
+        bonCommandeFacade.creerBonCommande(chefRayon, datecommand, Fournisseur, livrs, listeLignes);
+    }
+    
+     @Override
+    public List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception{
+        return bonCommandeFacade.getBonCommande(query, params);
+    }
 
 }

@@ -431,15 +431,18 @@ function RefreshComboBoxTable(ddl1,ddl2,ddl3) {
             var selectedValue = ddl1.options[ddl1.selectedIndex].value;
              var filter = selectedValue.toUpperCase();
              console.log("for id selected "+selectedValue);
+             console.log("len "+tr.length);
             ddl2.options.length = 0;
             for (var i = 0; i < tr.length; i++) {
                 var td = tr[i].getElementsByTagName("td")[0];
-                console.log("for id row "+td.innerHTML.toUpperCase());
+                
                 if (td) {
+                    
                     if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        console.log("oui");
                         console.log(tr[i].getElementsByTagName("td")[1]);
                         console.log(tr[i].getElementsByTagName("td")[2]);
-                        createOption(ddl2, tr[i].getElementsByTagName("td")[2], tr[i].getElementsByTagName("td")[1]);
+                        createOption(ddl2, tr[i].getElementsByTagName("td")[2].innerHTML, tr[i].getElementsByTagName("td")[1].innerHTML);
                     }
                 }       
             } 

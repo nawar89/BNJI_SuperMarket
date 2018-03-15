@@ -60,18 +60,19 @@
                  
               </tr>
               
-              <tr >
+              
                   <% if (!listefor.isEmpty())  {
                 for (Fournisseur f : listefor){
                 for(Article a : f.getArticles() ) {%>
+                <tr >
                 <td><%= f.getId()%>"></td>
                 <td><%=a.getId()%></td>
                 <td><%=a.getLibelle() %></td>
                 <td><%=a.getPrix_achat_actuel()%></td>
-                
+                 </tr>
                 <% }}}%>
                     
-              </tr>
+             
                 
              </tbody>
             </table>   
@@ -87,14 +88,7 @@
                 <th >Prix total</th>
                 
               </tr>
-              
-              <tr onclick="addRowHandlersDirectionGeneral()">
-                     <td>koko</td>
-                     <td>koko</td>
-                     <td>koko</td>
-                     <td contenteditable="true">koko</td>
-                     
-              </tr>
+           
                 
              </tbody>
             </table>   
