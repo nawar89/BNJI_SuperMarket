@@ -87,16 +87,11 @@
                         <select class="form-control" id="articlemag" name="ArticleSelect">
                         <% List<ArticleMagasin> liste = articles ;
                         for(ArticleMagasin ar : liste) {%>
-                        <option data-prix ="<%=ar.getId()%>" value ="<%=ar.getId()%>"> <%=ar.getArticle().getLibelle() %> </option>
+                        <option data-prix ="<%=ar.getPrix_vente_actuel()%>" value ="<%=ar.getId()%>"> <%=ar.getArticle().getLibelle() %> </option>
                         <% }%>
                         </select>
                         </div>
                       </div>
-                         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
-                        $("#articlemag").change(function(){
-                        $("#ancien").attr("placeholder", $("#articlemag").find(":selected").text());
-                        });
-                         </script>
                      <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Prix actuel</label>
                         <div class="ol-md-6 col-sm-6 col-xs-12">
@@ -115,10 +110,10 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button class="btn btn-primary" type="button">Annuler</button>
-		          <button class="btn btn-primary" type="reset">Reset</button>
+                          <a href="ControlChef?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
+                          <button class="btn btn-primary" type="reset">Reset</button>
                           <input type="hidden" name="action" value="ModifA"/>
-                          <button type="submit" class="btn btn-success">Créer</button>
+                          <button type="submit" class="btn btn-success">Modifier</button>
                         </div>
                       </div>
                     </form>
@@ -145,6 +140,13 @@
     <script src="./Template/iCheck/icheck.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="./Template/js/custom.min.js"></script>
+    
+    <script>
+       $("#ancien").attr("placeholder", $("#articlemag").find(":selected").data("prix"));
+       $("#articlemag").change(function(){
+       $("#ancien").attr("placeholder", $("#articlemag").find(":selected").data("prix"));
+       });
+    </script>
 	
   </body>
 </html>

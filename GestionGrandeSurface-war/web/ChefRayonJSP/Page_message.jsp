@@ -38,6 +38,16 @@
               <h2>BNJI SuperMarket - Platform by BNJI</h2>
               <p><%=message%><a href="#"></a>
               </p>
+              
+               <form method="post" action="ControlChef">
+              <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <input type="hidden" name="action" value="Accueil"/>
+                          <button type="submit" class="btn btn-success">Retour au Menu</button>
+                        </div>
+              </div>
+               </form>
+              
               <!--<div class="mid_center">
                 <h3>Search</h3>
                 <form>

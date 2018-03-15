@@ -101,7 +101,7 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button class="btn btn-primary" type="button">Annuler</button>
+                          <a href="ControlChef?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
 		          <button class="btn btn-primary" type="reset">Reset</button>
                           <input type="hidden" name="action" value="CreerF"/>
                           <button type="submit" class="btn btn-success">Ajouter</button>
