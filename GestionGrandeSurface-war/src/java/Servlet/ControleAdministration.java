@@ -163,6 +163,11 @@ public class ControleAdministration extends HttpServlet {
             GoToGoToCreationBonCommande(request,response); 
             request.setAttribute( "message", message );
         }
+        
+        else if (act.equals("FromBonCommande")){
+            FromCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
       }
     }
     
@@ -610,6 +615,26 @@ HttpServletResponse response) throws ServletException, IOException
               listeFor = new ArrayList<Fournisseur>(); 
               }
               request.setAttribute( "fournisseurs", listeFor );
+
+              jspClient = "/JSP_Pages/CreateBonCommande.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+
+protected void FromCreationBonCommande(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    
+    try{
+        //Construire requete SQL        
+              String [] lignes = request.getParameterValues("test");
+              
 
               jspClient = "/JSP_Pages/CreateBonCommande.jsp";
               message = "";

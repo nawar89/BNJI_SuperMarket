@@ -385,7 +385,7 @@ var table = document.getElementById("myTable");
 
 /////////////////////////////////////////////////////////
 
-function AjouterDansTable(ddl1,table) {
+function AjouterDansTable(ddl1,table,tableTemp) {
    
             //var row = ddl1.getElementsByTagName("option");
             var selectedValue = ddl1.options[ddl1.selectedIndex].value;
@@ -412,11 +412,37 @@ function AjouterDansTable(ddl1,table) {
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                cell1.name = "test";
+                cell2.name = "test";
+                cell3.name = "test";
+                cell4.name = "test";
+                
                 cell1.innerHTML = selectedValue;
                 cell2.innerHTML = selectedText;
-                cell3.innerHTML = "";
-                cell4.innerHTML = "1";
+                cell3.innerHTML = 0;
+                cell4.innerHTML = 1;
+                cell5.innerHTML = 0;
                 cell4.contentEditable = true;
+                cell4.addEventListener("onchange", function(){
+                    //document.getElementById("demo").innerHTML = "Hello World";
+                    cell5.innerHTML = parseInt(cell3.innerHTML) * parseInt(cell4.innerHTML);
+                });
+                var filter = selectedValue.toUpperCase();
+                tr = tableTemp.getElementsByTagName("tr");
+                for (var i = 0; i < tr.length; i++) {
+                var td = tr[i].getElementsByTagName("td")[1];
+                
+                if (td) {
+                    
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+                        cell3.innerHTML = tr[i].getElementsByTagName("td")[3].innerHTML;
+                        cell5.innerHTML = tr[i].getElementsByTagName("td")[3].innerHTML;
+ 
+                    }
+                }       
+              } 
   
             }
             
@@ -447,3 +473,6 @@ function RefreshComboBoxTable(ddl1,ddl2,ddl3) {
                 }       
             } 
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+ 
