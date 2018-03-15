@@ -17,16 +17,16 @@
     <title>Login</title>
 
     <!-- Bootstrap -->
-    <link href="../Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../Template/nprogress/nprogress.css" rel="stylesheet">
+    <link href="./Template/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="../Template/animate.css/animate.min.css" rel="stylesheet">
+    <link href="./Template/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../Template/css/custom.min.css" rel="stylesheet">
+    <link href="./Template/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="login">
@@ -40,13 +40,14 @@
             <form>
               <h1>Connectez-vous</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Utilisateur" required="" />
+                <input type="login" class="form-control" placeholder="Utilisateur" required="" />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Mot de passe" required="" />
+                <input type="mdp" class="form-control" placeholder="Mot de passe" required="" />
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Connexion</a>
+                <input type="hidden" name="action" value="doActionConnexion">
+                <a class="btn btn-default submit">Connexion</a>
               <!--<a class="reset_pass" href="#">Lost your password?</a>-->
               </div>
 
