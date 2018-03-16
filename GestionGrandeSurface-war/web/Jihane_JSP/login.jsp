@@ -40,13 +40,13 @@
             <form>
               <h1>Connectez-vous</h1>
               <div>
-                <input type="login" class="form-control" placeholder="Utilisateur" required="" />
+                <input type="text" name ="email" class="form-control" placeholder="Utilisateur" required="" />
               </div>
               <div>
-                <input type="mdp" class="form-control" placeholder="Mot de passe" required="" />
+                <input type="text" name="mdp" class="form-control" placeholder="Mot de passe" required="" />
               </div>
               <div>
-                <input type="hidden" name="action" value="doActionConnexion">
+                <input type="hidden" name="action" value="loginFournisseur">
                 <a class="btn btn-default submit">Connexion</a>
               <!--<a class="reset_pass" href="#">Lost your password?</a>-->
               </div>

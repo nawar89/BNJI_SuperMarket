@@ -11,7 +11,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>Chef de Rayon</h2>
+                <h2>Fournisseur</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -22,25 +22,19 @@
              <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=Accueil">Analyse des ventes</a></li>
+                      <li><a href="ControlChef?action=Accueil">Analyse des chiffres d'affaire</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> Fournisseurs <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i> Commandes & Réclamations <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CreerFour">Creer un Fournisseur </a></li>
-                      <li><a href="ControlChef?action=listerFour">Afficher Fournisseurs</a></li>
+                      <li><a href="ControlChef?action=Accueil">Consulter les commandes reçues </a></li>
+                      <li><a href="ControlChef?action=Accueil">Consulter les réclamations</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> Articles <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-desktop"></i> Livraisons <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CreerArticle">Créer un Article</a></li>
-                      <li><a href="ControlChef?action=ModifierArticleMag">Modifier le prix de vente d'un article du magasin</a></li>
-                      <li><a href="ControlChef?action=listerArticle">Consulter les articles de votre rayon</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-table"></i> Livraisons <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="MainServlet?action=consulterLivr">Consulter les livraisons non comforme</a></li>
+                      <li><a href="ControlChef?action=CreerLivraison">Livrer une commande</a></li>
+                      <li><a href="ControlChef?action=ConsulterLivraisons">Consulter l'historique des livraisons</a></li>
                     </ul>
                   </li>
                 </ul>
