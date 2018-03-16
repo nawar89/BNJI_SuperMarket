@@ -128,6 +128,10 @@ public class DirecteurMagasin extends HttpServlet {
             chargerPageConsultationCommandes(request,response);
             request.setAttribute("message", message);
 
+        } else if (act.equals("afficherDetailCommande")){
+            afficherDetailCommande(request, response);
+            request.setAttribute("message", message);
+            
         }
 
     }
@@ -287,7 +291,44 @@ HttpServletResponse response) throws ServletException, IOException
    
     
 }
+//////////////////////////////////////////////////////////////////////////////////
+         protected void afficherDetailCommande(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+        try {
+            HttpSession sess=request.getSession(true);
+            Employe employeCo = (Employe) sess.getAttribute("employeCo");
+            String[] idCommandes= request.getParameterValues( "idCommande" );
+            List<String> listIdCat = new ArrayList<>();
+            listIdCat =  Arrays.asList(idCommandes);
+            if(listIdCat.size()==1)
+            {
+            String idCommande= listIdCat.get(0);
+            
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Integer i = Integer.parseInt(idCommande);
+            p= new Parametre("id", "int", i);
+            mesParam.add(p);
+            
+            List<BonCommande> listeCommandes = administration.getBonCommande(Requete.getCommandes+" AND b.id = :id", mesParam);
+            BonCommande commande = (BonCommande)Aide.getObjectDeListe(listeCommandes.toArray());
+            
+            
+            jspClient = "/JSP_Isa/AffichageDetailCommande.jsp"; 
+            sess.setAttribute("employeCo", employeCo);
+            request.setAttribute("commande", commande);
+            message = "";
+            }
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }
 
+   
+    
+}
+      
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

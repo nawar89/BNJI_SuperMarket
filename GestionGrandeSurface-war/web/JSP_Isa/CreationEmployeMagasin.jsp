@@ -18,23 +18,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
     <!-- Bootstrap -->
-    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="./Template/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
-    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-wysiwyg -->
-    <link href="../vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+    <link href="./Template/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
     <!-- Select2 -->
-    <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+    <link href="./Template/select2/dist/css/select2.min.css" rel="stylesheet">
     <!-- Switchery -->
-    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <link href="./Template/switchery/dist/switchery.min.css" rel="stylesheet">
     <!-- starrr -->
     <link href="./Template/starrr/dist/starrr.css" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="./Template/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="./Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -103,8 +103,7 @@
                                 <%}%>
                           </select>
                         </div>
-                      </div>
-                                
+                      </div>  
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nom">Nom <span class="required">*</span>
                             </label>
@@ -150,23 +149,22 @@
                         </div> 
                         </div>
                                 
-                        <div class="form-group"style="padding: 5px;">
+                    <div class="form-group"style="padding: 5px;">
                             
                         <label for="categorie">Séléctionner une ou plusieurs catégories :</label>
                         <% List<Categorie> lesCategories = listCategorie;
                         for( Categorie r : lesCategories){%>
-                      <table>
+                      <table class="icheckbox_flat-green" style="position: relative;">
                       <td>
-                          <input type="checkbox" value="<%=r.getId()%>" name="categorie" class="flat" /><%=r.getLibelle() %>
-                        <br />
+                          <input type="checkbox" value="<%=r.getId()%>" name="categorie" class="flat" style="position: absolute; opacity: 0;" /><%=r.getLibelle() %>
+                          <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
+                              
+                          </ins>
+                          <br />
                       </td>
                       </table>
                       <%}%>
-                      </div>
-                      
-                                
-
-                  
+                    </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
