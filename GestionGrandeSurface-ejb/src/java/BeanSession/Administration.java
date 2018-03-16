@@ -10,6 +10,7 @@ import BeanFacade.BonCommandeFacadeLocal;
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.FournisseurFacadeLocal;
+import BeanFacade.LigneCommandeFacadeLocal;
 import BeanFacade.MagasinFacadeLocal;
 import BeanFacade.PromotionFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
@@ -41,6 +42,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private LigneCommandeFacadeLocal ligneCommandeFacade;
 
     @EJB
     private BonCommandeFacadeLocal bonCommandeFacade;
@@ -158,6 +162,11 @@ public class Administration implements AdministrationLocal {
      @Override
     public List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception{
         return bonCommandeFacade.getBonCommande(query, params);
+    }
+    
+     @Override
+    public void creerLigneCommande(BonCommande command, Article article, int quantite, float prix) {
+        ligneCommandeFacade.creerLigneCommande(command, article, quantite, prix);
     }
 
 }

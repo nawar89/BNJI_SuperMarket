@@ -646,12 +646,13 @@ HttpServletResponse response) throws ServletException, IOException
                         Fournisseur fournisseur = (Fournisseur)Aide.getObjectDeListe(listearts.toArray());
                         BonCommande monCommande = administration.creerBonCommande(employeConnecte, new Date(), fournisseur, null, null);
                         if (!lignes.isEmpty()){
-                            List<LigneCommande> commandeLignes = Aide.ParserLignesCommandes(lignes,monCommande);
+                            List<LigneCommande> commandeLignes = ParserLignesCommandes(lignes,monCommande);
+                             message = "BonCommande est bien créé";
                         }
                     }
               
               jspClient = "/JSP_Pages/Page_Message.jsp";
-              message = "";
+             
 }catch(Exception exe){
     message = exe.getMessage();
     jspClient = "/JSP_Pages/Page_Message.jsp";
@@ -661,10 +662,54 @@ HttpServletResponse response) throws ServletException, IOException
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+public  List<LigneCommande> ParserLignesCommandes(String input,BonCommande com){
+         List<LigneCommande> lignes = new ArrayList<LigneCommande>();
+         mesParam = new ArrayList<Parametre>();
+         try{
+            String [] temp  = input.split(",");
+            int count = 0;
+            int quantite = 0;
+            float prix = 0;
+            Article art = null;
+            LigneCommande l = new LigneCommande();
+            for (int i=0;i<temp.length;i++){
+                if ((i)%5==0 || i==0){
+                    count = 1;
+                }
+                if(count==1){
+                    
+                    Integer articleID = Integer.parseInt(temp[i]);
+                    Parametre p = new Parametre("id", "int", articleID);
+                      mesParam.add(p);
+                      String requete = Requete.getArticles+" and a.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        art = (Article)Aide.getObjectDeListe(listearts.toArray());
+                    }
+                }
+                else if (count==3){
+                       prix = Float.parseFloat(temp[i]); 
+                 }else if (count==4){
+                       quantite = Integer.parseInt(temp[i]);
+                 }else if (count==5){
+                        //creerLigneCommande
+                        if (com !=null && art !=null){
+                            administration.creerLigneCommande(com, art, quantite, prix);
+                        }else{ message = "article n'exite pas";
+                            break;
+                        }
+                  }
+                 count++;   
+                
+            }
+         }catch(Exception exe){message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";
+         }
+         return lignes;
+     }
 
 
-
-
+//////////////////////////////////////////////////////////////////////////////////////////////
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

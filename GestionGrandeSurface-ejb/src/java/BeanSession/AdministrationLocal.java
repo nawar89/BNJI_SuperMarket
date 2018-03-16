@@ -61,6 +61,7 @@ public interface AdministrationLocal {
     BonCommande creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) ;
     
     List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception;
-
+    
+    void creerLigneCommande(BonCommande command, Article article, int quantite, float prix);
     
 }
