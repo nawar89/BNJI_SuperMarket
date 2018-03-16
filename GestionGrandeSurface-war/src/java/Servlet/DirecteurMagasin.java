@@ -7,6 +7,7 @@ package Servlet;
 
 import BeanSession.AdministrationLocal;
 import BeanSession.DirecteurMagasinLocal;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Magasin;
@@ -17,7 +18,11 @@ import Structure.Requete;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -115,12 +120,18 @@ public class DirecteurMagasin extends HttpServlet {
             
             request.setAttribute("message", message);
         }
-        else if (act.equals("doActionCreationEmploye")){
+        else if (act.equals("creerEmployeMagasin")){
             creerEmployeMagasin(request, response);
             request.setAttribute( "message", message );
             
-        } else if (act.equals("")){
+        } else if (act.equals("consulterCommandes")){
+            chargerPageConsultationCommandes(request,response);
+            request.setAttribute("message", message);
 
+        } else if (act.equals("afficherDetailCommande")){
+            afficherDetailCommande(request, response);
+            request.setAttribute("message", message);
+            
         }
 
     }
@@ -182,25 +193,32 @@ HttpServletResponse response) throws ServletException, IOException
                 String tel     = request.getParameter( "telephone" );
                 String email   = request.getParameter( "email" );
                 String title    = request.getParameter("role");
-                String categories = request.getParameter("categories");
+                String[] categories = request.getParameterValues("categorie");
                 Magasin mag = employeCo.getMagasin();
-                List<Categorie> listCat = null;
+                
+                List<Categorie> listCat = new ArrayList<>();
+                listCat.clear();
                 if (categories != null)
                 {
-               for (String element : categories.split("\\s")){
+                    List<String> listIdCat = new ArrayList<>();
+                           listIdCat =  Arrays.asList(categories); 
+                    for (String element : listIdCat)
+                    {
                     Integer i = Integer.parseInt(element);
-                    p = new Parametre("id", "Int", i);
+                    p = new Parametre("idcat", "int", i);
                     mesParam.add(p); 
-                    List<Categorie> listResult = administration.getCategories(Requete.getCategories+"AND c.id = :id", mesParam);
+                    List<Categorie> listResult = new ArrayList<>();
+                           listResult = administration.getCategories(Requete.getCategories+" AND c.id = :idcat", mesParam);
                     Categorie result = (Categorie)Aide.getObjectDeListe(listResult.toArray());
                     listCat.add(result);
-                }
+                    }
                 }
                mesParam.clear();
                String nomRole = Aide.aTitletoRoleName(title);
-               p = new Parametre("nom","String", title);
-               String requete = Requete.getRoles+"AND r.nom = :nom";
-               List<Role> resultInList = administration.getRoles(requete, mesParam);
+               p = new Parametre("nom","String", nomRole);
+               mesParam.add(p);
+               String requeteRole = Requete.getRoles+" AND r.nom = :nom";
+               List<Role> resultInList = administration.getRoles(requeteRole, mesParam);
                Role roleEmploye =(Role)Aide.getObjectDeListe(resultInList.toArray());
                                       
                 String login   = Aide.GenererLogin(nom,prenom);
@@ -222,27 +240,23 @@ HttpServletResponse response) throws ServletException, IOException
 HttpServletResponse response) throws ServletException, IOException
 {
    HttpSession sess=request.getSession(true);
-   mesParam = new ArrayList<Parametre>();
     try{
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
              Employe employeCo = (Employe) sess.getAttribute("employeCo");
-              mesParam = new ArrayList<Parametre>();
-              List<Categorie> listCat = administration.getCategories(Requete.getCategories, null);
-             // Parametre p = new Parametre("dirnat","String", DirNAT);
-              //mesParam.add(p);
-              //p = new Parametre("dirmag","String", DirMag);
-              //mesParam.add(p);
-              String requete = Requete.getRoles ;
-//+ " AND r.nom <> :dirnat OR r.nom <> :dirmag ";
-              List<Role> listRoles = administration.getRoles(requete, null);
-              
-              List<String> listTitles = Aide.rolesToTitles(listRoles);
-              System.out.println("**************************************");
-              System.out.println(listTitles.size());
-               System.out.println("**************************************");
+              List<Categorie> listCat = administration.getCategories(Requete.getCategories, null) ;
+              p = new Parametre("dirmag", "String", DirMag);
+              mesParam.add(p);
+              p = new Parametre("dirnat", "String", DirNAT);
+              mesParam.add(p);
+              List<Role> listRoles = administration.getRoles(Requete.getRoles+" AND r.nom <> :dirmag AND r.nom <> :dirnat", mesParam);
+           
+            List<String> listTitles = Aide.rolesToTitles(listRoles);
             jspClient = "/JSP_Isa/CreationEmployeMagasin.jsp";
             request.setAttribute( "listCategorie", listCat );
             request.setAttribute("listTitres", listTitles);
             sess.setAttribute("employeCo", employeCo); 
+            message = "";
             
                         
     }catch(Exception exe){
@@ -251,8 +265,70 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 }
-    
+      ////////////////////////////////////////////////////////////////////////////
+      protected void chargerPageConsultationCommandes(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+        try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Employe employeCo = (Employe) sess.getAttribute("employeCo");
+            Magasin mag = employeCo.getMagasin();
+            p = new Parametre("1", "long", mag.getId());
+            mesParam.add(p);
+            List<BonCommande> listeCommandes = administration.getBonCommande(Requete.getCommandesParMagasin+ " AND m.id = ?1", mesParam);
+            
+            jspClient = "/JSP_Isa/ConsulterCommandes.jsp"; 
+            sess.setAttribute("employeCo", employeCo);
+            request.setAttribute("listCommandes", listeCommandes);
+            message = "";
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }
 
+   
+    
+}
+//////////////////////////////////////////////////////////////////////////////////
+         protected void afficherDetailCommande(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+        try {
+            HttpSession sess=request.getSession(true);
+            Employe employeCo = (Employe) sess.getAttribute("employeCo");
+            String[] idCommandes= request.getParameterValues( "idCommande" );
+            List<String> listIdCat = new ArrayList<>();
+            listIdCat =  Arrays.asList(idCommandes);
+            if(listIdCat.size()==1)
+            {
+            String idCommande= listIdCat.get(0);
+            
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Integer i = Integer.parseInt(idCommande);
+            p= new Parametre("id", "int", i);
+            mesParam.add(p);
+            
+            List<BonCommande> listeCommandes = administration.getBonCommande(Requete.getCommandes+" AND b.id = :id", mesParam);
+            BonCommande commande = (BonCommande)Aide.getObjectDeListe(listeCommandes.toArray());
+            
+            
+            jspClient = "/JSP_Isa/AffichageDetailCommande.jsp"; 
+            sess.setAttribute("employeCo", employeCo);
+            request.setAttribute("commande", commande);
+            message = "";
+            }
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }
+
+   
+    
+}
+      
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

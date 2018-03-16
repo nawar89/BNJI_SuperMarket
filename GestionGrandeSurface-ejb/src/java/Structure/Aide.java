@@ -96,16 +96,29 @@ public abstract class Aide {
      public static List<String> rolesToTitles (List<Role> listRoles)
      {
         List<String> listeTitres = null;
+        listeTitres = new ArrayList<String>();
          for (Role role : listRoles)
          {
              switch(role.getNom()){
                  case "DirNat" : listeTitres.add("Direction Nationale");
+                 break;
                  case "DirMag" : listeTitres.add("Directeur Magasin");
+                 break;
                  case "AgRayon" :listeTitres.add("Agent de Rayon");
+                 break;
                  case "ChefRayon": listeTitres.add("Chef de Rayon");
+                 break;
                  case "AgLivraison": listeTitres.add("Agent de Livraison");
+                 break;
                  case "AgCaisse" : listeTitres.add("Agent de Caisse");
+                 break;
+                 default : listeTitres.add("inconnu");
+                 break;
              }
+             
+         }
+         if (listeTitres.isEmpty())
+         {
              
          }
          return listeTitres ;
@@ -116,11 +129,19 @@ public abstract class Aide {
          switch (title)
          {
              case "Direction Nationale" : nomRole = "DirNat";
+             break;
              case "Directeur Magasin" : nomRole ="DirMag"; 
+             break;
              case "Agent de Rayon":  nomRole = "AgRayon" ;
+             break;
              case "Chef de Rayon": nomRole = "ChefRayon" ;
+             break;
              case  "Agent de Livraison": nomRole = "AgLivraison";
+             break;
              case  "Agent de Caisse": nomRole = "AgCaisse";
+             break;
+             default : nomRole = "inconnu";
+             break;
          }
          return nomRole; 
      }

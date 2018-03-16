@@ -719,12 +719,14 @@ public  List<LigneCommande> ParserLignesCommandes(String input,BonCommande com){
 protected void GoToConsulterLvraison(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-    
+    mesParam = new ArrayList<Parametre>();
     try{
         //Construire requete SQL        
-              
-              requete = Requete.getLivraisons;
-              List<Livraison> listelivs = administration.getLivraisons(requete, null);
+              Integer magasinId = Integer.parseInt(""+employeConnecte.getMagasin().getId());
+              requete = Requete.getLivraisonParMagasin + " and m.id = ?id";
+              Parametre p = new Parametre("id", "int", magasinId);
+              mesParam.add(p);
+              List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
               if (listelivs == null){
               listelivs = new ArrayList<Livraison>(); 
               }
