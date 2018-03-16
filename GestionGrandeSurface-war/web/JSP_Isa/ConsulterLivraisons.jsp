@@ -1,9 +1,10 @@
 <%-- 
-    Document   : ConsulterLivraison
-    Created on : 14 mars 2018, 15:58:47
+    Document   : ConsulterLivraisons
+    Created on : 16 mars 2018, 15:35:25
     Author     : i.silvestre
 --%>
 
+<%@page import="EntityBean.Livraison"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.util.List"%>
@@ -41,7 +42,7 @@
     <link href="./Template/css/custom.min.css" rel="stylesheet">
         
          <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
-         <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="listLivraisons" scope="request" class="java.util.List"></jsp:useBean>
          <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
 
         
@@ -80,7 +81,7 @@
                 </div>
               </div>
             </div>
-              <h2>Liste des Commandes Magasin <%=employeCo.getMagasin().getNom()%></h2>
+              <h2>Liste des Livraisons Magasin <%=employeCo.getMagasin().getNom()%></h2>
 
             <div class="clearfix"></div>
             <div class="row">
@@ -111,7 +112,7 @@
                     <p class="text-muted font-13 m-b-30">
                     </p>
                     
-                    <form method="post" action="DirecteurMagasin?action=afficherDetailCommande">
+                    <form method="post" action="DirecteurMagasin?action=afficherDetailLivraison">
                     <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
@@ -132,17 +133,18 @@
                             <th class="sorting_asc" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 46px;">
                                 
                             </th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">Nom Chef de rayon</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Nom fournisseur</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Catégorie concernée</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date de la commande</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">prix total</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 167px;">Nom fournisseur</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Mention livraison : activer pour ordonner" style="width: 277px;">Mention</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Agent de livraison : activer pour ordonner" style="width: 96px;">Agent de livraison responsable</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date prévue : activer pour ordonner" style="width: 126px;">Date de livraison prévue</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date réelle : activer pour ordonner" style="width: 124px;">Date de livraison réelle</th>
+                            
                         </tr>
                       </thead>
                       <tbody>
                         
                           <% float total = 0.01f ;
-                              List<BonCommande> lesCommandes = listCommandes;
+                              List<Livraison> lesLivraisons = listLivraisons;
                         for( BonCommande r : lesCommandes){ 
                         for (LigneCommande l : r.getLigneCommandes()) {
                             total = total + (l.getPrix_achat()*l.getQuantite()) ;}

@@ -277,7 +277,7 @@ HttpServletResponse response) throws ServletException, IOException
             Magasin mag = employeCo.getMagasin();
             p = new Parametre("1", "long", mag.getId());
             mesParam.add(p);
-            List<BonCommande> listeCommandes = administration.getBonCommande(Requete.getCommandesParMagasin+ " AND m.id = ?1", mesParam);
+            List<BonCommande> listeCommandes = administration.getBonCommande(Requete.getCommandesParMagasin+ " AND m.id = ?1 ", mesParam);
             
             jspClient = "/JSP_Isa/ConsulterCommandes.jsp"; 
             sess.setAttribute("employeCo", employeCo);
