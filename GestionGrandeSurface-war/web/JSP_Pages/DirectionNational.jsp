@@ -15,7 +15,7 @@
         <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> </script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-         <jsp:useBean id="employes" scope="session" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="employes" scope="request" class="java.util.List"></jsp:useBean>
         <title>Creation Direction National</title>
     </head>
     <body>

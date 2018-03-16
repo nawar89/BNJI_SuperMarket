@@ -40,7 +40,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="MenuAgentLivraison.jsp" %>
+              <%@include file ="./MenuAgentLivraison.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>

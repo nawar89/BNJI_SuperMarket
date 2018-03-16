@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
          <jsp:useBean id="livraisons" scope="request" class="java.util.List"></jsp:useBean>
-         <jsp:useBean id="employes" scope="session" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
     </head>
     <body class="nav-md">
         
@@ -39,8 +39,9 @@
               <%@include file ="MenuAgentLivraison.jsp" %>
           </div>
         </div>
-           <%@include file="/ChefRayonJSP/header.jsp" %>
-          <form name="LivraisonForm" onsubmit="" method="post" action="ControleAdministration">
+           <%@include file="header.jsp" %>
+           
+          <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" name="LivraisonForm" onsubmit="" method="post" action="ControleAdministration">
          <div class="form-group"> 
         <fieldset>
         <legend>Livraisons</legend>
@@ -77,7 +78,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <table class="table table-hover">
+                    <table class="table table-hover" >
                       <thead>
                         <tr>
                           <th>#</th>
@@ -117,7 +118,7 @@
                   </div>
                 </div>             
         </fieldset>
-                <%@include file="/ChefRayonJSP/footer.jsp" %>
+                <%@include file="footer.jsp" %>
             </div>
               <input type="hidden"  name="livraison" class="form-control" />
             <input type="hidden" name="action" value="FromConsulterLivraison">

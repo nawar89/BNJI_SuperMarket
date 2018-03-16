@@ -723,8 +723,8 @@ HttpServletResponse response) throws ServletException, IOException
     try{
         //Construire requete SQL        
               Integer magasinId = Integer.parseInt(""+employeConnecte.getMagasin().getId());
-              requete = Requete.getLivraisonParMagasin + " and m.id = ?id";
-              Parametre p = new Parametre("id", "int", magasinId);
+              requete = Requete.getLivraisonParMagasin + " and m.id = ?1";
+              Parametre p = new Parametre("1", "long", employeConnecte.getMagasin().getId());
               mesParam.add(p);
               List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
               if (listelivs == null){
