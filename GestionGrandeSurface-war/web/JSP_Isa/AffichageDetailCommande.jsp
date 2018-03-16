@@ -4,6 +4,11 @@
     Author     : i.silvestre
 --%>
 
+<%@page import="EntityBean.Livraison"%>
+<%@page import="EntityBean.ChefRyon_Categorie"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="EntityBean.LigneCommande"%>
+<%@page import="java.util.List"%>
 <%@page import="EntityBean.BonCommande"%>
 <%@page import="EntityBean.Employe"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -72,87 +77,93 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Hover rows <small>Try hovering over the rows</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
+                    <h2>Lignes commandes<small>Détails de la commande</small></h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Hover rows <small>Try hovering over the rows</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
+                      <div class="col-xs-12 invoice-header">
+                          <h1>
+                                          <i class="fa fa-globe"></i> Commande n° <%= commande.getId() %>
+                                          <small class="pull-right">Date de la commande : <%= new SimpleDateFormat("yyyy-MM-dd").format(commande.getDate_commande()) %></small>
+                                      </h1>
+                        </div>
+                    <div class="row invoice-info">
+                      <div class="col-sm-4 invoice-col">
+                          Fournisseur
+                          <address>
+                                          <strong><%= commande.getFournisseur().getNom() %></strong>
+                                          <br> Adresse : <%= commande.getFournisseur().getAdresse() %>
+                                          <br> Téléphone : <%= commande.getFournisseur().getTelephone() %>
+                                          <br> Email: <%= commande.getFournisseur().getEmail() %>
+                          </address>
+                        </div>
+                        <div class="col-sm-4 invoice-col">
+                          Chef de rayon
+                          <address>
+                                          <strong> <%= commande.getChefRyon().getPrenom()%> <%= commande.getChefRyon().getNom() %></strong>
+                                          
+                                          <br>Téléphone : <%= commande.getChefRyon().getTelephone() %>
+                                          <br>Email: <%= commande.getChefRyon().getEmail() %>
+                                      </address>
+                        </div>
+                                      <% float total = 0.01f ; 
+                              for (LigneCommande l : commande.getLigneCommandes()) {
+                              total = total + (l.getPrix_achat()*l.getQuantite()) ;}
+                              total = total - 0.01f ;%>
+                        <div class="col-sm-4 invoice-col">
+                          <b>Commande : </b>
+                          <br>
+                          <br>
+                          <b> Statut:</b><% if (commande.getLivraisons().isEmpty()) { %>
+                                        <%= "Non prise en charge"%>
+                          <%} else if (commande.getLivraisons().size()== 1){ %>
+                                        <%= commande.getLivraisons().get(0).getMention()%>
+                          <%} else {%>
+                                        <%= commande.getLivraisons().get(commande.getLivraisons().size()-1).getMention()%> (plusieurs livraisons effectuées)
+                          <%}%>
+                          <br>
+                          <b>Total : <%= total %> € </b>
+                          <br>
+                        </div>
+                      </div>
                     <table class="table table-hover">
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Username</th>
+                          <th>libellé</th>
+                          <th>Sous-catégorie</th>
+                          <th>Prix d'achat</th>
+                          <th>quantité achetée</th>
+                          <th>total ligne</th>
                         </tr>
                       </thead>
                       <tbody>
+                          <% int i = 0;
+                          List<LigneCommande> lesLignes = commande.getLigneCommandes();
+                                for( LigneCommande l : lesLignes){
+                          
+                          i = i+1 ; 
+                          float totalLigne = 0.01f ;
+                          totalLigne = l.getQuantite()*l.getPrix_achat(); %>
                         <tr>
-                          <th scope="row">1</th>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
+                          <th scope="row"> <%= i%> </th>
+                          <td><%=l.getArticle().getLibelle()%></td>
+                          <td><%=l.getArticle().getSousCategorie().getLibelle() %></td>
+                          <td><%=l.getPrix_achat() %></td>
+                          <td><%=l.getQuantite() %></td>
+                          <td> <%= totalLigne %> € </td>
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>Larry</td>
-                          <td>the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
+                        <% } %>
                       </tbody>
                     </table>
 
                   </div>
                 </div>
-              </div>
                   </div>
-                </div>
-              </div>
+                  
                  
                     
                   </div>

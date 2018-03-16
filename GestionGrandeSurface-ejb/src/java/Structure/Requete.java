@@ -27,3 +27,4 @@ public abstract class Requete {
     public static String getCommandes = "select b from BonCommande b where 1=1";
     
 }
+
