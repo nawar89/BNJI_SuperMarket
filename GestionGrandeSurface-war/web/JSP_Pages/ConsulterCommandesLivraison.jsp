@@ -1,16 +1,28 @@
 <%-- 
-    Document   : ConsulterCommandesLivraison
-    Created on : 16 mars 2018, 10:23:29
-    Author     : Nawar
+    Document   : ConsulterLivraison
+    Created on : 14 mars 2018, 15:58:47
+    Author     : i.silvestre
 --%>
 
-<%@page import="EntityBean.Livraison"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.util.List"%>
+<%@page import="EntityBean.Employe"%>
+<%@page import="EntityBean.BonCommande"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-         <!-- Bootstrap -->
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Consulter Commandes magasin</title>
+
+    <!-- Bootstrap -->
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="./Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -18,48 +30,64 @@
     <link href="./Template/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="./Template/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    
+    <!-- Datatables -->
+    <link href="./Template/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="./Template/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="./Template/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="./Template/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="./Template/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="./Template/css/custom.min.css" rel="stylesheet">
-        <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> </script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-         <jsp:useBean id="livraisons" scope="request" class="java.util.List"></jsp:useBean>
-         <jsp:useBean id="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
+        
+         <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
+         <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
+
+        
     </head>
     <body class="nav-md">
-        
-        <div class="container body">
-        <div class="main_container">
-         <div class="col-md-3 left_col">
+     
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="MenuAgentLivraison.jsp" %>
+              <%@include file ="MenuDirMag.jsp" %>
           </div>
         </div>
-           <%@include file="header.jsp" %>
-           
-          <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" name="LivraisonForm" onsubmit="" method="post" action="ControleAdministration">
-         <div class="form-group"> 
-        <fieldset>
-        <legend>Livraisons</legend>
-            <table id="myTable">
-                <tbody style="cursor:pointer">
-              <tr class="header">
-                <th >ID</th>
-                <th >Fournisseur</th>
-                <th >Agent Livraison</th>
-                <th >Date Prevu</th>
-                <th >Menton</th>
-                
-           
-             </tbody>
-            </table>
-             <div class="x_panel">
+              <%@include file="header.jsp" %>
+ 
+        <!-- page content -->
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Tableau <small> ecrire qqch ici si on veut </small></h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <h2>Liste des Commandes Magasin <%=employeCo.getMagasin().getNom()%></h2>
+
+            <div class="clearfix"></div>
+            <div class="row">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
                   <div class="x_title">
-                    <h2>Hover rows <small>Try hovering over the rows</small></h2>
+                    <h2>Plus Table Design</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -77,58 +105,126 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
+                    
+                    
                   <div class="x_content">
-                    <table class="table table-hover" >
+                    <p class="text-muted font-13 m-b-30">
+                    </p>
+                    
+                    <form method="post" action="DirecteurMagasin?action=afficherDetailCommande">
+                    <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="dataTables_length" id="datatable-checkbox_length">
+                                </div>
+                                    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                      <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
                       <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Fournisseur</th>
-                          <th>Agent Livraison</th>
-                          <th>Date Prevu</th>
-                          <th >Menton</th>
+                        <tr role="row">
+                            <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="
+                                " style="width: 12px;">
+                                                             
+                            </th>
+                            <th class="sorting_asc" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 46px;">
+                                
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">Nom Chef de rayon</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Nom fournisseur</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Catégorie concernée</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date de la commande</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">prix total</th>
                         </tr>
                       </thead>
                       <tbody>
-                      
-              
-                        <% List<Livraison> listeLivs = livraisons ;
-
-                        for(Livraison l : listeLivs) {%>
-                               <tr onclick="addRowHandlersDirectionGeneral()">
-                                 <td><%=l.getId()%></td>
-                                 <td><%=l.getFournisseur().getNom() %></td>
-                                 <% String agent = "not assigned";
-                                     if (l.getAgentLivraison() != null){ agent = l.getAgentLivraison().getNom()+" "+l.getAgentLivraison().getPrenom(); }%>
-                                 <td><%=agent %></td>
-                                 <td><%=l.getDate_livraison_prevu()%></td>
-                                 <td><%=l.getMention()%></td>
-                                 <% String disp = "";
-                                     if (l.getAgentLivraison()!=null){
-                                         disp = "style='display: none'"; 
-                                     }
-                                 %>
-                                 <td><input type="button" onclick="" name="but" title="prendre" <%=disp %> /></td>
-                                 
-                               </tr>
-                             <% }%>
-                      
+                        
+                          <% float total = 0.01f ;
+                              List<BonCommande> lesCommandes = listCommandes;
+                        for( BonCommande r : lesCommandes){ 
+                        for (LigneCommande l : r.getLigneCommandes()) {
+                            total = total + (l.getPrix_achat()*l.getQuantite()) ;}
+                          total = total - 0.01f ;%>
+                          
+                      <tr role="row" class="odd">
+                        <td>
+			</td>
+                        <th class="sorting_1">
+                            <input type="radio" class="flat" name="idCommande" value ="<%=r.getId()%>" required="" data-parsley-multiple="commande" style="position: absolute; opacity: 0;">
+                           
+                        </th>
+						  
+                          <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
+                          <td><%= r.getFournisseur().getNom()%></td>
+                          <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
+                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
+                          <td><%=total %> € </td>
+                      </tr>
+                        
+                        <%;}%>
+                        
                       </tbody>
+                   
                     </table>
-
+                            </div>
+                      
+                        </div>
+                      <div class="row">
+                          <div class="col-sm-5">
+                                  
+                          </div>
+                          <div class="col-sm-7">
+                          </div>
+                      </div>
+                    </div>
+                        <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <button id="send" type="submit" class="btn btn-success">Consulter le détail d'une commande</button>
+                        </div>
+                      </div>
+                    </form>
+                        
                   </div>
-                </div>             
-        </fieldset>
-                <%@include file="footer.jsp" %>
+                </div>
+              </div>
+              </div>
             </div>
-              <input type="hidden"  name="livraison" class="form-control" />
-            <input type="hidden" name="action" value="FromConsulterLivraison">
-           <input type="submit"  class="btn btn-primary" value="Valider" />
-        <input type="reset"   class="btn btn-primary"  value="Remettre à zéro" /> <br />
-        
-        
-        </form>
           </div>
-         </div>
-          
-    </body>
+        </div>
+        
+        <%@include file="footer.jsp" %>
+      </div>
+
+<!-- jQuery -->
+    <script src="./Template/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="./Template/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="./Template/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="./Template/nprogress/nprogress.js"></script>
+    <!-- iCheck -->
+    <script src="./Template/iCheck/icheck.min.js"></script>
+    <!-- Datatables -->
+    <script src="./Template/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="./Template/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="./Template/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="./Template/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="./Template/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="./Template/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="./Template/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="./Template/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="./Template/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="./Template/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="./Template/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="./Template/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="./Template/jszip/dist/jszip.min.js"></script>
+    <script src="./Template/pdfmake/build/pdfmake.min.js"></script>
+    <script src="./Template/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="./Template/js/custom.min.js"></script>
+    </body> 
 </html>
