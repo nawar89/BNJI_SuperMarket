@@ -12,6 +12,7 @@ import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
+import EntityBean.Livraison;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -168,6 +169,11 @@ public class ControleAdministration extends HttpServlet {
         
         else if (act.equals("FromBonCommande")){
             FromCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("GoToConsulterLvraison")){
+            GoToConsulterLvraison(request,response); 
             request.setAttribute( "message", message );
         }
       }
@@ -707,6 +713,34 @@ public  List<LigneCommande> ParserLignesCommandes(String input,BonCommande com){
          }
          return lignes;
      }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+protected void GoToConsulterLvraison(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    
+    try{
+        //Construire requete SQL        
+              
+              requete = Requete.getLivraisons;
+              List<Livraison> listelivs = administration.getLivraisons(requete, null);
+              if (listelivs == null){
+              listelivs = new ArrayList<Livraison>(); 
+              }
+              request.setAttribute( "livraisons", listelivs );
+
+              jspClient = "/JSP_Pages/ConsulterCommandesLivraison.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////

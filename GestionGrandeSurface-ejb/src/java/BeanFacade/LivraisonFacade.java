@@ -67,7 +67,13 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
             livraisons = q.getResultList();
         }catch(Exception exe){throw exe;}
         return livraisons;
-    } 
+    }
     
+    @Override
+    public void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv) throws Exception {
+        liv.setDate_livraison(date_livraison);
+        liv.setMention(mension);
+        em.merge(liv);
+    }
     
 }

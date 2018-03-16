@@ -39,4 +39,6 @@ public interface LivraisonFacadeLocal {
     void creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception ;
       
     List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv) throws Exception;
 }

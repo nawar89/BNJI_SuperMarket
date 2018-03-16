@@ -11,6 +11,7 @@ import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.FournisseurFacadeLocal;
 import BeanFacade.LigneCommandeFacadeLocal;
+import BeanFacade.LivraisonFacadeLocal;
 import BeanFacade.MagasinFacadeLocal;
 import BeanFacade.PromotionFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
@@ -19,6 +20,7 @@ import EntityBean.Article;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
 import EntityBean.Livraison;
@@ -42,6 +44,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private LivraisonFacadeLocal livraisonFacade;
 
     @EJB
     private LigneCommandeFacadeLocal ligneCommandeFacade;
@@ -167,6 +172,16 @@ public class Administration implements AdministrationLocal {
      @Override
     public void creerLigneCommande(BonCommande command, Article article, int quantite, float prix) {
         ligneCommandeFacade.creerLigneCommande(command, article, quantite, prix);
+    }
+    
+    @Override
+    public void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv) throws Exception {
+        livraisonFacade.modifierLivraison(date_livraison, mension, liv);
+    }
+    
+       @Override
+    public List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception{
+        return livraisonFacade.getLivraisons(query, params);
     }
 
 }
