@@ -11,6 +11,7 @@ import BeanSession.ChefRayonLocal;
 import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
+import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.SousCategorie;
@@ -85,7 +86,7 @@ public class ControlChef extends HttpServlet {
                  request.setAttribute( "message", message );
                  break;
             case "CreerLivraison":
-                 jspClient="/Jihane_JSP/CreerLivraison.jsp";
+                 GoTOLivraison(request,response);
                  break;
             case "CreerL" : 
                  doActionCreerLivraison(request,response);
@@ -100,8 +101,8 @@ public class ControlChef extends HttpServlet {
             }
            }
         else {
-            jspClient="/Jihane_JSP/Accueil.jsp";
-           //jspClient="/Jihane_JSP/login.jsp";
+            //jspClient="/Jihane_JSP/Accueil.jsp";
+           jspClient="/Jihane_JSP/login.jsp";
            
         }        
     RequestDispatcher Rd;
@@ -115,27 +116,29 @@ public class ControlChef extends HttpServlet {
     protected void seConnecter(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-   HttpSession sess=request.getSession(true);
-   mesParam = new ArrayList<Parametre>();
+   //HttpSession sess=request.getSession(true);
+
     try{
+              mesParam = new ArrayList<Parametre>();
               String email  = request.getParameter( "email" );
               String mdp     = request.getParameter( "mdp" );
-              requete = Requete.getFournisseurs+ " and e.email=:email and e.mdp=:mdp";
+              requete = Requete.getFournisseurs+ " and f.email=:email and f.mdp=:mdp";
               Parametre p = new Parametre("email", "String", email);
               mesParam.add(p);
               p = new Parametre("mdp", "String", mdp);
               mesParam.add(p);
               List<Fournisseur> listeFour = chefRayon.getFournisseur(requete, mesParam);
               if (listeFour != null && listeFour.size()== 1){
-                  Fournisseur four = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
-                    
-                             jspClient = "/Jihane_JSP/AccueilFournisseur.jsp";
-                             sess.setAttribute("employeCo", four);
-                             message = "Bonjour "+four.getNom();
-     }     
-              } catch(Exception exe){
+              Fournisseur four = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
+              jspClient = "/Jihane_JSP/AccueilFournisseur.jsp";
+              //sess.setAttribute("employeCo", four);
+               message = "Bonjour "+four.getNom();
+             //jspClient = "/Jihane_JSP/Page_message.jsp";
+             
+                }     
+        } catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "Jihane_JSP/Page_message.jsp";
+    jspClient = "/Jihane_JSP/Page_message.jsp";
 }
 }
 
@@ -150,6 +153,8 @@ HttpServletResponse response) throws ServletException, IOException
        String adresse = request.getParameter("adresse");
        String telephone=request.getParameter("telephone");
        String email=request.getParameter("email");
+       System.out.println("**************************************");
+       System.out.println(Aide.GenererMDP());
        String mdp= Aide.encrypterMdp(Aide.GenererMDP());
    
        if ( nom.trim().isEmpty() || adresse.trim().isEmpty())
@@ -313,6 +318,36 @@ HttpServletResponse response) throws ServletException, IOException
          }
       }
          
+        //Go to livraison ou il faut récupérer les employe dont le role est chefRayon + les commande de ce chef de rayon 
+         
+         
+      protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse response) 
+              throws ServletException, IOException
+      {
+          
+          try{
+            // Récupérer les employés dont le rôle est chef de rayon 
+              requete=Requete.getEmployes + " AND e.role_id =6";
+              List<Employe> emp = administration.getEmploye(requete, null);
+              if (emp == null){
+              emp = new ArrayList<>(); 
+              }
+              request.setAttribute( "employes", emp );
+              //Réupérer les commandes du fournisseur connecté et qui n'ont pas encore été livrées :
+              requete=Requete.getCommandes + " And ";
+              List<BonCommande> listec=administration.getBonCommande(requete, null);
+              if (listec == null){
+              listec = new ArrayList<>(); 
+              }
+              request.setAttribute( "commandes", listec );
+              jspClient="/Jihane_JSP/CreerLivraison.jsp";
+              message = "";
+            }catch(Exception exe){
+             message = exe.getMessage();
+            jspClient = "/Jihane_JSP/Page_message.jsp";
+            }
+
+     } 
          
          protected void doActionCreerLivraison(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -323,7 +358,7 @@ HttpServletResponse response) throws ServletException, IOException
       
        String date_pr = request.getParameter( "date_pr" );
        String commande = request.getParameter( "CommandeSelect" );
-       String employe = request.getParameter("ChefSelect");
+       
        
        
        if ( date_pr.trim().isEmpty() || commande.trim().isEmpty())
@@ -333,12 +368,11 @@ HttpServletResponse response) throws ServletException, IOException
        else 
        {
                 Integer commandeID= Integer.parseInt(commande);
-                Integer employeID= Integer.parseInt(employe);
                 java.sql.Date d = java.sql.Date.valueOf(date_pr);
                //Récupérer la commande
                 mesParam = new ArrayList<Parametre>();
-                requete= Requete.getCommandesParMagasin + " And m.id = ?id";
-                Parametre s = new Parametre("id", "int", employeID);
+                requete= Requete.getCommandes+ " And b.id=:id";
+                Parametre s = new Parametre("id", "int", commandeID);
                 mesParam.add(s);
                 List<BonCommande> listeBonCommande=administration.getBonCommande(requete, mesParam);
                 chefRayon.creationLivraison(null,d,null,listeBonCommande.get(0),Etat_Livraison.ENCOURS);  

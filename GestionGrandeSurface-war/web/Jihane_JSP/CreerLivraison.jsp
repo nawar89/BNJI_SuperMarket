@@ -4,6 +4,7 @@
     Author     : Jihane
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.BonCommande"%>
 <%@page import="EntityBean.Employe"%>
 <%@page import="EntityBean.Magasin"%>
@@ -95,7 +96,7 @@
                             <select class="form-control" id = "mag" name="ChefSelect" onchange="RefreshComboBox(this,document.getElementById('commandesel'),document.getElementById('commandeseltemp'))">
                             <% List<Employe> emp = employes ;
                             for(Employe e : emp) {%>
-                            <option value ="<%=e.getId()%>"> <%=e.getMagasin().getNom()%>  </option>
+                            <option value ="<%=e.getId()%>"> <%=e.getMagasin().getNom()%> : <%=e.getNom()%> </option>
                             <% }%>
                             </select>
                         </div>
@@ -109,8 +110,8 @@
                         if (!emp.isEmpty())  {
                         Employe e = emp.get(0);
                         for(BonCommande b : com ){
-                        if(b.getChefRyon().getId()==e.getId()){ %>
-                        <option class="filterOption" value ="<%= b.getId()%>"> <%=b.getChefRyon().getNom()%>  </option>
+                        if(b.getChefRyon().getId()==e.getId()){%>
+                        <option class="filterOption" value ="<%= b.getId()%>"><%=b.getChefRyon().getNom()%> </option>
                             <% }}}%>
                         </select>
                         

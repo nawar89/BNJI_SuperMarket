@@ -39,7 +39,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="Menu_Founisseur.jsp" %>
+              <%@include file ="Menu_Fournisseur.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>

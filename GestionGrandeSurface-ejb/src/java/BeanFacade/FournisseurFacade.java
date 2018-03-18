@@ -43,6 +43,7 @@ public class FournisseurFacade extends AbstractFacade<Fournisseur> implements Fo
           fournisseur.setAdresse(adresse);
           fournisseur.setTelephone(telephone);
           fournisseur.setEmail(email);
+          fournisseur.setMdp(mdp);
             em.persist(fournisseur);
         }catch (Exception ex){ throw ex;}
         

@@ -1,6 +1,6 @@
- <div class="navbar nav_title" style="border: 0;">
+           <div class="navbar nav_title" style="border: 0;">
               <a href="ControlChef?action=Accueil" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
-            </div>
+           </div>
 
             <div class="clearfix"></div>
 
@@ -25,9 +25,9 @@
                       <li><a href="ControlChef?action=Accueil">Analyse des chiffres d'affaire</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> Commandes & Réclamations <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-edit"></i>Commandes<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=Accueil">Consulter les commandes reçues </a></li>
+                      <li><a href="ControlChef?action=Accueil">Consulter les commandes reçues</a></li>
                       <li><a href="ControlChef?action=Accueil">Consulter les réclamations</a></li>
                     </ul>
                   </li>

@@ -22,6 +22,8 @@ public abstract class Requete {
     public static String getMagasins = "SELECT m FROM Magasin AS m WHERE 1=1";
     public static String getPromotions = "SELECT p FROM Promotion AS p WHERE 1=1";
     public static String getFournisseurs = "SELECT f FROM Fournisseur AS f WHERE 1=1";
+    public static String getCommandes = "select b from BonCommande as b where 1=1";
     public static String getCommandesParMagasin = "select b from BonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
+    public static String getCommandesNonLivree = "select b from BonCommande b join b.id c join c.livraison l where 1=1" ;
 
 }
