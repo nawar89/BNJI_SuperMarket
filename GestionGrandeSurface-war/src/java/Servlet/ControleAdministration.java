@@ -13,6 +13,7 @@ import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
+import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
@@ -180,6 +181,11 @@ public class ControleAdministration extends HttpServlet {
                 
          else if (act.equals("FromConsulterLivraison")){
             FromConsulterLvraison(request,response); 
+            request.setAttribute( "message", message );
+        }
+                
+        else if (act.equals("FromLivraisonDetail")){
+            FromLivraisonDetail(request,response); 
             request.setAttribute( "message", message );
         }
       }
@@ -787,6 +793,82 @@ HttpServletResponse response) throws ServletException, IOException
 
 }
 
+
+
+protected void FromLivraisonDetail(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL 
+              String ligneslivraison = request.getParameter("livlignes");
+              if (!ligneslivraison.isEmpty()){
+                        
+                        jspClient = "/JSP_Pages/LivraisonDetail.jsp";
+                    }
+              else {
+                message = "il y pas de ligne de livraison";
+                 jspClient = "/JSP_Pages/Page_Message.jsp";
+              }
+             
+             
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+public  void ParserLignesLivraison(String input){
+         
+         mesParam = new ArrayList<Parametre>();
+         try{
+            String [] temp  = input.split(",");
+            int count = 0;
+            int quantite = 0;
+            float prix = 0;
+            Article art = null;
+            Ligne_livraison l = new Ligne_livraison();
+            for (int i=0;i<temp.length;i++){
+                if ((i)%7==0 || i==0){
+                    count = 0;
+                }
+                if(count==1){
+                    
+                    Integer ligneID = Integer.parseInt(temp[i]);
+                    Parametre p = new Parametre("id", "int", ligneID);
+                      mesParam.add(p);
+                      String requete = Requete.+" and a.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        art = (Article)Aide.getObjectDeListe(listearts.toArray());
+                    }
+                }
+                else if (count==3){
+                       prix = Float.parseFloat(temp[i]); 
+                 }else if (count==4){
+                       quantite = Integer.parseInt(temp[i]);
+                 }else if (count==5){
+                        //creerLigneCommande
+                        if (com !=null && art !=null){
+                            administration.creerLigneCommande(com, art, quantite, prix);
+                        }else{ message = "article n'exite pas";
+                            break;
+                        }
+                  }
+                 count++;   
+                
+            }
+         }catch(Exception exe){message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";
+         }
+        
+     }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////

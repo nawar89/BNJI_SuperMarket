@@ -114,7 +114,7 @@
                     <p class="text-muted font-13 m-b-30">
                     </p>
                     
-                    <form id ="monForm" method="post" name="LivraisonForm" action="ControleAdministration" onsubmit="return doSaveLivraison(document.getElementById('myTable'))">
+                    <form id ="monForm" method="post" name="LivraisonForm" action="ControleAdministration" onsubmit="return doSaveLivraisonLigneAgent(document.getElementById('myTable'))">
                     <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
@@ -135,7 +135,8 @@
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Quantité livrée</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité acceptée</th>
-                            
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Type Reclamation</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Reclamation</th>
                         </tr>
                       </thead>
                       <tbody style="cursor:pointer">
@@ -150,8 +151,9 @@
                                  <td><%=lg.getId()%></td>
                                  <td><%=lg.getArticle().getLibelle() %></td>
                                  <td><%=lg.getQuantite_livree() %></td>
-                                 <td onchange="creerReclamationLigneLivraison(document.getElementById('recDev'),document.getElementById('myTable'))"><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;" name="nom" class="form-control" value ="<%=lg.getQuantite_livree() %>" /></td>
-                                  
+                                 <td onchange=""><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;AfficherReclamationLigneLivraison(document.getElementById('recDev'),document.getElementById('myTable'));" name="nom" class="form-control" value ="<%=lg.getQuantite_livree() %>" /></td>
+                                 <td></td>
+                                 <td></td>
                                </tr>
                              <% }}%>
                         
@@ -175,7 +177,10 @@
                              </select>  
                               <br />
                               <label for="rec">Reclamation <span class="requis">*   </span></label>
-                              <input type="text" name="rec" class="form-control" placeholder="Saisir reclamation" />
+                              <input type="text" id="recText" name="rec" class="form-control" placeholder="Saisir reclamation" />
+                              <input type="hidden" name="ligneLivraisonID" class="form-control" />
+                                <br />
+                                <input type="button" onclick= "creerReclamationLigneLivraison(document.getElementById('myTable'),document.getElementById('recsel'),document.getElementById('recDev'));" value="Ajouter Reclamation">
                                 <br />
                                 
                           </div>
