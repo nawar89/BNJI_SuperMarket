@@ -508,3 +508,33 @@ function RefreshComboBoxTable(ddl1,ddl2,ddl3) {
 
 ////////////////////////////////////////////////////////////////////////////////////
 
+function affectuerLivraisonAgent(table) {
+           
+     //var table = document.getElementById("myTable");
+    var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                                 
+                                 var cell = row.getElementsByTagName("td")[0];
+                                 var id = cell.innerHTML;
+                                 //alert("id:" + id);
+                                 if (confirm('Vous etes sur de vouloir changer le role demploye '+id+'?')) {
+                                              document.getElementsByName("livraison").value = id;
+                                                
+                                } else {
+                                    // Do nothing!
+                                }
+                                       
+                           };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+    }   
+            
+}
+
+/////////////////////////////////////////////////////////////////////////:

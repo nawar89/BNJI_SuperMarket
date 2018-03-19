@@ -4,6 +4,7 @@
     Author     : i.silvestre
 --%>
 
+<%@page import="EntityBean.Livraison"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.util.List"%>
@@ -41,7 +42,7 @@
     <link href="./Template/css/custom.min.css" rel="stylesheet">
         
          <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
-         <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="livraisons" scope="request" class="java.util.List"></jsp:useBean>
          <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
 
         
@@ -53,7 +54,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="MenuDirMag.jsp" %>
+              <%@include file ="MenuAgentLivraison.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>
@@ -111,7 +112,7 @@
                     <p class="text-muted font-13 m-b-30">
                     </p>
                     
-                    <form method="post" action="DirecteurMagasin?action=afficherDetailCommande">
+                    <form method="post" name="LivraisonForm" action="ControleAdministration">
                     <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
@@ -125,45 +126,42 @@
                       <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
                       <thead>
                         <tr role="row">
-                            <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="
-                                " style="width: 12px;">
-                                                             
-                            </th>
-                            <th class="sorting_asc" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 46px;">
-                                
-                            </th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">Nom Chef de rayon</th>
+                           
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">#</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Nom fournisseur</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Catégorie concernée</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date de la commande</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">prix total</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Agent Livraison</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date Prevu</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">Menton</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody style="cursor:pointer">
                         
-                          <% float total = 0.01f ;
-                              List<BonCommande> lesCommandes = listCommandes;
-                        for( BonCommande r : lesCommandes){ 
-                        for (LigneCommande l : r.getLigneCommandes()) {
-                            total = total + (l.getPrix_achat()*l.getQuantite()) ;}
-                          total = total - 0.01f ;%>
-                          
-                      <tr role="row" class="odd">
-                        <td>
-			</td>
-                        <th class="sorting_1">
-                            <input type="radio" class="flat" name="idCommande" value ="<%=r.getId()%>" required="" data-parsley-multiple="commande" style="position: absolute; opacity: 0;">
-                           
-                        </th>
-						  
-                          <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
-                          <td><%= r.getFournisseur().getNom()%></td>
-                          <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
-                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
-                          <td><%=total %> € </td>
-                      </tr>
-                        
-                        <%;}%>
+                      <% List<Livraison> listeLivs = livraisons ;
+
+                        for(Livraison l : listeLivs) {%>
+                        <tr onclick="affectuerLivraisonAgent(document.getElementById('datatable-checkbox'))">
+                                 <td><%=l.getId()%></td>
+                                 <td><%=l.getFournisseur().getNom() %></td>
+                                 <% String agent = "not assigned";
+                                     if (l.getAgentLivraison() != null){ agent = l.getAgentLivraison().getNom()+" "+l.getAgentLivraison().getPrenom(); }%>
+                                 <td><%=agent %></td>
+                                 <td><%=l.getDate_livraison_prevu()%></td>
+                                 <td><%=l.getMention()%></td>
+                                 <% String disp = "";
+                                    String msg = "";
+                                     if (l.getAgentLivraison()!=null){
+                                         if (l.getAgentLivraison().getId() == employeCo.getId()){
+                                             msg = "consulter";
+                                         }else{
+                                             disp = "style='display: none'"; 
+                                             msg = "";
+                                         }
+                                     }else msg = "Je la prend";
+                                 %>
+                                 <td><%=msg%></td>
+                                 
+                               </tr>
+                             <% }%>
                         
                       </tbody>
                    
@@ -182,6 +180,7 @@
                         <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
                           <button id="send" type="submit" class="btn btn-success">Consulter le détail d'une commande</button>
+                          <input type="hidden" name="livraison" class="form-control" />
                         </div>
                       </div>
                     </form>
