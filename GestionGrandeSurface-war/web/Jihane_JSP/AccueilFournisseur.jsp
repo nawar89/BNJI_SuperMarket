@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+     <jsp:useBean id ="FourCo" scope="session" class="EntityBean.Fournisseur"></jsp:useBean>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">

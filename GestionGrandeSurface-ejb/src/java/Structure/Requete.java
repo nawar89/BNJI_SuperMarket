@@ -13,6 +13,7 @@ public abstract class Requete {
     public static String getRoles = "SELECT r FROM Role AS r WHERE 1=1";
     public static String getEmployes = "SELECT e FROM Employe AS e WHERE 1=1";
     public static String getArticles = "SELECT a FROM Article AS a WHERE 1=1";
+    public static String getLivraisons = "SELECT l FROM Livraison AS l WHERE 1=1";
     public static String getVetement = "SELECT v FROM Vetement AS v WHERE 1=1";
     public static String getElectromenager = "SELECT e FROM Electromenager AS e WHERE 1=1";
     public static String getProduitFrais = "SELECT p FROM Produit_Frais AS a WHERE 1=1";
@@ -24,6 +25,6 @@ public abstract class Requete {
     public static String getFournisseurs = "SELECT f FROM Fournisseur AS f WHERE 1=1";
     public static String getCommandes = "select b from BonCommande as b where 1=1";
     public static String getCommandesParMagasin = "select b from BonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
-    public static String getCommandesNonLivree = "select b from BonCommande b join b.id c join c.livraison l where 1=1" ;
+    
 
 }

@@ -47,7 +47,10 @@
               </div>
               <div>
                 <input type="hidden" name="action" value="loginFournisseur">
-                 <button type="submit" class="btn btn-success">Connexion</button>
+                <button type="submit" class="btn btn-success">Connexion Fournisseur</button>
+                <input type="hidden" name="action" value="loginEmp">
+                <button type="submit" class="btn btn-success">ConnexionEmployé </button>
+              
                <!-- <a class="btn btn-default submit">Connexion</a>-->
               <!--<a class="reset_pass" href="#">Lost your password?</a>-->
               </div>

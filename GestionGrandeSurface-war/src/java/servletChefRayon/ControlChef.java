@@ -14,6 +14,7 @@ import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
+import EntityBean.Livraison;
 import EntityBean.SousCategorie;
 import Structure.Aide;
 import Structure.Parametre;
@@ -46,6 +47,7 @@ public class ControlChef extends HttpServlet {
      public String jspClient="";
      public String message   = ""; 
      public String requete   = "";
+     public final String ChefRayon = "ChefRayon";
      public Date date = new Date();
      ArrayList <Parametre> mesParam = new ArrayList<Parametre>();
 
@@ -93,9 +95,13 @@ public class ControlChef extends HttpServlet {
                  request.setAttribute( "message", message );
                  break;
             case "loginFournisseur" : 
-                 seConnecter(request,response);
+                 seConnecterFour(request,response);
                  request.setAttribute( "message", message );
                  break;
+            case "loginEmp" : 
+                seConnecter(request,response);
+                request.setAttribute( "message", message );
+                break;
                 
                 
             }
@@ -113,10 +119,10 @@ public class ControlChef extends HttpServlet {
     }
     
         /////////////////////////////////////////////////////////////////////////////////////////
-    protected void seConnecter(HttpServletRequest request,
+    protected void seConnecterFour(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-   //HttpSession sess=request.getSession(true);
+   HttpSession sess=request.getSession(true);
 
     try{
               mesParam = new ArrayList<Parametre>();
@@ -131,15 +137,45 @@ HttpServletResponse response) throws ServletException, IOException
               if (listeFour != null && listeFour.size()== 1){
               Fournisseur four = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
               jspClient = "/Jihane_JSP/AccueilFournisseur.jsp";
-              //sess.setAttribute("employeCo", four);
-               message = "Bonjour "+four.getNom();
-             //jspClient = "/Jihane_JSP/Page_message.jsp";
-             
+              sess.setAttribute("FourCo", four);
+               message = "Bonjour "+four.getNom();     
                 }     
         } catch(Exception exe){
     message = exe.getMessage();
     jspClient = "/Jihane_JSP/Page_message.jsp";
 }
+}
+
+     protected void seConnecter(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   HttpSession sess=request.getSession(true);
+   mesParam = new ArrayList<Parametre>();
+    try{
+              String login   = request.getParameter( "login" );
+              String mdp     = request.getParameter( "mdp" );
+              requete = Requete.getEmployes+ " and e.login=:login and e.mdp=:mdp";
+              Parametre p = new Parametre("login", "String", login);
+              mesParam.add(p);
+              p = new Parametre("mdp", "String", mdp);
+              mesParam.add(p);
+              List<Employe> listeEmp = administration.getEmploye(requete, mesParam);
+              if (listeEmp != null && listeEmp.size()== 1){
+                  Employe emp = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
+                     switch (emp.getRole().getNom()){
+                         case ChefRayon:
+                             jspClient = "/Jihane_JSP/Accueil.jsp";
+                             sess.setAttribute("employeCo", emp);
+                             message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
+                             break;
+                        
+                     }     
+              }        
+    }catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/Jihane_JSP/Page_message.jsp";
+}
+
 }
 
 
@@ -324,22 +360,51 @@ HttpServletResponse response) throws ServletException, IOException
       protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse response) 
               throws ServletException, IOException
       {
+             HttpSession sess=request.getSession(true);
           
           try{
             // Récupérer les employés dont le rôle est chef de rayon 
-              requete=Requete.getEmployes + " AND e.role_id =6";
-              List<Employe> emp = administration.getEmploye(requete, null);
+              int roleID= 6;
+              requete= Requete.getEmployes;
+              /*Parametre r = new Parametre("id", "int", roleID);
+              mesParam.add(r);*/
+              List<Employe> emp = administration.getEmploye(requete,null);
               if (emp == null){
               emp = new ArrayList<>(); 
               }
               request.setAttribute( "employes", emp );
               //Réupérer les commandes du fournisseur connecté et qui n'ont pas encore été livrées :
-              requete=Requete.getCommandes + " And ";
-              List<BonCommande> listec=administration.getBonCommande(requete, null);
+              requete=Requete.getLivraisons;
+              List<Livraison> listl=chefRayon.getLivraison(requete, null);
+              if (listl == null){
+              listl = new ArrayList<>(); 
+              }
+              //ajouter l'id du fournisseur connecté dans la requete
+              Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+              long fourID = fourCo.getId();
+              requete=Requete.getCommandes + " And b.fournisseur_id=:id";
+              mesParam= new ArrayList<Parametre>();
+              Parametre c = new Parametre("id", "long", fourID);
+              mesParam.add(c);
+              List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
               if (listec == null){
               listec = new ArrayList<>(); 
               }
+              else
+              {
+              for (Livraison l : listl)
+              {
+                  for(BonCommande b : listec)
+                  {
+                      if(l.getBonCommande().getId()==b.getId())
+                      {
+                          listec.remove(b);
+                      }
+                  }
+              }
+              }
               request.setAttribute( "commandes", listec );
+              
               jspClient="/Jihane_JSP/CreerLivraison.jsp";
               message = "";
             }catch(Exception exe){
@@ -353,14 +418,8 @@ HttpServletResponse response) throws ServletException, IOException
             throws ServletException, IOException {
        try
        {
-           
-      
-      
        String date_pr = request.getParameter( "date_pr" );
        String commande = request.getParameter( "CommandeSelect" );
-       
-       
-       
        if ( date_pr.trim().isEmpty() || commande.trim().isEmpty())
        {
           message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
