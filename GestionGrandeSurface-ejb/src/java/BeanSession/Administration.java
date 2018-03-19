@@ -175,8 +175,8 @@ public class Administration implements AdministrationLocal {
     }
     
     @Override
-    public void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv) throws Exception {
-        livraisonFacade.modifierLivraison(date_livraison, mension, liv);
+    public void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception {
+        livraisonFacade.modifierLivraison(date_livraison, mension, liv,agentLivrasion);
     }
     
        @Override

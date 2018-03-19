@@ -6,6 +6,7 @@
 package BeanFacade;
 
 import EntityBean.BonCommande;
+import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.Livraison;
@@ -40,5 +41,5 @@ public interface LivraisonFacadeLocal {
       
     List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
     
-    void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv) throws Exception;
+    void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception;
 }

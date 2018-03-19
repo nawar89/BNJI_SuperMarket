@@ -4,6 +4,8 @@
     Author     : i.silvestre
 --%>
 
+<%@page import="EntityBean.Type_Reclamation"%>
+<%@page import="EntityBean.Ligne_livraison"%>
 <%@page import="EntityBean.Livraison"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>
@@ -21,7 +23,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> </script>
-    <title>Consulter Commandes magasin</title>
+    <title></title>
 
     <!-- Bootstrap -->
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +44,7 @@
     <link href="./Template/css/custom.min.css" rel="stylesheet">
         
          <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
-         <jsp:useBean id="livraisons" scope="request" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="livraison" scope="request" class="Livraison"></jsp:useBean>
          <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
 
         
@@ -81,7 +83,7 @@
                 </div>
               </div>
             </div>
-              <h2>Liste des Commandes Magasin <%=employeCo.getMagasin().getNom()%></h2>
+              <h2>Magasin <%=employeCo.getMagasin().getNom()%></h2>
 
             <div class="clearfix"></div>
             <div class="row">
@@ -112,7 +114,7 @@
                     <p class="text-muted font-13 m-b-30">
                     </p>
                     
-                    <form id ="monForm" method="post" name="LivraisonForm" action="ControleAdministration">
+                    <form id ="monForm" method="post" name="LivraisonForm" action="ControleAdministration" onsubmit="return doSaveLivraison(document.getElementById('myTable'))">
                     <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
@@ -130,43 +132,28 @@
                               <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">#</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Nom fournisseur</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Agent Livraison</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date Prevu</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">Menton</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Quantité livrée</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité acceptée</th>
+                            
                         </tr>
                       </thead>
                       <tbody style="cursor:pointer">
                         
-                      <% List<Livraison> listeLivs = livraisons ;
-
-                        for(Livraison l : listeLivs) {%>
+                      <%  Livraison liv = livraison;
+                        if (liv.getLigne_livraisons()!=null){
+                        for(Ligne_livraison lg : liv.getLigne_livraisons()) {%>
                         <tr >
                            <td class="a-center ">
                               <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
                             </td>
-                                 <td><%=l.getId()%></td>
-                                 <td><%=l.getFournisseur().getNom() %></td>
-                                 <% String agent = "not assigned";
-                                     if (l.getAgentLivraison() != null){ agent = l.getAgentLivraison().getNom()+" "+l.getAgentLivraison().getPrenom(); }%>
-                                 <td><%=agent %></td>
-                                 <td><%=l.getDate_livraison_prevu()%></td>
-                                 <td><%=l.getMention()%></td>
-                                 <% String disp = "";
-                                    String msg = "";
-                                     if (l.getAgentLivraison()!=null){
-                                         if (l.getAgentLivraison().getId() == employeCo.getId()){
-                                             msg = "consulter";
-                                         }else{
-                                             disp = "style='display: none'"; 
-                                             msg = "";
-                                         }
-                                     }else msg = "Je la prend";
-                                 %>
-                                 <td><input type="button" onclick= "affectuerLivraisonAgent(document.getElementById('myTable'));" value="<%=msg%>"></td>
-                                 
+                                 <td><%=lg.getId()%></td>
+                                 <td><%=lg.getArticle().getLibelle() %></td>
+                                 <td><%=lg.getQuantite_livree() %></td>
+                                 <td onchange="creerReclamationLigneLivraison(document.getElementById('recDev'),document.getElementById('myTable'))"><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;" name="nom" class="form-control" value ="<%=lg.getQuantite_livree() %>" /></td>
+                                  
                                </tr>
-                             <% }%>
+                             <% }}%>
                         
                       </tbody>
                    
@@ -176,9 +163,21 @@
                         </div>
                              
                                 
-                      <div class="row">
+                      <div id = "recDev" class="row" style="display: none">
                           <div class="col-sm-5">
-                                  
+                              <label for="rec">Type Reclamation <span class="requis">*</span></label>
+                             <select id = "recsel"  name="ReclamationSelect" >
+                           
+                                 <option value ="<%=0%>"> <%=Type_Reclamation.RECLAMATION_LIVRAISON %>  </option>
+                                 <option value ="<%=1%>"> <%=Type_Reclamation.RECLAMATION_COMMANDE %>  </option>
+                                 <option value ="<%=2%>"> <%=Type_Reclamation.RECLAMATION_QUALITE %>  </option>
+                           
+                             </select>  
+                              <br />
+                              <label for="rec">Reclamation <span class="requis">*   </span></label>
+                              <input type="text" name="rec" class="form-control" placeholder="Saisir reclamation" />
+                                <br />
+                                
                           </div>
                           <div class="col-sm-7">
                           </div>
@@ -187,8 +186,9 @@
                         <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
                             <button style="display: non" id="send" type="submit" class="btn btn-success">Consulter le détail d'une commande</button>
-                            <input type="hidden" name="action" value="FromConsulterLivraison">
-                          <input type="hidden" name="livraison" class="form-control" />
+                            <input type="hidden" name="action" value="FromLivraisonDetail">
+                            <input type="hidden" name="acepte" class="form-control" />
+                          <input type="hidden" name="livlignes" class="form-control" />
                         </div>
                       </div>
                     </form>

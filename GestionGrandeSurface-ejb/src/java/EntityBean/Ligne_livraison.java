@@ -131,6 +131,27 @@ public class Ligne_livraison implements Serializable {
     public void setQuantite_livree(int quantite_livree) {
         this.quantite_livree = quantite_livree;
     }
+    
+        private int quantite_accepte;
+
+    /**
+     * Get the value of quantite_accepte
+     *
+     * @return the value of quantite_accepte
+     */
+    public int getQuantite_accepte() {
+        return quantite_accepte;
+    }
+
+    /**
+     * Set the value of quantite_accepte
+     *
+     * @param quantite_accepte new value of quantite_accepte
+     */
+    public void setQuantite_accepte(int quantite_accepte) {
+        this.quantite_accepte = quantite_accepte;
+    }
+
 
     
 }

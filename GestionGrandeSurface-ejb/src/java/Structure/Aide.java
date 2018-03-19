@@ -9,6 +9,7 @@ import EntityBean.Article;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
 import EntityBean.Role;
@@ -45,6 +46,8 @@ public abstract class Aide {
             case "Categorie":
                 o = (Categorie)o;
                break;
+            case "Etat_Livraison":
+                 o =(Etat_Livraison)o;
        }
       }catch(Exception exe){ throw  exe;}
    }

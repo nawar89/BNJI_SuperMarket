@@ -22,7 +22,7 @@
          <jsp:useBean id="fournisseurs" scope="request" class="java.util.List"></jsp:useBean>
         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
         <jsp:useBean id ="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
-        <title>Bon Commande</title>
+    <title>Bon Commande</title>
     </head>
     <body>
         <h1>Bon Commande</h1>
@@ -83,7 +83,7 @@
             </table>   
          
         <br /> 
-          <table id="myTable" name = "to">
+          <table id="myTable" >
                 <tbody style="cursor:pointer">
               <tr class="header">
                 <th >ID Aricle</th>

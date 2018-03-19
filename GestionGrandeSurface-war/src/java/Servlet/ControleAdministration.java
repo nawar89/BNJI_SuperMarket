@@ -10,6 +10,7 @@ import EntityBean.Article;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
 import EntityBean.Livraison;
@@ -174,6 +175,11 @@ public class ControleAdministration extends HttpServlet {
         
         else if (act.equals("GoToConsulterLvraison")){
             GoToConsulterLvraison(request,response); 
+            request.setAttribute( "message", message );
+        }
+                
+         else if (act.equals("FromConsulterLivraison")){
+            FromConsulterLvraison(request,response); 
             request.setAttribute( "message", message );
         }
       }
@@ -723,8 +729,12 @@ HttpServletResponse response) throws ServletException, IOException
     try{
         //Construire requete SQL        
               Integer magasinId = Integer.parseInt(""+employeConnecte.getMagasin().getId());
-              requete = Requete.getLivraisonParMagasin + " and m.id = ?1";
+              requete = Requete.getLivraisonParMagasin + " and m.id = ?1 and ( l.mention = ?2 or  l.mention = ?3)";
               Parametre p = new Parametre("1", "long", employeConnecte.getMagasin().getId());
+              mesParam.add(p);
+              p = new Parametre("2", "Etat_livraison", Etat_Livraison.ENCOURS);
+              mesParam.add(p);
+              p = new Parametre("3", "Etat_livraison", Etat_Livraison.RECEPTIONNE);
               mesParam.add(p);
               List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
               if (listelivs == null){
@@ -742,6 +752,40 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 
+
+
+protected void FromConsulterLvraison(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL 
+              String livraison = request.getParameter("livraison");
+              if (!livraison.isEmpty()){
+                    Integer livID = Integer.parseInt(livraison);
+                    requete = Requete.getLivraisons + " and l.id =:id";
+                    Parametre p = new Parametre("id", "int", livID);
+                    mesParam.add(p);
+                    List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
+                    if (listelivs!=null){
+                        Livraison liv = (Livraison)Aide.getObjectDeListe(listelivs.toArray());
+                        administration.modifierLivraison(new Date(), Etat_Livraison.RECEPTIONNE, liv,employeConnecte);
+                        request.setAttribute( "livraison", liv );
+                        jspClient = "/JSP_Pages/LivraisonDetail.jsp";
+                    }
+              }else {
+                message = "il y pas de livraison";
+                 jspClient = "/JSP_Pages/Page_Message.jsp";
+              }
+             
+             
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
 
 
 

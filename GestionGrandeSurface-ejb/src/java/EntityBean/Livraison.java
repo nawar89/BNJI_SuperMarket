@@ -157,6 +157,7 @@ public class Livraison implements Serializable {
         this.agentLivraison = agentLivraison;
     }
 
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date date_livraison_prevu;
 
     /**

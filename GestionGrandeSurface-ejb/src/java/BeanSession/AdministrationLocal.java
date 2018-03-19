@@ -65,7 +65,7 @@ public interface AdministrationLocal {
     
     void creerLigneCommande(BonCommande command, Article article, int quantite, float prix);
     
-    void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv) throws Exception;
+    void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception;
     
     List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
     

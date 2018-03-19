@@ -509,7 +509,7 @@ function RefreshComboBoxTable(ddl1,ddl2,ddl3) {
 ////////////////////////////////////////////////////////////////////////////////////
 
 function affectuerLivraisonAgent(table) {
-           
+       document.forms["LivraisonForm"]["livraison"].value = "";    
      //var table = document.getElementById("myTable");
     var rows = table.getElementsByTagName("tr");
     for (i = 0; i < rows.length; i++) {
@@ -519,22 +519,71 @@ function affectuerLivraisonAgent(table) {
             {
                 return function() { 
                                  
-                                 var cell = row.getElementsByTagName("td")[0];
+                                 var cell = row.getElementsByTagName("td")[1];
                                  var id = cell.innerHTML;
                                  //alert("id:" + id);
-                                 if (confirm('Vous etes sur de vouloir changer le role demploye '+id+'?')) {
-                                              document.getElementsByName("livraison").value = id;
-                                                
-                                } else {
-                                    // Do nothing!
-                                }
-                                       
-                           };
+                                
+                                 if (confirm('Vous etes sur de vouloir prendre cette livraison ?')) {
+                                              document.forms["LivraisonForm"]["livraison"].value = id;
+                                              console.log("dans  "+document.forms["LivraisonForm"]["livraison"].value);
+                                              document.getElementById('monForm').submit();
+                                              //console.log('id '+id);
+                                 }          
+                                
+                      };
             };
 
         currentRow.onclick = createClickHandler(currentRow);
-    }   
-            
+        
+        
+    }  
+    //alert('test');
+    //document.forms["LivraisonForm"]["livraison"].value = "55";
+     //document.getElementById('monForm').submit();
 }
 
-/////////////////////////////////////////////////////////////////////////:
+/////////////////////////////////////////////////////////////////////////
+
+function creerReclamationLigneLivraison(div,table) {
+    
+     var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                                 
+                                 var cell = row.getElementsByTagName("td")[3];
+                                 var ;livre = cell.innerHTML;
+                                 var cell2 = row.getElementsByTagName("td")[4];
+                                 //cell2.value = "33";
+                                 var acepte = document.getElementsByName('acepte').value;
+                                 //alert("id:" + id);
+                                 console.log("TEETE   "+livre+"  "+ acepte);
+                                 if (livre !== acepte){
+                                     
+                                     if (confirm('Vous voulez créer un reclamation ?')) {
+                                            console.log("HERE");
+                                            div.style.visibility='visible';
+         
+                                     }else {
+                                         cell2.value = livre;
+                                         document.getElementsByName('acepte').value = livre;
+                                         
+                                     }
+                                     
+                                 }       
+                                
+                      };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+        
+        
+    }  
+    
+    
+            
+}
+///////////////////////////////////////////////////////////////////////
