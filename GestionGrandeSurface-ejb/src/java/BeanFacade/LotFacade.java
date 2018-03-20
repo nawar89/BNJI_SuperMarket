@@ -40,7 +40,7 @@ public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
     public void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article) {
         Lot l = new Lot();
         l.setDate_promption(date_de_peremption);
-        l.setDate_promption(date_de_peremption);
+        l.setQuantite_de_lot(quantite);
         l.setArticleMagasin(article);
         em.persist(l);
     }
