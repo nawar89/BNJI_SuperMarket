@@ -857,6 +857,10 @@ public  void ParserLignesLivraison(String input){
                        quantiteAccepte = Integer.parseInt(temp[i]); 
                        administration.modifierLigneLivraison(ligne, quantiteAccepte);
                        
+                       if(ligne.getDate_de_peremption()!=null){
+                           
+                       }
+                       
                         if (!rec.isEmpty() && !reclamationType.isEmpty()){
                             switch(reclamationType){
                                 case "RECLAMATION_LIVRAISON":

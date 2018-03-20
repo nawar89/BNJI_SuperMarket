@@ -10,6 +10,7 @@ import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
 import Structure.Parametre;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -34,7 +35,7 @@ public interface Ligne_livraisonFacadeLocal {
 
     int count();
 
-    void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison);
+    void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison,Date date_de_peremption);
 
     void modifierLigneLivraison(Ligne_livraison lignelivraison, int quantite_accepte);
     

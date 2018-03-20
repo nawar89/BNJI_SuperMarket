@@ -6,6 +6,7 @@
 package BeanSession;
 
 import BeanFacade.ArticleFacadeLocal;
+import BeanFacade.ArticleMagasinFacadeLocal;
 import BeanFacade.BonCommandeFacadeLocal;
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
@@ -13,12 +14,14 @@ import BeanFacade.FournisseurFacadeLocal;
 import BeanFacade.LigneCommandeFacadeLocal;
 import BeanFacade.Ligne_livraisonFacadeLocal;
 import BeanFacade.LivraisonFacadeLocal;
+import BeanFacade.LotFacadeLocal;
 import BeanFacade.MagasinFacadeLocal;
 import BeanFacade.PromotionFacadeLocal;
 import BeanFacade.ReclamationFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
 import BeanFacade.SousCategorieFacadeLocal;
 import EntityBean.Article;
+import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
@@ -27,6 +30,7 @@ import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
 import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
+import EntityBean.Lot;
 import EntityBean.Role;
 import EntityBean.Magasin;
 
@@ -49,6 +53,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private ArticleMagasinFacadeLocal articleMagasinFacade;
+
+    @EJB
+    private LotFacadeLocal lotFacade;
 
     @EJB
     private ReclamationFacadeLocal reclamationFacade;
@@ -196,8 +206,8 @@ public class Administration implements AdministrationLocal {
     }
     
      @Override
-    public void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison) {
-       ligne_livraisonFacade.creerLigneLivraison(quantite_livree, quantite_aceptee, article, livraison);
+    public void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison,Date date_de_peremption) {
+       ligne_livraisonFacade.creerLigneLivraison(quantite_livree, quantite_aceptee, article, livraison,date_de_peremption);
     }
     
      @Override
@@ -222,6 +232,36 @@ public class Administration implements AdministrationLocal {
     @Override
     public void modifierEtat(Livraison liv, Etat_Livraison mension) throws Exception{
         livraisonFacade.modifierEtat(liv, mension);
+    }
+    
+    @Override
+    public void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article) {
+         lotFacade.creerLot(date_de_peremption, quantite, article);
+    }
+    
+     @Override
+    public List<Lot> getLots(String query, ArrayList<Parametre> params) throws Exception{
+        return lotFacade.getLots(query, params);
+    }
+    
+    @Override
+    public void ajouterQuantite(ArticleMagasin articleMagasin, int quantite) {
+        articleMagasinFacade.ajouterQuantite(articleMagasin, quantite);
+    }
+    
+      @Override
+    public void enleverQuantite(ArticleMagasin articleMagasin, int quantite) {
+        articleMagasinFacade.enleverQuantite(articleMagasin, quantite);
+    }
+    
+    @Override
+    public void ajouterQuantiteLot(Lot lot, int quantite) {
+        lotFacade.ajouterQuantiteLot(lot, quantite);
+    }
+    
+    @Override
+    public void enleverQuantiteLot(Lot lot, int quantite) {
+        lotFacade.enleverQuantiteLot(lot, quantite);
     }
 
 }

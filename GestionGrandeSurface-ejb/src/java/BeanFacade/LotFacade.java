@@ -5,9 +5,8 @@
  */
 package BeanFacade;
 
-import EntityBean.Article;
-import EntityBean.Ligne_livraison;
-import EntityBean.Livraison;
+import EntityBean.ArticleMagasin;
+import EntityBean.Lot;
 import Structure.Aide;
 import Structure.Parametre;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import javax.persistence.Query;
  * @author Nawar
  */
 @Stateless
-public class Ligne_livraisonFacade extends AbstractFacade<Ligne_livraison> implements Ligne_livraisonFacadeLocal {
+public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -33,30 +32,22 @@ public class Ligne_livraisonFacade extends AbstractFacade<Ligne_livraison> imple
         return em;
     }
 
-    public Ligne_livraisonFacade() {
-        super(Ligne_livraison.class);
+    public LotFacade() {
+        super(Lot.class);
     }
 
     @Override
-    public void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison,Date date_de_peremption) {
-        Ligne_livraison l = new Ligne_livraison();
-        l.setQuantite_livree(quantite_livree);
-        l.setQuantite_accepte(quantite_aceptee);
-        l.setArticle(article);
-        l.setLivraison(livraison);
-        l.setDate_de_peremption(date_de_peremption);
+    public void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article) {
+        Lot l = new Lot();
+        l.setDate_promption(date_de_peremption);
+        l.setDate_promption(date_de_peremption);
+        l.setArticleMagasin(article);
         em.persist(l);
-    }
-
-    @Override
-    public void modifierLigneLivraison(Ligne_livraison lignelivraison, int quantite_accepte) {
-        lignelivraison.setQuantite_accepte(quantite_accepte);
-        em.merge(lignelivraison);
     }
     
      @Override
-    public List<Ligne_livraison> getLignesLivraison(String query, ArrayList<Parametre> params) throws Exception{
-        List<Ligne_livraison> lignes = null;
+    public List<Lot> getLots(String query, ArrayList<Parametre> params) throws Exception{
+        List<Lot> lots = null;
         try{
          
             Query q = em.createQuery(query);
@@ -66,10 +57,23 @@ public class Ligne_livraisonFacade extends AbstractFacade<Ligne_livraison> imple
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            lignes = q.getResultList();
+            lots = q.getResultList();
         }catch(Exception exe){throw exe;}
-        return lignes;
+        return lots;
     }
+
+    @Override
+    public void ajouterQuantiteLot(Lot lot, int quantite) {
+        lot.setQuantite_de_lot(lot.getQuantite_de_lot()+quantite);
+        em.merge(lot);
+    }
+    
+    @Override
+    public void enleverQuantiteLot(Lot lot, int quantite) {
+        lot.setQuantite_de_lot(lot.getQuantite_de_lot()-quantite);
+        em.merge(lot);
+    }
+    
     
     
     

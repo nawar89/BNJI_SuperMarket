@@ -6,6 +6,7 @@
 package BeanSession;
 
 import EntityBean.Article;
+import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
@@ -14,6 +15,7 @@ import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
 import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
+import EntityBean.Lot;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Reclamation;
@@ -72,7 +74,7 @@ public interface AdministrationLocal {
     
     List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
     
-    void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison);
+    void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison,Date date_de_peremption);
     
     void modifierLigneLivraison(Ligne_livraison lignelivraison, int quantite_accepte) ;
     
@@ -83,5 +85,17 @@ public interface AdministrationLocal {
     List<Reclamation> getReclamations(String query, ArrayList<Parametre> params) throws Exception;
     
     void modifierEtat(Livraison liv, Etat_Livraison mension) throws Exception;
+    
+    void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article);
+    
+    List<Lot> getLots(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void ajouterQuantite(ArticleMagasin articleMagasin, int quantite);
+    
+    void enleverQuantite(ArticleMagasin articleMagasin, int quantite);
+    
+    void ajouterQuantiteLot(Lot lot, int quantite);
+    
+    void enleverQuantiteLot(Lot lot, int quantite);
     
 }
