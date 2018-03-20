@@ -29,6 +29,7 @@ public abstract class Requete {
     public static String getLivraisonParMagasin = "select l from Livraison l join l.bonCommande c join c.chefRyon cr join cr.magasin m where 1=1" ;
     public static String getCommandes = "select b from BonCommande b where 1=1";
     public static String getLigneLivraisons = "select l from Ligne_livraison l where 1=1";
+    public static String getLots = "select l from Lot l where 1=1";
     
 }
 

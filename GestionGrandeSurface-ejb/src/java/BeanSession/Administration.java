@@ -55,6 +55,9 @@ import javax.ejb.Stateless;
 public class Administration implements AdministrationLocal {
 
     @EJB
+    private ArticleMagasinFacadeLocal articleMagasinFacade1;
+
+    @EJB
     private ArticleMagasinFacadeLocal articleMagasinFacade;
 
     @EJB
@@ -263,5 +266,23 @@ public class Administration implements AdministrationLocal {
     public void enleverQuantiteLot(Lot lot, int quantite) {
         lotFacade.enleverQuantiteLot(lot, quantite);
     }
+    
+    @Override
+    public ArticleMagasin creerArticleMag(int quantite, float prix_vente_actuel, Article article, Magasin magasin) throws Exception{
+        return articleMagasinFacade.creerArticleMag(quantite, prix_vente_actuel, article, magasin);
+    }
+    
+    @Override
+    public List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception{
+        return articleMagasinFacade.getArticleMagasin(query, params);
+        
+    }
+    
+    @Override
+    public void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix) {
+        articleMagasinFacade.modifierPrixVente(articleMagasin, nouveauPrix);
+    }
+    
+    
 
 }

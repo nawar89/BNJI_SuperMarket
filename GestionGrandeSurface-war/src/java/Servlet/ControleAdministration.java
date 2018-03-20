@@ -7,6 +7,7 @@ package Servlet;
 
 import BeanSession.AdministrationLocal;
 import EntityBean.Article;
+import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
@@ -15,6 +16,7 @@ import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
 import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
+import EntityBean.Lot;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -759,7 +761,7 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////
 
 protected void FromConsulterLvraison(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
@@ -856,8 +858,38 @@ public  void ParserLignesLivraison(String input){
                 else if (count==4){
                        quantiteAccepte = Integer.parseInt(temp[i]); 
                        administration.modifierLigneLivraison(ligne, quantiteAccepte);
-                       
+                       //Article magasin treatement
+                       mesParam = new ArrayList<Parametre>();
+                       Parametre p = new Parametre("article", "Article", ligne.getArticle());
+                       mesParam.add(p);
+                       requete = Requete.getArticleMagasin+" and a.article=:article";
+                       List<ArticleMagasin> listeArts = administration.getArticleMagasin(requete, mesParam);
+                       ArticleMagasin artMag = null;
+                       if (listeArts !=null){
+                           artMag = (ArticleMagasin)Aide.getObjectDeListe(listeArts.toArray());
+                           administration.ajouterQuantite(artMag, quantiteAccepte);
+                       }else{
+                           artMag = administration.creerArticleMag(quantiteAccepte, 0.0f, ligne.getArticle(), employeConnecte.getMagasin());
+                       }
+                       //Lot tratement
                        if(ligne.getDate_de_peremption()!=null){
+                           
+                           //verifer si lot existe deja 
+                           mesParam = new ArrayList<Parametre>();
+                           p = new Parametre("articleMagasin", "ArticleMagasin", artMag);
+                           mesParam.add(p);
+                           p = new Parametre("date_de_peremption", "Date", ligne.getDate_de_peremption());
+                           mesParam.add(p);
+                           requete = Requete.getLots+" and l.articleMagasin=:articleMagasin and l.date_de_peremption=:date_de_peremption";
+                            List<Lot> lots = administration.getLots(requete, mesParam);
+                            Lot lot = null;
+                            if (lots !=null){
+                                lot = (Lot)Aide.getObjectDeListe(lots.toArray());
+                                administration.ajouterQuantiteLot(lot, quantiteAccepte);
+                                
+                            }else  administration.creerLot(ligne.getDate_de_peremption(), quantiteAccepte, artMag);
+                            
+                            
                            
                        }
                        

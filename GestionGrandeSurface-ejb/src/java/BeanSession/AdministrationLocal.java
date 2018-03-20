@@ -98,4 +98,10 @@ public interface AdministrationLocal {
     
     void enleverQuantiteLot(Lot lot, int quantite);
     
+    ArticleMagasin creerArticleMag(int quantite, float prix_vente_actuel, Article article, Magasin magasin) throws Exception;
+    
+    List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix);
+    
 }
