@@ -40,6 +40,8 @@ import EntityBean.Reclamation;
 import EntityBean.SousCategorie;
 import EntityBean.Type_Reclamation;
 
+import EntityBean.Promotion;
+
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -286,3 +288,4 @@ public class Administration implements AdministrationLocal {
     
 
 }
+

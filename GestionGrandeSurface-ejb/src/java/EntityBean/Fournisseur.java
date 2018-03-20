@@ -173,5 +173,45 @@ public class Fournisseur implements Serializable {
         this.email = email;
     }
 
+    private String login;
+
+    /**
+     * Get the value of login
+     *
+     * @return the value of login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * Set the value of login
+     *
+     * @param login new value of login
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    private String mdp;
+
+    /**
+     * Get the value of mdp
+     *
+     * @return the value of mdp
+     */
+    public String getMdp() {
+        return mdp;
+    }
+
+    /**
+     * Set the value of mdp
+     *
+     * @param mdp new value of mdp
+     */
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
     
 }

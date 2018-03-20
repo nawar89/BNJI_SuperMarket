@@ -9,8 +9,13 @@ import BeanFacade.FournisseurFacadeLocal;
 import BeanSession.AdministrationLocal;
 import BeanSession.ChefRayonLocal;
 import EntityBean.ArticleMagasin;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
+import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
+import EntityBean.Livraison;
+import EntityBean.Role;
 import EntityBean.SousCategorie;
 import Structure.Aide;
 import Structure.Parametre;
@@ -26,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,6 +48,7 @@ public class ControlChef extends HttpServlet {
      public String jspClient="";
      public String message   = ""; 
      public String requete   = "";
+     public final String ChefRayon = "ChefRayon";
      public Date date = new Date();
      ArrayList <Parametre> mesParam = new ArrayList<Parametre>();
 
@@ -53,17 +60,17 @@ public class ControlChef extends HttpServlet {
         if(null!=act){
             switch (act) {
                 case "null":
-                    jspClient="/ChefRayonJSP/Accueil.jsp";
+                    jspClient="/Jihane_JSP/Accueil.jsp";
                     break;
                 case "CreerFour":
-                    jspClient="/ChefRayonJSP/CreerFournisseur.jsp";
+                    jspClient="/Jihane_JSP/CreerFournisseur.jsp";
                     break;
                 case "CreerF":
                     doActionCreerF(request,response);
                     request.setAttribute( "message", message );
                     break;
                 case "Accueil":
-                    jspClient="/ChefRayonJSP/Accueil.jsp";
+                    jspClient="/Jihane_JSP/Accueil.jsp";
                     break;
                 case "CreerArticle":
                     GoTOArticle(request,response);
@@ -80,13 +87,30 @@ public class ControlChef extends HttpServlet {
             case "ModifA" : 
                  doActionModifArticleMag(request,response);
                  request.setAttribute( "message", message );
-                   break;
+                 break;
+            case "CreerLivraison":
+                 GoTOLivraison(request,response);
+                 break;
+            case "CreerL" : 
+                 doActionCreerLivraison(request,response);
+                 request.setAttribute( "message", message );
+                 break;
+            case "loginFournisseur" : 
+                 seConnecterFour(request,response);
+                 request.setAttribute( "message", message );
+                 break;
+            case "loginEmp" : 
+                seConnecter(request,response);
+                request.setAttribute( "message", message );
+                break;
+                
+                
             }
-            
-            
-        }
+           }
         else {
-            jspClient="/ChefRayonJSP/Accueil.jsp";
+            //jspClient="/Jihane_JSP/Accueil.jsp";
+           jspClient="/Jihane_JSP/login.jsp";
+           
         }        
     RequestDispatcher Rd;
     Rd = getServletContext().getRequestDispatcher(jspClient);
@@ -94,6 +118,68 @@ public class ControlChef extends HttpServlet {
         }catch (Exception exception){System.err.println(exception.getMessage());}    
      
     }
+    
+        /////////////////////////////////////////////////////////////////////////////////////////
+    protected void seConnecterFour(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   HttpSession sess=request.getSession(true);
+
+    try{
+              mesParam = new ArrayList<Parametre>();
+              String email  = request.getParameter( "email" );
+              String mdp     = request.getParameter( "mdp" );
+              requete = Requete.getFournisseurs+ " and f.email=:email and f.mdp=:mdp";
+              Parametre p = new Parametre("email", "String", email);
+              mesParam.add(p);
+              p = new Parametre("mdp", "String", mdp);
+              mesParam.add(p);
+              List<Fournisseur> listeFour = chefRayon.getFournisseur(requete, mesParam);
+              if (listeFour != null && listeFour.size()== 1){
+              Fournisseur four = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
+              jspClient = "/Jihane_JSP/AccueilFournisseur.jsp";
+              sess.setAttribute("FourCo", four);
+               message = "Bonjour "+four.getNom();     
+                }     
+        } catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/Jihane_JSP/Page_message.jsp";
+}
+}
+
+     protected void seConnecter(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   HttpSession sess=request.getSession(true);
+   mesParam = new ArrayList<Parametre>();
+    try{
+              String login   = request.getParameter( "login" );
+              String mdp     = request.getParameter( "mdp" );
+              requete = Requete.getEmployes+ " and e.login=:login and e.mdp=:mdp";
+              Parametre p = new Parametre("login", "String", login);
+              mesParam.add(p);
+              p = new Parametre("mdp", "String", mdp);
+              mesParam.add(p);
+              List<Employe> listeEmp = administration.getEmploye(requete, mesParam);
+              if (listeEmp != null && listeEmp.size()== 1){
+                  Employe emp = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
+                     switch (emp.getRole().getNom()){
+                         case ChefRayon:
+                             jspClient = "/Jihane_JSP/Accueil.jsp";
+                             sess.setAttribute("employeCo", emp);
+                             message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
+                             break;
+                        
+                     }     
+              }        
+    }catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/Jihane_JSP/Page_message.jsp";
+}
+
+}
+
+
     
       protected void doActionCreerF(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -104,21 +190,23 @@ public class ControlChef extends HttpServlet {
        String adresse = request.getParameter("adresse");
        String telephone=request.getParameter("telephone");
        String email=request.getParameter("email");
-     
+       System.out.println("**************************************");
+       System.out.println(Aide.GenererMDP());
+       String mdp= Aide.encrypterMdp(Aide.GenererMDP());
    
        if ( nom.trim().isEmpty() || adresse.trim().isEmpty())
        {
-          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"CreerFournisseur.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
        } 
        else {
           
-          chefRayon.creationFournisseur(nom, adresse, telephone, email);
+          chefRayon.creationFournisseur(nom, adresse, telephone, email,mdp);
            message = "Fournisseur créé avec succès !";  
-           jspClient = "/ChefRayonJSP/Page_message.jsp";
+           jspClient = "/Jihane_JSP/Page_message.jsp";
         }
         }catch(Exception exe){ 
            message = exe.getMessage();
-           jspClient = "/ChefRayonJSP/Page_message.jsp";
+           jspClient = "/Jihane_JSP/Page_message.jsp";
          }
       }
       
@@ -143,11 +231,11 @@ public class ControlChef extends HttpServlet {
               listeFour = new ArrayList<>(); 
               }
               request.setAttribute( "fournisseurs", listeFour );
-              jspClient="/ChefRayonJSP/CreerArticle.jsp";
+              jspClient="/Jihane_JSP/CreerArticle.jsp";
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/ChefRayonJSP/Page_message.jsp";
+    jspClient = "/Jihane_JSP/Page_message.jsp";
 }
 
 } 
@@ -162,11 +250,11 @@ public class ControlChef extends HttpServlet {
               listeart = new ArrayList<>(); 
               }
               request.setAttribute( "articles", listeart );
-              jspClient="/ChefRayonJSP/modifierPrixArticle.jsp";
+              jspClient="/Jihane_JSP/modifierPrixArticle.jsp";
               message = "";
             }catch(Exception exe){
              message = exe.getMessage();
-            jspClient = "/ChefRayonJSP/Page_message.jsp";
+            jspClient = "/Jihane_JSP/Page_message.jsp";
             }
 
      } 
@@ -187,7 +275,7 @@ public class ControlChef extends HttpServlet {
        
        if ( libelle.trim().isEmpty() || reference.trim().isEmpty() || prix.trim().isEmpty())
        {
-          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"CreerArticle.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
        } 
        else 
        {
@@ -231,11 +319,11 @@ public class ControlChef extends HttpServlet {
                    break;
                   }
                 message = "Article créé avec succès !";  
-                jspClient = "/ChefRayonJSP/Page_message.jsp";
+                jspClient = "/Jihane_JSP/Page_message.jsp";
         }
          }catch(Exception exe){ 
            message = exe.getMessage();
-           jspClient = "/ChefRayonJSP/Page_message.jsp";
+           jspClient = "/Jihane_JSP/Page_message.jsp";
          }
       } 
         
@@ -248,7 +336,7 @@ public class ControlChef extends HttpServlet {
        String article= request.getParameter("ArticleSelect");
        if ( prix.trim().isEmpty())
        {
-          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"modifierPrixArticle.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. ";
        } 
        else {
           Integer newPrice = Integer.parseInt(prix);
@@ -259,13 +347,92 @@ public class ControlChef extends HttpServlet {
            List<ArticleMagasin> listearticle=chefRayon.getArticleMagasin(requete, mesParam);
            chefRayon.modifierPrixVente(listearticle.get(0), newPrice);
            message = "Prix modifié avec succès !";  
-           jspClient = "/ChefRayonJSP/Page_message.jsp";
+           jspClient = "/Jihane_JSP/Page_message.jsp";
         }
         }catch(Exception exe){ 
            message = exe.getMessage();
-           jspClient = "/ChefRayonJSP/Page_message.jsp";
+           jspClient = "/Jihane_JSP/Page_message.jsp";
          }
       }
+         
+        //Go to livraison ou il faut récupérer les employe dont le role est chefRayon + les commande de ce chef de rayon 
+         
+         
+      protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse response) 
+              throws ServletException, IOException
+      {
+             HttpSession sess=request.getSession(true);
+          
+          try{
+             //Récupérer le rôle chef de rayon 
+             /* int roleID= 6;
+              requete= Requete.getEmployeParRole + " And r.id =:role";
+              mesParam = new ArrayList<Parametre>();
+              Parametre role = new Parametre("role","int",roleID);
+              mesParam.add(role);
+              List<Employe> emp = administration.getEmploye(requete,mesParam);
+              if (emp == null){
+              emp = new ArrayList<>(); 
+              }
+              request.setAttribute( "employes", emp );*/
+              //Réupérer les commandes du fournisseur connecté et qui n'ont pas encore été livrées :
+              requete=Requete.getLivraisons;
+              List<Livraison> listl=chefRayon.getLivraison(requete, null);
+              if (listl == null){
+              listl = new ArrayList<>(); 
+              }
+              Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+              long fourID = fourCo.getId();
+              requete=Requete.getCommandesParFournisseur + " And f.id=:id";
+              mesParam= new ArrayList<Parametre>();
+              Parametre c = new Parametre("id", "long", fourID);
+              mesParam.add(c);
+              List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
+              if (listec == null){
+              listec = new ArrayList<>(); 
+              }
+              request.setAttribute( "commandes", listec );
+              
+              jspClient="/Jihane_JSP/CreerLivraison.jsp";
+              message = "";
+            }catch(Exception exe){
+             message = exe.getMessage();
+            jspClient = "/Jihane_JSP/Page_message.jsp";
+            }
+
+     } 
+         
+         protected void doActionCreerLivraison(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+       HttpSession sess=request.getSession(true);
+       String date_pr = request.getParameter( "date_pr" );
+       String commande = request.getParameter( "CommandeSelect" );
+       if ( date_pr.trim().isEmpty() || commande.trim().isEmpty())
+       {
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
+       } 
+       else 
+       {
+                Integer commandeID= Integer.parseInt(commande);
+                java.sql.Date d = java.sql.Date.valueOf(date_pr);
+                 Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+               //Récupérer la commande
+                mesParam = new ArrayList<Parametre>();
+                requete= Requete.getCommandes+ " And b.id=:id";
+                Parametre s = new Parametre("id", "int", commandeID);
+                mesParam.add(s);
+                List<BonCommande> listeBonCommande=administration.getBonCommande(requete, mesParam);
+                chefRayon.creationLivraison(null,d, fourCo,listeBonCommande.get(0),Etat_Livraison.ENCOURS);  
+                message = "Livraison créé avec succès !";  
+                jspClient = "/Jihane_JSP/Page_message.jsp";
+        }
+         }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/Jihane_JSP/Page_message.jsp";
+         }
+      } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

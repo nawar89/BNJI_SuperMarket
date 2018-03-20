@@ -21,6 +21,17 @@ import javax.persistence.OneToMany;
 @Entity
 public class ArticleMagasin implements Serializable {
 
+    public List<Ligne_Casse> getLigne_Casses() {
+        return ligne_Casses;
+    }
+
+    public void setLigne_Casses(List<Ligne_Casse> ligne_Casses) {
+        this.ligne_Casses = ligne_Casses;
+    }
+
+    @OneToMany(mappedBy = "article")
+    private List<Ligne_Casse> ligne_Casses;
+
     @OneToMany(mappedBy = "articleMagasin")
     private List<ligneCommandeCaisse> ligneCommandeCaisses;
 

@@ -32,7 +32,7 @@ public interface FournisseurFacadeLocal {
 
     int count();
 
-    void creerFournisseur(String nom, String adresse, String telephone, String email)throws Exception;
+    void creerFournisseur(String nom, String adresse, String telephone, String email,String mdp)throws Exception;
      
     List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
 }

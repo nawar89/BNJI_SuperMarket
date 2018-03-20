@@ -23,6 +23,17 @@ import javax.persistence.Temporal;
 @Entity
 public class Employe implements Serializable {
 
+    @OneToMany(mappedBy = "agentRayon")
+    private List<Casse> casses;
+
+    public List<Casse> getCasses() {
+        return casses;
+    }
+
+    public void setCasses(List<Casse> casses) {
+        this.casses = casses;
+    }
+
     @OneToMany(mappedBy = "employeCaisse")
     private List<CommandeClientCaisse> commandeClientCaisses;
 

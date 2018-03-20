@@ -71,7 +71,7 @@ public class ControleAdministration extends HttpServlet {
         
         try {
         
-            session=request.getSession(true);
+            HttpSession session=request.getSession(true);
 
             String act=request.getParameter("action");
             if ((act == null)||(act.equals("null")))
@@ -111,9 +111,10 @@ public class ControleAdministration extends HttpServlet {
         throws ServletException, IOException {
         
         employeConnecte = (Employe) session.getAttribute("employeCo");
-        
+
         session.setAttribute("employeCo", employeConnecte);
         
+
         if (employeConnecte ==null){
             jspClient="/JSP_Isa/PageConnexion.jsp";
         
@@ -166,7 +167,7 @@ public class ControleAdministration extends HttpServlet {
             FromCreationPromotion(request,response); 
             request.setAttribute( "message", message );
         }
-        
+
          else if (act.equals("GoToCreationBonCommande")){
             GoToGoToCreationBonCommande(request,response); 
             request.setAttribute( "message", message );
@@ -191,6 +192,7 @@ public class ControleAdministration extends HttpServlet {
             FromLivraisonDetail(request,response); 
             request.setAttribute( "message", message );
         }
+
       }
     }
     
@@ -624,7 +626,6 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 }
-
 protected void GoToGoToCreationBonCommande(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {

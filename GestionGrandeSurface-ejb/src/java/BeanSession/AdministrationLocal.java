@@ -61,6 +61,9 @@ public interface AdministrationLocal {
     
 
     List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
+
+    
+   
     
     List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
     
