@@ -79,13 +79,23 @@
                   <div class="x_content">
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControlChef">
-
+                      <div class="form-group">
+                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Type d'article</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" id ="typeselect" name="TypeSelect">
+                                <option value ="0">Articles Frais</option>
+                                <option value ="1">Vêtement</option>
+                                <option value ="2">Electromenager</option>
+                                <option value ="3">Autres</option>
+                            </select>
+                        </div>
+                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="libelle">Libellé <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="libelle" name="libelle" required="required" class="form-control col-md-7 col-xs-12">
-                           <span class="fa fa-user form-control-feedback  right" aria-hidden="true"></span>
+                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                           
                       </div>
@@ -100,15 +110,44 @@
                         <label for="prix_achat_actuel" class="control-label col-md-3 col-sm-3 col-xs-12">Prix d'achat</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="prix_achat_actuel" class="form-control col-md-7 col-xs-12" type="text" name="prix_achat_actuel">
-                          <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
+                          <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                       </div>
+                       
                       <div class="form-group">
                          <label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Description</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                        <textarea class="resizable_textarea form-control" id="description" name="description"></textarea>
                        </div>
                       </div> 
+                       <div class="form-group">
+                        <label for="taille" class="control-label col-md-3 col-sm-3 col-xs-12">Taille</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="taille" class="form-control col-md-7 col-xs-12" type="text" name="taille">
+                          <span class="form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                      </div>
+                        <div class="form-group">
+                        <label for="coloris" class="control-label col-md-3 col-sm-3 col-xs-12">Coloris</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="coloris" class="form-control col-md-7 col-xs-12" type="text" name="coloris">
+                          <span class="form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        </div>
+                         <div class="form-group">
+                        <label for="date_p" class="control-label col-md-3 col-sm-3 col-xs-12">Date de péremption</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="date_p" class="form-control col-md-7 col-xs-12" type="date" name="date_p">
+                          <span class="form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="period_garantie" class="control-label col-md-3 col-sm-3 col-xs-12">Période de garantie</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="period_garantie" class="form-control col-md-7 col-xs-12" type="text" name="period_garantie">
+                          <span class="form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        </div>
                       <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Catégorie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -119,7 +158,8 @@
                             <% }%>
                             </select>
                         </div>
-                      </div>
+                       </div>
+                            
                       <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Sous Catégorie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -151,6 +191,7 @@
                         </select>
                         </div>
                       </div>
+                        
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

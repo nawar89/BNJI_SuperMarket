@@ -167,9 +167,9 @@ public class ControlChef extends HttpServlet {
             }catch(Exception exe){
              message = exe.getMessage();
             jspClient = "/ChefRayonJSP/Page_message.jsp";
-}
+            }
 
-} 
+     } 
         protected void doActionCreerA(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        try
@@ -181,7 +181,10 @@ public class ControlChef extends HttpServlet {
        String prix=request.getParameter("prix_achat_actuel");
        String souscategory = request.getParameter( "SousCategorieSelect" );
        String fourni= request.getParameter( "FournisseurSelect" );
-   
+      
+       String type = request.getParameter( "TypeSelect" );
+       
+       
        if ( libelle.trim().isEmpty() || reference.trim().isEmpty() || prix.trim().isEmpty())
        {
           message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. " + "<br /> <a href=\"CreerArticle.jsp\">Cliquez ici</a> pour accéder au formulaire de création.";
@@ -191,6 +194,9 @@ public class ControlChef extends HttpServlet {
                 Integer souscatID= Integer.parseInt(souscategory);
                 Integer fourniID = Integer.parseInt(fourni);
                 Integer prix_actuel = Integer.parseInt(prix);
+                
+               
+                
                 //Récupérer la sous-categorie
                 mesParam = new ArrayList<Parametre>();
                 requete= Requete.getSousCategories + " And s.id=:id";
@@ -203,7 +209,27 @@ public class ControlChef extends HttpServlet {
                 Parametre f = new Parametre("id", "int", fourniID);
                 mesParam.add(f);
                 List<Fournisseur> listeFour=chefRayon.getFournisseur(requete, mesParam);
-                chefRayon.creationArticle(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0));
+                switch (type)
+                {
+                   case "0":
+                   String date_peremp= request.getParameter("date_p");
+                   java.sql.Date d = java.sql.Date.valueOf(date_peremp);
+                   chefRayon.creationProdFrais(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0),d);  
+                   break;
+                   case "1":
+                   String taille = request.getParameter("taille");
+                   String coloris = request.getParameter("coloris");
+                   chefRayon.creationVetement(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0), taille, coloris);
+                   break;
+                   case "2": 
+                   String garantie = request.getParameter("period_garantie");
+                   Integer periode_garantie=Integer.parseInt(garantie);
+                   chefRayon.creationElectromenager(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0),periode_garantie);
+                   break;
+                   case "3":
+                   chefRayon.creationArticle(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0));
+                   break;
+                  }
                 message = "Article créé avec succès !";  
                 jspClient = "/ChefRayonJSP/Page_message.jsp";
         }
@@ -226,7 +252,7 @@ public class ControlChef extends HttpServlet {
        } 
        else {
           Integer newPrice = Integer.parseInt(prix);
-          Integer articleID = Integer.parseInt(prix);
+          Integer articleID = Integer.parseInt(article);
            requete= Requete.getArticleMagasin + " And a.id=:id";
            Parametre a = new Parametre("id", "int", articleID);
            mesParam.add(a);
