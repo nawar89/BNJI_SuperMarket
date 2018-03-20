@@ -177,11 +177,14 @@
                            
                              </select>  
                               <br />
+                              <br />
                               <label for="rec">Reclamation <span class="requis">*   </span></label>
                               <input type="text" id="recText" name="rec" class="form-control" placeholder="Saisir reclamation" />
                               <input type="hidden" name="ligneLivraisonID" class="form-control" />
                                 <br />
+                                <br />
                                 <input type="button" onclick= "creerReclamationLigneLivraison(document.getElementById('myTable'),document.getElementById('recsel'),document.getElementById('recDev'));" value="Ajouter Reclamation">
+                                <br />
                                 <br />
                                 
                           </div>

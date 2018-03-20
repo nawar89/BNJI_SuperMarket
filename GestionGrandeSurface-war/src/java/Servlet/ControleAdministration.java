@@ -839,8 +839,8 @@ public  void ParserLignesLivraison(String input){
             for (int i=0;i<temp.length;i++){
                 if ((i)%4==0 || i==0){
                     count = 1;
-                    reclamationType = null;
-                    rec = null;
+                    reclamationType = "";
+                    rec = "";
                 }
                 if(count==1){
                     
@@ -855,14 +855,8 @@ public  void ParserLignesLivraison(String input){
                 }
                 else if (count==4){
                        quantiteAccepte = Integer.parseInt(temp[i]); 
-                 }else if (count==3){
-                     if (!temp[i].isEmpty())
-                       rec = temp[i];
-                 }else if (count==2){
-                        //creerLigneCommande
-                        if (!temp[i].isEmpty())
-                           reclamationType =  temp[i];
-                        administration.modifierLigneLivraison(ligne, quantiteAccepte);
+                       administration.modifierLigneLivraison(ligne, quantiteAccepte);
+                       
                         if (!rec.isEmpty() && !reclamationType.isEmpty()){
                             switch(reclamationType){
                                 case "RECLAMATION_LIVRAISON":
@@ -877,9 +871,20 @@ public  void ParserLignesLivraison(String input){
                                     break;
                             
                             }
+                            administration.modifierEtat(ligne.getLivraison(),Etat_Livraison.EN_RECLAMATION);
                         }
-                    administration.modifierEtat(ligne.getLivraison(),Etat_Livraison.EN_RECLAMATION);
+                    
                     message = "Livraison est bien traité";
+                       
+                 }else if (count==3){
+                     if (!temp[i].isEmpty())
+                       rec = temp[i];
+                 }else if (count==2){
+                        //creerLigneCommande
+                        if (!temp[i].isEmpty())
+                           reclamationType =  temp[i];
+                        
+                       
                   }
                  count++;   
                 
