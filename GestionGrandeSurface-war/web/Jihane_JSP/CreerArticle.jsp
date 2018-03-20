@@ -134,13 +134,6 @@
                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                         </div>
-                         <div class="form-group">
-                        <label for="date_p" class="control-label col-md-3 col-sm-3 col-xs-12">Date de péremption</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="date_p" class="form-control col-md-7 col-xs-12" type="date" name="date_p">
-                          <span class="form-control-feedback" aria-hidden="true"></span>
-                        </div>
-                        </div>
                         <div class="form-group">
                         <label for="period_garantie" class="control-label col-md-3 col-sm-3 col-xs-12">Période de garantie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">

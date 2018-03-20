@@ -40,16 +40,14 @@
             <form method="post" action="ControlChef">
               <h1>Connectez-vous</h1>
               <div>
-                <input type="text" name ="email" class="form-control" placeholder="Utilisateur" required="" />
+                <input type="text" name ="login" class="form-control" placeholder="Utilisateur" required="" />
               </div>
               <div>
                 <input type="password" name="mdp" class="form-control" placeholder="Mot de passe" required="" />
               </div>
               <div>
-                <input type="hidden" name="action" value="loginFournisseur">
-                <button type="submit" class="btn btn-success">Connexion Fournisseur</button>
-                <input type="hidden" name="action" value="loginEmp">
-                <button type="submit" class="btn btn-success">ConnexionEmployé </button>
+                <button type="submit" name= "action" value="loginFournisseur" class="btn btn-success">Connexion Fournisseur</button>
+                <button type="submit" name= "action" value="loginEmp" class="btn btn-success">Connexion Employé </button>
               
                <!-- <a class="btn btn-default submit">Connexion</a>-->
               <!--<a class="reset_pass" href="#">Lost your password?</a>-->

@@ -38,7 +38,7 @@ public interface ChefRayonLocal {
     void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix) ;
     List<Livraison> getLivraison(String query, ArrayList<Parametre> params) throws Exception;
    
-  void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, Date date_peremption) throws Exception ;
+  void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception ;
     
   List<Produit_Frais> getProdFrais(String query, ArrayList<Parametre> params) throws Exception;
     

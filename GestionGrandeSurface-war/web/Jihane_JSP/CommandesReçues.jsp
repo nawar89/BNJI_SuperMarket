@@ -1,8 +1,9 @@
 <%-- 
-    Document   : ConsulterLivraison
-    Created on : 14 mars 2018, 15:58:47
-    Author     : i.silvestre
+    Document   : CommandesReçues
+    Created on : Mar 20, 2018, 2:15:23 PM
+    Author     : Jihane
 --%>
+
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.util.List"%>
@@ -12,7 +13,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-    
+    <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
+    <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -38,13 +40,7 @@
 
     <!-- Custom Theme Style -->
     <link href="./Template/css/custom.min.css" rel="stylesheet">
-        
-         <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
-         <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
-         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
-
-        
-    </head>
+     </head>
     <body class="nav-md">
      
     <div class="container body">
@@ -52,7 +48,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="MenuDirMag.jsp" %>
+              <%@include file ="Menu_Fournisseur.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>
@@ -62,28 +58,8 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>Tableau <small> ecrire qqch ici si on veut </small></h3>
-              </div>
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-              <h2>Liste des Commandes Magasin <%=employeCo.getMagasin().getNom()%></h2>
-
-            <div class="clearfix"></div>
             <div class="row">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Plus Table Design</h2>
@@ -104,13 +80,11 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                    
-                    
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
                     </p>
                     
-                    <form method="post" action="DirecteurMagasin?action=afficherDetailCommande">
+                    <form method="post" action="ControlChef">
                     <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
@@ -132,7 +106,6 @@
                                 
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">Nom Chef de rayon</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Nom fournisseur</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Catégorie concernée</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date de la commande</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">prix total</th>
@@ -156,7 +129,6 @@
                         </th>
 						  
                           <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
-                          <td><%= r.getFournisseur().getNom()%></td>
                           <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
                           <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
                           <td><%=total %> € </td>
@@ -188,12 +160,11 @@
                 </div>
               </div>
               </div>
-            </div>
+            
           </div>
+         <%@include file="footer.jsp" %>
         </div>
-        
-        <%@include file="footer.jsp" %>
-      </div>
+        </div>
 <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

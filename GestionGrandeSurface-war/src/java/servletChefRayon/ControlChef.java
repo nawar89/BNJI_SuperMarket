@@ -103,6 +103,11 @@ public class ControlChef extends HttpServlet {
                 seConnecter(request,response);
                 request.setAttribute( "message", message );
                 break;
+            case "CommandeRecues":
+               doActionCommandeRecues(request,response); 
+               request.setAttribute( "message", message );
+               break;
+              
                 
                 
             }
@@ -127,7 +132,7 @@ HttpServletResponse response) throws ServletException, IOException
 
     try{
               mesParam = new ArrayList<Parametre>();
-              String email  = request.getParameter( "email" );
+              String email  = request.getParameter( "login" );
               String mdp     = request.getParameter( "mdp" );
               requete = Requete.getFournisseurs+ " and f.email=:email and f.mdp=:mdp";
               Parametre p = new Parametre("email", "String", email);
@@ -300,9 +305,7 @@ HttpServletResponse response) throws ServletException, IOException
                 switch (type)
                 {
                    case "0":
-                   String date_peremp= request.getParameter("date_p");
-                   java.sql.Date d = java.sql.Date.valueOf(date_peremp);
-                   chefRayon.creationProdFrais(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0),d);  
+                   chefRayon.creationProdFrais(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0));  
                    break;
                    case "1":
                    String taille = request.getParameter("taille");
@@ -376,14 +379,14 @@ HttpServletResponse response) throws ServletException, IOException
               }
               request.setAttribute( "employes", emp );*/
               //Réupérer les commandes du fournisseur connecté et qui n'ont pas encore été livrées :
-              requete=Requete.getLivraisons;
+              /*requete=Requete.getLivraisons;
               List<Livraison> listl=chefRayon.getLivraison(requete, null);
               if (listl == null){
               listl = new ArrayList<>(); 
-              }
+              }*/
               Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
               long fourID = fourCo.getId();
-              requete=Requete.getCommandesParFournisseur + " And f.id=:id";
+              requete=Requete.getCommandesParFournisseurLivr + " And f.id=:id";
               mesParam= new ArrayList<Parametre>();
               Parametre c = new Parametre("id", "long", fourID);
               mesParam.add(c);
@@ -392,7 +395,6 @@ HttpServletResponse response) throws ServletException, IOException
               listec = new ArrayList<>(); 
               }
               request.setAttribute( "commandes", listec );
-              
               jspClient="/Jihane_JSP/CreerLivraison.jsp";
               message = "";
             }catch(Exception exe){
@@ -417,7 +419,7 @@ HttpServletResponse response) throws ServletException, IOException
        {
                 Integer commandeID= Integer.parseInt(commande);
                 java.sql.Date d = java.sql.Date.valueOf(date_pr);
-                 Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+                Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
                //Récupérer la commande
                 mesParam = new ArrayList<Parametre>();
                 requete= Requete.getCommandes+ " And b.id=:id";
@@ -433,6 +435,35 @@ HttpServletResponse response) throws ServletException, IOException
            jspClient = "/Jihane_JSP/Page_message.jsp";
          }
       } 
+         
+          protected void doActionCommandeRecues(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+        try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+            long fourID = fourCo.getId();
+            requete=Requete.getCommandesParFournisseurLivr + " And f.id=:id";
+            mesParam= new ArrayList<Parametre>();
+            Parametre c = new Parametre("id", "long", fourID);
+            mesParam.add(c);
+            List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
+            if (listec == null){
+            listec = new ArrayList<>(); 
+            }
+            jspClient = "/Jihane_JSP/CommandesReçues.jsp"; 
+            request.setAttribute("listCommandes", listec);
+            message = "";
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }
+
+   
+    
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

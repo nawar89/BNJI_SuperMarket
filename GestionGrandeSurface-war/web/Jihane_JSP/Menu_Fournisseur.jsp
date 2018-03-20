@@ -27,7 +27,7 @@
                   </li>
                    <li><a><i class="fa fa-edit"></i>Commandes<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=Accueil">Consulter les commandes reçues</a></li>
+                      <li><a href="ControlChef?action=CommandeRecues">Consulter les commandes reçues</a></li>
                       <li><a href="ControlChef?action=Accueil">Consulter les réclamations</a></li>
                     </ul>
                   </li>

@@ -108,9 +108,9 @@ public class ChefRayon implements ChefRayonLocal {
     }
     
     @Override
-    public void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, Date date_peremption) throws Exception {
+    public void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception {
     
-    produit_FraisFacade.creerProduitFrais(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur,date_peremption);
+    produit_FraisFacade.creerProduitFrais(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur);
      
     }
     
