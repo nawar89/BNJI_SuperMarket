@@ -22,7 +22,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> </script>
+    <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> var ArrayAccept = [];</script>
     <title></title>
 
     <!-- Bootstrap -->
@@ -154,6 +154,7 @@
                                  <td onchange=""><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;AfficherReclamationLigneLivraison(document.getElementById('recDev'),document.getElementById('myTable'));" name="nom" class="form-control" value ="<%=lg.getQuantite_livree() %>" /></td>
                                  <td></td>
                                  <td></td>
+                                 <td style="display: none"></td>
                                </tr>
                              <% }}%>
                         
@@ -190,7 +191,7 @@
                     </div>
                         <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                            <button style="display: non" id="send" type="submit" class="btn btn-success">Consulter le détail d'une commande</button>
+                            <button style="display: non" id="send" type="submit" class="btn btn-success">Valider</button>
                             <input type="hidden" name="action" value="FromLivraisonDetail">
                             <input type="hidden" name="acepte" class="form-control" />
                           <input type="hidden" name="livlignes" class="form-control" />

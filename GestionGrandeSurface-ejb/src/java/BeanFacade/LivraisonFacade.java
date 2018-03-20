@@ -78,4 +78,11 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
         em.merge(liv);
     }
     
+            
+    @Override
+    public void modifierEtat(Livraison liv, Etat_Livraison mension) throws Exception {
+        liv.setMention(mension);
+        em.merge(liv);
+    }
+    
 }

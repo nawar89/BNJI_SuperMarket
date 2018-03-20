@@ -12,11 +12,14 @@ import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
+import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
+import EntityBean.Reclamation;
 import EntityBean.Role;
 import EntityBean.SousCategorie;
+import EntityBean.Type_Reclamation;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,5 +71,17 @@ public interface AdministrationLocal {
     void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception;
     
     List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison);
+    
+    void modifierLigneLivraison(Ligne_livraison lignelivraison, int quantite_accepte) ;
+    
+    List<Ligne_livraison> getLignesLivraison(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void creerReclamation(String rec, Type_Reclamation type, Ligne_livraison ligne,Date dateRec) ;
+    
+    List<Reclamation> getReclamations(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void modifierEtat(Livraison liv, Etat_Livraison mension) throws Exception;
     
 }
