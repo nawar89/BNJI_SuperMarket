@@ -5,8 +5,9 @@
  */
 package BeanFacade;
 
-import EntityBean.ArticleMagasin;
-import EntityBean.Lot;
+import EntityBean.Article;
+import EntityBean.Ligne_livraison;
+import EntityBean.Livraison;
 import Structure.Aide;
 import Structure.Parametre;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import javax.persistence.Query;
  * @author Nawar
  */
 @Stateless
-public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
+public class Ligne_livraisonFacade extends AbstractFacade<Ligne_livraison> implements Ligne_livraisonFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -32,22 +33,30 @@ public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
         return em;
     }
 
-    public LotFacade() {
-        super(Lot.class);
+    public Ligne_livraisonFacade() {
+        super(Ligne_livraison.class);
     }
 
     @Override
-    public void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article) {
-        Lot l = new Lot();
-        l.setDate_promption(date_de_peremption);
-        l.setQuantite_de_lot(quantite);
-        l.setArticleMagasin(article);
+    public void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison,Date date_de_peremption) {
+        Ligne_livraison l = new Ligne_livraison();
+        l.setQuantite_livree(quantite_livree);
+        l.setQuantite_accepte(quantite_aceptee);
+        l.setArticle(article);
+        l.setLivraison(livraison);
+        l.setDate_de_peremption(date_de_peremption);
         em.persist(l);
+    }
+
+    @Override
+    public void modifierLigneLivraison(Ligne_livraison lignelivraison, int quantite_accepte) {
+        lignelivraison.setQuantite_accepte(quantite_accepte);
+        em.merge(lignelivraison);
     }
     
      @Override
-    public List<Lot> getLots(String query, ArrayList<Parametre> params) throws Exception{
-        List<Lot> lots = null;
+    public List<Ligne_livraison> getLignesLivraison(String query, ArrayList<Parametre> params) throws Exception{
+        List<Ligne_livraison> lignes = null;
         try{
          
             Query q = em.createQuery(query);
@@ -57,23 +66,10 @@ public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            lots = q.getResultList();
+            lignes = q.getResultList();
         }catch(Exception exe){throw exe;}
-        return lots;
+        return lignes;
     }
-
-    @Override
-    public void ajouterQuantiteLot(Lot lot, int quantite) {
-        lot.setQuantite_de_lot(lot.getQuantite_de_lot()+quantite);
-        em.merge(lot);
-    }
-    
-    @Override
-    public void enleverQuantiteLot(Lot lot, int quantite) {
-        lot.setQuantite_de_lot(lot.getQuantite_de_lot()-quantite);
-        em.merge(lot);
-    }
-    
     
     
     

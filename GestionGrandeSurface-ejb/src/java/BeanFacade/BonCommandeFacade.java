@@ -40,7 +40,7 @@ public class BonCommandeFacade extends AbstractFacade<BonCommande> implements Bo
     }
 
     @Override
-    public void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) {
+    public BonCommande creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) {
         BonCommande b = new BonCommande();
         b.setChefRyon(chefRayon);
         b.setDate_commande(datecommand);
@@ -48,6 +48,7 @@ public class BonCommandeFacade extends AbstractFacade<BonCommande> implements Bo
         b.setLigneCommandes(listeLignes);
         b.setLivraisons(livrs);
         em.persist(b);
+        return b;
     }
     
     

@@ -6,6 +6,7 @@
 package EntityBean;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -131,6 +133,48 @@ public class Ligne_livraison implements Serializable {
     public void setQuantite_livree(int quantite_livree) {
         this.quantite_livree = quantite_livree;
     }
+    
+        private int quantite_accepte;
+
+    /**
+     * Get the value of quantite_accepte
+     *
+     * @return the value of quantite_accepte
+     */
+    public int getQuantite_accepte() {
+        return quantite_accepte;
+    }
+
+    /**
+     * Set the value of quantite_accepte
+     *
+     * @param quantite_accepte new value of quantite_accepte
+     */
+    public void setQuantite_accepte(int quantite_accepte) {
+        this.quantite_accepte = quantite_accepte;
+    }
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+        private Date date_de_peremption;
+
+    /**
+     * Get the value of date_de_peremption
+     *
+     * @return the value of date_de_peremption
+     */
+    public Date getDate_de_peremption() {
+        return date_de_peremption;
+    }
+
+    /**
+     * Set the value of date_de_peremption
+     *
+     * @param date_de_peremption new value of date_de_peremption
+     */
+    public void setDate_de_peremption(Date date_de_peremption) {
+        this.date_de_peremption = date_de_peremption;
+    }
+
 
     
 }

@@ -256,6 +256,6 @@ public class Article implements Serializable {
     public void setFournisseur(Fournisseur fournisseur) {
         this.fournisseur = fournisseur;
     }
-
+   
     
 }

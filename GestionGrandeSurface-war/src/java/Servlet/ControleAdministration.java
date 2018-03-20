@@ -7,12 +7,20 @@ package Servlet;
 
 import BeanSession.AdministrationLocal;
 import EntityBean.Article;
+import EntityBean.ArticleMagasin;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
+import EntityBean.Ligne_livraison;
+import EntityBean.Livraison;
+import EntityBean.Lot;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
+import EntityBean.Type_Reclamation;
 import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
@@ -20,7 +28,7 @@ import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Parameter;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -162,6 +170,26 @@ public class ControleAdministration extends HttpServlet {
 
          else if (act.equals("GoToCreationBonCommande")){
             GoToGoToCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("FromBonCommande")){
+            FromCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("GoToConsulterLvraison")){
+            GoToConsulterLvraison(request,response); 
+            request.setAttribute( "message", message );
+        }
+                
+         else if (act.equals("FromConsulterLivraison")){
+            FromConsulterLvraison(request,response); 
+            request.setAttribute( "message", message );
+        }
+                
+        else if (act.equals("FromLivraisonDetail")){
+            FromLivraisonDetail(request,response); 
             request.setAttribute( "message", message );
         }
 
@@ -554,8 +582,8 @@ HttpServletResponse response) throws ServletException, IOException
              
               if (!Articleselect.isEmpty()){
                   if (!Articleselect.equals("0")){
-                      Date dated = Date.valueOf(datedeb);
-                      Date datef = Date.valueOf(datefin);
+                      Date dated = java.sql.Date.valueOf(datedeb);
+                      Date datef = java.sql.Date.valueOf(datefin);
                       float prix = Float.parseFloat(prixpromo);
                       Integer artId =  Integer.parseInt(Articleselect);
                       Parametre p = new Parametre("id", "int", artId);
@@ -622,12 +650,290 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 
+
+protected void FromCreationBonCommande(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL        
+              String  lignes = request.getParameter("lignes");
+              String fourni  = request.getParameter("FourniSelect");
+              Integer forId =  Integer.parseInt(fourni);
+                      Parametre p = new Parametre("id", "int", forId);
+                      mesParam.add(p);
+                      requete = Requete.getFournisseurs+" and f.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        Fournisseur fournisseur = (Fournisseur)Aide.getObjectDeListe(listearts.toArray());
+                        BonCommande monCommande = administration.creerBonCommande(employeConnecte, new Date(), fournisseur, null, null);
+                        if (!lignes.isEmpty()){
+                            List<LigneCommande> commandeLignes = ParserLignesCommandes(lignes,monCommande);
+                             message = "BonCommande est bien créé";
+                        }
+                    }
+              
+              jspClient = "/JSP_Pages/Page_Message.jsp";
+             
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+public  List<LigneCommande> ParserLignesCommandes(String input,BonCommande com){
+         List<LigneCommande> lignes = new ArrayList<LigneCommande>();
+         mesParam = new ArrayList<Parametre>();
+         try{
+            String [] temp  = input.split(",");
+            int count = 0;
+            int quantite = 0;
+            float prix = 0;
+            Article art = null;
+            LigneCommande l = new LigneCommande();
+            for (int i=0;i<temp.length;i++){
+                if ((i)%5==0 || i==0){
+                    count = 1;
+                }
+                if(count==1){
+                    
+                    Integer articleID = Integer.parseInt(temp[i]);
+                    Parametre p = new Parametre("id", "int", articleID);
+                      mesParam.add(p);
+                      String requete = Requete.getArticles+" and a.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        art = (Article)Aide.getObjectDeListe(listearts.toArray());
+                    }
+                }
+                else if (count==3){
+                       prix = Float.parseFloat(temp[i]); 
+                 }else if (count==4){
+                       quantite = Integer.parseInt(temp[i]);
+                 }else if (count==5){
+                        //creerLigneCommande
+                        if (com !=null && art !=null){
+                            administration.creerLigneCommande(com, art, quantite, prix);
+                        }else{ message = "article n'exite pas";
+                            break;
+                        }
+                  }
+                 count++;   
+                
+            }
+         }catch(Exception exe){message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";
+         }
+         return lignes;
+     }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+protected void GoToConsulterLvraison(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL        
+              Integer magasinId = Integer.parseInt(""+employeConnecte.getMagasin().getId());
+              requete = Requete.getLivraisonParMagasin + " and m.id = ?1 and ( l.mention = ?2 or  l.mention = ?3)";
+              Parametre p = new Parametre("1", "long", employeConnecte.getMagasin().getId());
+              mesParam.add(p);
+              p = new Parametre("2", "Etat_livraison", Etat_Livraison.ENCOURS);
+              mesParam.add(p);
+              p = new Parametre("3", "Etat_livraison", Etat_Livraison.RECEPTIONNE);
+              mesParam.add(p);
+              List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
+              if (listelivs == null){
+              listelivs = new ArrayList<Livraison>(); 
+              }
+              request.setAttribute( "livraisons", listelivs );
+
+              jspClient = "/JSP_Pages/ConsulterCommandesLivraison.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+protected void FromConsulterLvraison(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL 
+              String livraison = request.getParameter("livraison");
+              if (!livraison.isEmpty()){
+                    Integer livID = Integer.parseInt(livraison);
+                    requete = Requete.getLivraisons + " and l.id =:id";
+                    Parametre p = new Parametre("id", "int", livID);
+                    mesParam.add(p);
+                    List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
+                    if (listelivs!=null){
+                        Livraison liv = (Livraison)Aide.getObjectDeListe(listelivs.toArray());
+                        administration.modifierLivraison(new Date(), Etat_Livraison.RECEPTIONNE, liv,employeConnecte);
+                        request.setAttribute( "livraison", liv );
+                        jspClient = "/JSP_Pages/LivraisonDetail.jsp";
+                    }
+              }else {
+                message = "il y pas de livraison";
+                 jspClient = "/JSP_Pages/Page_Message.jsp";
+              }
+             
+             
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
 
 
 
+protected void FromLivraisonDetail(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL 
+              String ligneslivraison = request.getParameter("livlignes");
+              if (!ligneslivraison.isEmpty()){
+                        ParserLignesLivraison(ligneslivraison);
+                        jspClient = "/JSP_Pages/Page_Message.jsp";
+                    }
+              else {
+                message = "il y pas de ligne de livraison";
+                 jspClient = "/JSP_Pages/Page_Message.jsp";
+              }
+             
+             
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
 
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+public  void ParserLignesLivraison(String input){
+         
+         mesParam = new ArrayList<Parametre>();
+         try{
+            String [] temp  = input.split(",");
+            int count = 0;
+            int quantiteAccepte = 0;
+            String reclamationType = "";
+            String rec = "";
+            Ligne_livraison ligne = null;
+            Ligne_livraison l = new Ligne_livraison();
+            for (int i=0;i<temp.length;i++){
+                if ((i)%4==0 || i==0){
+                    count = 1;
+                    reclamationType = "";
+                    rec = "";
+                }
+                if(count==1){
+                    
+                    Integer ligneID = Integer.parseInt(temp[i]);
+                    Parametre p = new Parametre("id", "int", ligneID);
+                      mesParam.add(p);
+                      String requete = Requete.getLigneLivraisons+" and l.id=:id";
+                      List<Ligne_livraison> listelignes = administration.getLignesLivraison(requete, mesParam);
+                    if (listelignes !=null){
+                        ligne = (Ligne_livraison)Aide.getObjectDeListe(listelignes.toArray());
+                    }
+                }
+                else if (count==4){
+                       quantiteAccepte = Integer.parseInt(temp[i]); 
+                       administration.modifierLigneLivraison(ligne, quantiteAccepte);
+                       //Article magasin treatement
+                       mesParam = new ArrayList<Parametre>();
+                       Parametre p = new Parametre("article", "Article", ligne.getArticle());
+                       mesParam.add(p);
+                       requete = Requete.getArticleMagasin+" and a.article=:article";
+                       List<ArticleMagasin> listeArts = administration.getArticleMagasin(requete, mesParam);
+                       ArticleMagasin artMag = null;
+                       if (listeArts !=null){
+                           artMag = (ArticleMagasin)Aide.getObjectDeListe(listeArts.toArray());
+                           administration.ajouterQuantite(artMag, quantiteAccepte);
+                       }else{
+                           artMag = administration.creerArticleMag(quantiteAccepte, 0.0f, ligne.getArticle(), employeConnecte.getMagasin());
+                       }
+                       //Lot tratement
+                       if(ligne.getDate_de_peremption()!=null){
+                           
+                           //verifer si lot existe deja 
+                           mesParam = new ArrayList<Parametre>();
+                           p = new Parametre("articleMagasin", "ArticleMagasin", artMag);
+                           mesParam.add(p);
+                           p = new Parametre("date_de_peremption", "Date", ligne.getDate_de_peremption());
+                           mesParam.add(p);
+                           requete = Requete.getLots+" and l.articleMagasin=:articleMagasin and l.date_de_peremption=:date_de_peremption";
+                            List<Lot> lots = administration.getLots(requete, mesParam);
+                            Lot lot = null;
+                            if (lots !=null){
+                                lot = (Lot)Aide.getObjectDeListe(lots.toArray());
+                                administration.ajouterQuantiteLot(lot, quantiteAccepte);
+                                
+                            }else  administration.creerLot(ligne.getDate_de_peremption(), quantiteAccepte, artMag);
+                            
+                            
+                           
+                       }
+                       
+                        if (!rec.isEmpty() && !reclamationType.isEmpty()){
+                            switch(reclamationType){
+                                case "RECLAMATION_LIVRAISON":
+                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_LIVRAISON, ligne, new Date());
+                                    break;
+                                case "RECLAMATION_COMMANDE":
+                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_COMMANDE, ligne, new Date());
+                                    break;
+                                    
+                                case "RECLAMATION_QUALITE":
+                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_QUALITE, ligne, new Date());
+                                    break;
+                            
+                            }
+                            administration.modifierEtat(ligne.getLivraison(),Etat_Livraison.EN_RECLAMATION);
+                        }
+                    
+                    message = "Livraison est bien traité";
+                       
+                 }else if (count==3){
+                     if (!temp[i].isEmpty())
+                       rec = temp[i];
+                 }else if (count==2){
+                        //creerLigneCommande
+                        if (!temp[i].isEmpty())
+                           reclamationType =  temp[i];
+                        
+                       
+                  }
+                 count++;   
+                
+            }
+         }catch(Exception exe){message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";
+         }
+        
+     }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -37,7 +37,7 @@ public class ArticleMagasinFacade extends AbstractFacade<ArticleMagasin> impleme
     }
     // Creer article du magasin
     @Override
-    public void creerArticleMag(int quantite, float prix_vente_actuel, Article article, Magasin magasin) throws Exception{
+    public ArticleMagasin creerArticleMag(int quantite, float prix_vente_actuel, Article article, Magasin magasin) throws Exception{
         try {
             ArticleMagasin a = new ArticleMagasin();
             a.setQuantite(quantite);
@@ -46,6 +46,7 @@ public class ArticleMagasinFacade extends AbstractFacade<ArticleMagasin> impleme
             a.setMagasin(magasin);
             em.persist(a);
             
+            return a;
         }catch(Exception ex){throw ex;}
     }
     
@@ -73,14 +74,17 @@ public class ArticleMagasinFacade extends AbstractFacade<ArticleMagasin> impleme
         articleMagasin.setPrix_vente_actuel(nouveauPrix);
         em.merge(articleMagasin);
     }
-
-    @Override
-    public void modifierQuantiteStock(ArticleMagasin article, int quantite) {
-        int nouvQuantite = article.getQuantite() - quantite ;
-        article.setQuantite(nouvQuantite);
-        em.merge(article);
-    }
     
+    @Override
+    public void ajouterQuantite(ArticleMagasin articleMagasin, int quantite) {
+        articleMagasin.setQuantite(articleMagasin.getQuantite()+quantite);
+        em.merge(articleMagasin);
+    }
+     @Override
+    public void enleverQuantite(ArticleMagasin articleMagasin, int quantite) {
+        articleMagasin.setQuantite(articleMagasin.getQuantite()-quantite);
+        em.merge(articleMagasin);
+    }
    
     
 }

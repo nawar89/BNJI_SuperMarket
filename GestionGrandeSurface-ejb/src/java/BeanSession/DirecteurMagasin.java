@@ -106,7 +106,7 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
         return casse;
     }
 
-    @Override
+   /* @Override
     public Ligne_Casse creerLigneCasse(Lot lot, ArticleMagasin articleMag, int quantite, Casse casse) 
     {
         Ligne_Casse ligne = ligneCasseFacade.creerLigneCasse(casse, articleMag, quantite);
@@ -117,7 +117,7 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
         }
         
         return ligne; 
-    }
+    }*/
     
     
 

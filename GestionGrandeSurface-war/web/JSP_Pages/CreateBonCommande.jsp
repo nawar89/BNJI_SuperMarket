@@ -11,18 +11,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-       <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> </script>
+       <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> 
+        var myTableArray = [];
+        
+        
+        
+       </script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
          <jsp:useBean id="fournisseurs" scope="request" class="java.util.List"></jsp:useBean>
         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
         <jsp:useBean id ="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
-        <title>Bon Commande</title>
+    <title>Bon Commande</title>
     </head>
     <body>
         <h1>Bon Commande</h1>
         
-        <form name="PromotionForm" onsubmit="return validerCreationCommande()" method="post" action="ControleAdministration">
+        <form name="CommandeForm" onsubmit="return doSave(document.getElementById('myTable'))" method="post" action="ControleAdministration">
          <div class="form-group"> 
         <fieldset>
         <legend>Nouveau Commande</legend>
@@ -42,13 +47,13 @@
             <% if (!listefor.isEmpty())  {
                 Fournisseur f = listefor.get(0);
                 for(Article a : f.getArticles() ) {%>
-                <option class="filterOption" value ="<%= f.getId()%>"> <%=a.getLibelle() %>  </option>
+                <option class="filterOption" value ="<%= a.getId()%>"> <%=a.getLibelle() %>  </option>
                 <% }}%>
                 
              </select>
                 
-            <button type="button" onclick="AjouterDansTable(document.getElementById('artsel'),document.getElementById('myTable'))">Ajouter!</button>
-                
+            <button type="button" onclick="AjouterDansTable(document.getElementById('artsel'),document.getElementById('myTable'),document.getElementById('artseltemp'))">Ajouter!</button>
+            <button type="button" onclick="doSave(document.getElementById('myTable'))">test!</button>    
                 
             <table id="artseltemp"  style="display: none">
                 <tbody style="cursor:pointer">
@@ -96,9 +101,9 @@
         </fieldset>
 
             </div>
-            <input type="hidden"  name="promo" class="form-control" />
+            <input type="hidden"  name="lignes" class="form-control" />
             <input type="hidden" name="action" value="FromBonCommande">
-           <input type="submit"  class="btn btn-primary" value="Valider" />
+            <input type="submit"  onclick="" class="btn btn-primary" value="Valider" />
         <input type="reset"   class="btn btn-primary"  value="Remettre à zéro" /> <br />
         
        

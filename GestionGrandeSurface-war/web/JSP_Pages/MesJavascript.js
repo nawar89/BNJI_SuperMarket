@@ -385,7 +385,7 @@ var table = document.getElementById("myTable");
 
 /////////////////////////////////////////////////////////
 
-function AjouterDansTable(ddl1,table) {
+function AjouterDansTable(ddl1,table,tableTemp) {
    
             //var row = ddl1.getElementsByTagName("option");
             var selectedValue = ddl1.options[ddl1.selectedIndex].value;
@@ -412,11 +412,37 @@ function AjouterDansTable(ddl1,table) {
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                cell1.name = "test";
+                cell2.name = "test";
+                cell3.name = "test";
+                cell4.name = "test";
+                
                 cell1.innerHTML = selectedValue;
                 cell2.innerHTML = selectedText;
-                cell3.innerHTML = "";
-                cell4.innerHTML = "1";
+                cell3.innerHTML = 0;
+                cell4.innerHTML = 1;
+                cell5.innerHTML = 0;
                 cell4.contentEditable = true;
+                cell4.addEventListener("onchange", function(){
+                    //document.getElementById("demo").innerHTML = "Hello World";
+                    cell5.innerHTML = parseInt(cell3.innerHTML) * parseInt(cell4.innerHTML);
+                });
+                var filter = selectedValue.toUpperCase();
+                tr = tableTemp.getElementsByTagName("tr");
+                for (var i = 0; i < tr.length; i++) {
+                var td = tr[i].getElementsByTagName("td")[1];
+                
+                if (td) {
+                    
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+                        cell3.innerHTML = tr[i].getElementsByTagName("td")[3].innerHTML;
+                        cell5.innerHTML = tr[i].getElementsByTagName("td")[3].innerHTML;
+ 
+                    }
+                }       
+              } 
   
             }
             
@@ -447,3 +473,199 @@ function RefreshComboBoxTable(ddl1,ddl2,ddl3) {
                 }       
             } 
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+ function doSave(table) {
+            var ok = false;
+            document.forms["CommandeForm"]["lignes"].value = "";
+            var myTableArray = [];
+            var tr = table.getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+            //document.getElementsByName('lignes').innerHTML = document.getElementsByName('lignes').innerHTML+"Ligne,"
+            var arrayOfThisRow = [];
+            var tableData = tr[i].getElementsByTagName("td");
+            if (tableData.length > 0) {
+              for (var j=0;j < tableData.length;j++){
+                 arrayOfThisRow.push(tableData[j].innerHTML);
+                 //alert(tableData[j].innerHTML);
+                 ok = true;
+                 document.forms["CommandeForm"]["lignes"].value= document.forms["CommandeForm"]["lignes"].value + tableData[j].innerHTML+",";
+                 
+              }
+            myTableArray.push(arrayOfThisRow);
+             }
+           }
+          
+           console.log("lignes: " +document.forms["CommandeForm"]["lignes"].value);
+           //document.forms["CommandeForm"]["lignes"].value = "1";
+         //myTableArray = myTableArray.join(", ");
+         if (!ok){
+             alert("Il faut choisir au moins une article");
+         }
+         return ok;
+            
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
+function affectuerLivraisonAgent(table) {
+       document.forms["LivraisonForm"]["livraison"].value = "";    
+     //var table = document.getElementById("myTable");
+    var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                                 
+                                 var cell = row.getElementsByTagName("td")[1];
+                                 var id = cell.innerHTML;
+                                 //alert("id:" + id);
+                                
+                                 if (confirm('Vous etes sur de vouloir prendre cette livraison ?')) {
+                                              document.forms["LivraisonForm"]["livraison"].value = id;
+                                              console.log("dans  "+document.forms["LivraisonForm"]["livraison"].value);
+                                              document.getElementById('monForm').submit();
+                                              //console.log('id '+id);
+                                 }          
+                                
+                      };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+        
+        
+    }  
+    //alert('test');
+    //document.forms["LivraisonForm"]["livraison"].value = "55";
+     //document.getElementById('monForm').submit();
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+function AfficherReclamationLigneLivraison(div,table) {
+    
+     var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                                 
+                                 var cell = row.getElementsByTagName("td")[3];
+                                 var livre = cell.innerHTML;
+                                 var cell2 = row.getElementsByTagName("td")[4];
+                                 //cell2.value = "33";
+                                 var acepte = document.getElementsByName('acepte').value;
+                                 //alert("id:" + id);
+                                 console.log("TEETE   "+livre+"  "+ acepte);
+                                 if (livre !== acepte){
+                                     
+                                     if (confirm('Vous voulez créer un reclamation ?')) {
+                                            console.log("HERE");
+                                            //div.style.visibility='visible';
+                                            div.style.display = "block";
+                                            //document.getElementById('recDev').style.visibility = 'visible';
+                                            document.getElementsByName('ligneLivraisonID').value = row.getElementsByTagName("td")[1].innerHTML;
+                                            row.getElementsByTagName("td")[7].innerHTML= acepte;
+                                            console.log("row7 "+row.getElementsByTagName("td")[7].innerHTML);
+         
+                                     }else {
+                                         cell2.value = livre;
+                                         document.getElementsByName('acepte').value = livre;
+                                         
+                                     }
+                                     
+                                 }       
+                                
+                      };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+        
+        
+    }  
+    
+    
+            
+}
+///////////////////////////////////////////////////////////////////////
+function test() {
+    
+    alert('hi');
+            
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
+function creerReclamationLigneLivraison(table,ddl1,div) {
+    
+     var rows = table.getElementsByTagName("tr");
+    for (i = 1; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        //console.log('GGGGGGG' + rows.length);
+        if (currentRow.getElementsByTagName("td")[1].innerHTML === document.getElementsByName('ligneLivraisonID').value){
+            console.log('ddd'+ document.getElementById('recText').value);
+            currentRow.getElementsByTagName("td")[6].innerHTML = document.getElementById('recText').value;
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+            var selectedText = ddl1.options[ddl1.selectedIndex].text;
+            currentRow.getElementsByTagName("td")[5].innerHTML = selectedText;
+            document.getElementsByName('ligneLivraisonID').value = "";
+            document.getElementById('recText').value = "";
+            div.style.display = "none";
+            
+            
+        }
+        
+        
+    }  
+    
+    
+            
+}
+
+/////////////////////////////////////////////////////
+function doSaveLivraisonLigneAgent(table) {
+            var ok = false;
+            document.forms["LivraisonForm"]["livlignes"].value = "";
+            var myTableArray = [];
+            var tr = table.getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+            //document.getElementsByName('lignes').innerHTML = document.getElementsByName('lignes').innerHTML+"Ligne,"
+            var arrayOfThisRow = [];
+            var tableData = tr[i].getElementsByTagName("td");
+            if (tableData.length > 0) {
+              for (var j=0;j < tableData.length;j++){
+                 arrayOfThisRow.push(tableData[j].innerHTML);
+                 //alert(tableData[j].innerHTML);
+                 
+                 ok = true;
+                 if (j===1 || j===5 || j===6)
+                 {
+                      document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[j].innerHTML+",";
+                 }else
+                 if (j===7){
+                     if (tableData[j].innerHTML !== ""){
+                         
+                       document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[j].innerHTML+",";   
+                     }else document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[3].innerHTML+",";   
+                    
+                 }
+                
+                 
+              }
+            myTableArray.push(arrayOfThisRow);
+             }
+           }
+          
+           console.log("lignes: " +document.forms["LivraisonForm"]["livlignes"].value);
+           //document.forms["CommandeForm"]["lignes"].value = "1";
+         //myTableArray = myTableArray.join(", ");
+        
+         return ok;
+            
+}
+
+////////////////////////////////////////////////////////////////////////////////////

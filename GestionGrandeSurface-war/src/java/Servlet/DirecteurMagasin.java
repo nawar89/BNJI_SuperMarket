@@ -181,12 +181,12 @@ HttpServletResponse response) throws ServletException, IOException
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
-                         case agentRayon:
-                             jspClient = "/JSP_Isa/MenuAgentRayon.jsp";
+                        case agentLivraison:
+                             jspClient = "/JSP_Pages/AccueilAgentLivraison.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
-                        
+     
                      }     
               }        
     }catch(Exception exe){

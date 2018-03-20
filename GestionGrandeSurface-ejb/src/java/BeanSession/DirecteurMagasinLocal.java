@@ -30,7 +30,7 @@ public interface DirecteurMagasinLocal {
 
     Casse creerCasse(Employe agentRayon, Date date);
 
-    Ligne_Casse creerLigneCasse(Lot lot, ArticleMagasin articleMag, int quantite, Casse casse);
+   // Ligne_Casse creerLigneCasse(Lot lot, ArticleMagasin articleMag, int quantite, Casse casse);
     
     List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception ;
     
