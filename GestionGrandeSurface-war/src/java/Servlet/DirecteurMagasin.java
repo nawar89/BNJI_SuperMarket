@@ -136,7 +136,7 @@ public class DirecteurMagasin extends HttpServlet {
             afficherDetailCommande(request, response);
             request.setAttribute("message", message);
             
-        } else if (act.equals("consulterLivraisons")){
+       } else if (act.equals("consulterLivraisons")){
             chargerPageConsultationLivraisons(request,response);
             request.setAttribute("message", message);
         } else if (act.equals("afficherDetailLivraison")){
@@ -146,6 +146,8 @@ public class DirecteurMagasin extends HttpServlet {
         else if (act.equals("passerLaCasse")){
             creationCasse(request,response);
             request.setAttribute("message", message);
+        }else if (act.equals("choixArticleCasse")){
+            finaliserLigneCasse(request,response);
         }
 
     }
@@ -185,6 +187,11 @@ HttpServletResponse response) throws ServletException, IOException
                              break;
                          case agentRayon:
                              jspClient = "/JSP_Isa/MenuAgentRayon.jsp";
+                             sess.setAttribute("employeCo", emp);
+                             message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
+                             break;
+                        case agentLivraison:
+                             jspClient = "/JSP_Pages/AccueilAgentLivraison.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
@@ -421,33 +428,54 @@ HttpServletResponse response) throws ServletException, IOException
             p = new Parametre("1","long",employeCo.getMagasin().getId());
             mesParam.add(p);
             List<ArticleMagasin> listeArticlesMagasin = directeurMagasin.getArticleMagasin(Requete.getArticlesMagasinParMagasin+" AND m.id =?1", mesParam);
-          
-            List<Lot> listeLots = directeurMagasin.getLot(Requete.getLotParMagasin+ " AND m.id = ?1 ", mesParam);
-             
+            //List<Lot> listeLots = directeurMagasin.getLot(Requete.getLotParMagasin+ " AND m.id = ?1 ", mesParam);
+            mesParam.clear();
+            
             Date d = new Date();
+            d.setHours(0);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            
+            p = new Parametre("1", "long", employeCo.getId());
+            mesParam.add(p);
+            p = new Parametre("2", "Date", d);
+            mesParam.add(p);
+            List<Casse> listeCasses = directeurMagasin.getCasse(Requete.getCasseParEmploye + " AND a.id = ?1 AND c.date_casse = ?2", mesParam);
+            if (listeCasses.isEmpty())
+            {
             Casse casse = directeurMagasin.creerCasse(employeCo, d);
+            
             jspClient = "/JSP_Isa/CreationCasse.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("listeArticles", listeArticlesMagasin);
             request.setAttribute("casse", casse);
-            request.setAttribute("listeLot", listeLots);
+            
             message = "";
+            }else
+            {
+                Casse casse = (Casse)Aide.getObjectDeListe(listeCasses.toArray());
+             jspClient = "/JSP_Isa/CreationCasse.jsp"; 
+            sess.setAttribute("employeCo", employeCo);
+            request.setAttribute("listeArticles", listeArticlesMagasin);
+            request.setAttribute("casse", casse);   
+            }
         } catch (Exception exe) {
             message = exe.getMessage();
             jspClient = "/JSP_Pages/Page_Message.jsp";   
         }  
 }
             /////////////////////////////////////////////////////////////
-      /*protected void chargerCreationLigneCasse(HttpServletRequest request,
+      protected void finaliserLigneCasse(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
         try {
             HttpSession sess=request.getSession(true);
-            
+            String idArticleMagasin = request.getParameter( "idArticleMagasin" );
             Employe employeCo =(Employe)sess.getAttribute("employeCo");
-            Date d = new Date();
-            Casse casse = directeurMagasin.creerCasse(employeCo, d);
-            jspClient = "/JSP_Isa/CreationCasse.jsp"; 
+            mesParam = new ArrayList<Parametre>();
+            
+            List<Casse> listeCasses = directeurMagasin.getCasse(Requete.getCasseParEmploye + " AND a.id = ?1 AND c.date_casse = ?2", mesParam);
+            jspClient = "/JSP_Isa/CreerLigneCasse.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("casse", casse);
             message = "";
@@ -455,7 +483,7 @@ HttpServletResponse response) throws ServletException, IOException
             message = exe.getMessage();
             jspClient = "/JSP_Pages/Page_Message.jsp";   
         }  
-}*/
+}
       
       
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

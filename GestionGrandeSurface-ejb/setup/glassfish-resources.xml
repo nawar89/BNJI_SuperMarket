@@ -12,4 +12,5 @@
     <property name="User" value="administrateur"/>
     <property name="Password" value="1971I89mt{43F9G"/>
   </jdbc-connection-pool>
-  
+
+</resources>

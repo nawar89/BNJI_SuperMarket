@@ -1,8 +1,9 @@
 <%-- 
-    Document   : MenuDirecteurMagasin
-    Created on : 12 mars 2018, 14:33:48
-    Author     : i.silvestre
+    Document   : AccueilAgentLivraison
+    Created on : 16 mars 2018, 15:22:09
+    Author     : Nawar
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -39,7 +40,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="MenuDirMag.jsp" %>
+              <%@include file ="./MenuAgentLivraison.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>

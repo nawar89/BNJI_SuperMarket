@@ -56,6 +56,7 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
     private LotFacadeLocal lotFacade;
     
     
+    
          public List<Employe> getEmploye(String query, ArrayList<Parametre> params) throws Exception{
              return employeFacade.getEmploye(query, params);}
          
@@ -63,6 +64,11 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
     public List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception{
         return articleMagasinFacade.getArticleMagasin(query, params);
     }
+    @Override
+    public List<Casse> getCasse(String query, ArrayList<Parametre> params) throws Exception{
+        return casseFacade.getCasses(query, params);
+    }
+    
     @Override
     public List<Lot> getLot(String query, ArrayList<Parametre> params) throws Exception{
         return lotFacade.getLot(query, params);

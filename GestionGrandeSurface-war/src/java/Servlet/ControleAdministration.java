@@ -7,9 +7,14 @@ package Servlet;
 
 import BeanSession.AdministrationLocal;
 import EntityBean.Article;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
+import EntityBean.Ligne_livraison;
+import EntityBean.Livraison;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
@@ -20,7 +25,7 @@ import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Parameter;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -161,6 +166,26 @@ public class ControleAdministration extends HttpServlet {
         
          else if (act.equals("GoToCreationBonCommande")){
             GoToGoToCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("FromBonCommande")){
+            FromCreationBonCommande(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("GoToConsulterLvraison")){
+            GoToConsulterLvraison(request,response); 
+            request.setAttribute( "message", message );
+        }
+                
+         else if (act.equals("FromConsulterLivraison")){
+            FromConsulterLvraison(request,response); 
+            request.setAttribute( "message", message );
+        }
+                
+        else if (act.equals("FromLivraisonDetail")){
+            FromLivraisonDetail(request,response); 
             request.setAttribute( "message", message );
         }
       }
@@ -552,8 +577,8 @@ HttpServletResponse response) throws ServletException, IOException
              
               if (!Articleselect.isEmpty()){
                   if (!Articleselect.equals("0")){
-                      Date dated = Date.valueOf(datedeb);
-                      Date datef = Date.valueOf(datefin);
+                      Date dated = java.sql.Date.valueOf(datedeb);
+                      Date datef = java.sql.Date.valueOf(datefin);
                       float prix = Float.parseFloat(prixpromo);
                       Integer artId =  Integer.parseInt(Articleselect);
                       Parametre p = new Parametre("id", "int", artId);
@@ -620,12 +645,233 @@ HttpServletResponse response) throws ServletException, IOException
 
 }
 
+
+
+protected void FromCreationBonCommande(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL        
+              String  lignes = request.getParameter("lignes");
+              String fourni  = request.getParameter("FourniSelect");
+              Integer forId =  Integer.parseInt(fourni);
+                      Parametre p = new Parametre("id", "int", forId);
+                      mesParam.add(p);
+                      requete = Requete.getFournisseurs+" and f.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        Fournisseur fournisseur = (Fournisseur)Aide.getObjectDeListe(listearts.toArray());
+                        BonCommande monCommande = administration.creerBonCommande(employeConnecte, new Date(), fournisseur, null, null);
+                        if (!lignes.isEmpty()){
+                            List<LigneCommande> commandeLignes = ParserLignesCommandes(lignes,monCommande);
+                             message = "BonCommande est bien créé";
+                        }
+                    }
+              
+              jspClient = "/JSP_Pages/Page_Message.jsp";
+             
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+public  List<LigneCommande> ParserLignesCommandes(String input,BonCommande com){
+         List<LigneCommande> lignes = new ArrayList<LigneCommande>();
+         mesParam = new ArrayList<Parametre>();
+         try{
+            String [] temp  = input.split(",");
+            int count = 0;
+            int quantite = 0;
+            float prix = 0;
+            Article art = null;
+            LigneCommande l = new LigneCommande();
+            for (int i=0;i<temp.length;i++){
+                if ((i)%5==0 || i==0){
+                    count = 1;
+                }
+                if(count==1){
+                    
+                    Integer articleID = Integer.parseInt(temp[i]);
+                    Parametre p = new Parametre("id", "int", articleID);
+                      mesParam.add(p);
+                      String requete = Requete.getArticles+" and a.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        art = (Article)Aide.getObjectDeListe(listearts.toArray());
+                    }
+                }
+                else if (count==3){
+                       prix = Float.parseFloat(temp[i]); 
+                 }else if (count==4){
+                       quantite = Integer.parseInt(temp[i]);
+                 }else if (count==5){
+                        //creerLigneCommande
+                        if (com !=null && art !=null){
+                            administration.creerLigneCommande(com, art, quantite, prix);
+                        }else{ message = "article n'exite pas";
+                            break;
+                        }
+                  }
+                 count++;   
+                
+            }
+         }catch(Exception exe){message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";
+         }
+         return lignes;
+     }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+protected void GoToConsulterLvraison(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL        
+              Integer magasinId = Integer.parseInt(""+employeConnecte.getMagasin().getId());
+              requete = Requete.getLivraisonParMagasin + " and m.id = ?1 and ( l.mention = ?2 or  l.mention = ?3)";
+              Parametre p = new Parametre("1", "long", employeConnecte.getMagasin().getId());
+              mesParam.add(p);
+              p = new Parametre("2", "Etat_livraison", Etat_Livraison.ENCOURS);
+              mesParam.add(p);
+              p = new Parametre("3", "Etat_livraison", Etat_Livraison.RECEPTIONNE);
+              mesParam.add(p);
+              List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
+              if (listelivs == null){
+              listelivs = new ArrayList<Livraison>(); 
+              }
+              request.setAttribute( "livraisons", listelivs );
+
+              jspClient = "/JSP_Pages/ConsulterCommandesLivraison.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
 
 
 
 
+protected void FromConsulterLvraison(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL 
+              String livraison = request.getParameter("livraison");
+              if (!livraison.isEmpty()){
+                    Integer livID = Integer.parseInt(livraison);
+                    requete = Requete.getLivraisons + " and l.id =:id";
+                    Parametre p = new Parametre("id", "int", livID);
+                    mesParam.add(p);
+                    List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
+                    if (listelivs!=null){
+                        Livraison liv = (Livraison)Aide.getObjectDeListe(listelivs.toArray());
+                        administration.modifierLivraison(new Date(), Etat_Livraison.RECEPTIONNE, liv,employeConnecte);
+                        request.setAttribute( "livraison", liv );
+                        jspClient = "/JSP_Pages/LivraisonDetail.jsp";
+                    }
+              }else {
+                message = "il y pas de livraison";
+                 jspClient = "/JSP_Pages/Page_Message.jsp";
+              }
+             
+             
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+
+protected void FromLivraisonDetail(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    mesParam = new ArrayList<Parametre>();
+    try{
+        //Construire requete SQL 
+              String ligneslivraison = request.getParameter("livlignes");
+              if (!ligneslivraison.isEmpty()){
+                        
+                        jspClient = "/JSP_Pages/LivraisonDetail.jsp";
+                    }
+              else {
+                message = "il y pas de ligne de livraison";
+                 jspClient = "/JSP_Pages/Page_Message.jsp";
+              }
+             
+             
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+public  void ParserLignesLivraison(String input){
+         
+         mesParam = new ArrayList<Parametre>();
+         try{
+            String [] temp  = input.split(",");
+            int count = 0;
+            int quantite = 0;
+            float prix = 0;
+            Article art = null;
+            Ligne_livraison l = new Ligne_livraison();
+            for (int i=0;i<temp.length;i++){
+                if ((i)%7==0 || i==0){
+                    count = 0;
+                }
+                if(count==1){
+                    
+                    Integer ligneID = Integer.parseInt(temp[i]);
+                    Parametre p = new Parametre("id", "int", ligneID);
+                      mesParam.add(p);
+                      String requete = Requete.+" and a.id=:id";
+                      List<Article> listearts = administration.getArticle(requete, mesParam);
+                    if (listearts !=null){
+                        art = (Article)Aide.getObjectDeListe(listearts.toArray());
+                    }
+                }
+                else if (count==3){
+                       prix = Float.parseFloat(temp[i]); 
+                 }else if (count==4){
+                       quantite = Integer.parseInt(temp[i]);
+                 }else if (count==5){
+                        //creerLigneCommande
+                        if (com !=null && art !=null){
+                            administration.creerLigneCommande(com, art, quantite, prix);
+                        }else{ message = "article n'exite pas";
+                            break;
+                        }
+                  }
+                 count++;   
+                
+            }
+         }catch(Exception exe){message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";
+         }
+        
+     }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

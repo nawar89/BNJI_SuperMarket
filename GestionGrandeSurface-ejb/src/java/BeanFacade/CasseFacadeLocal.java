@@ -7,6 +7,8 @@ package BeanFacade;
 
 import EntityBean.Casse;
 import EntityBean.Employe;
+import Structure.Parametre;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -33,5 +35,7 @@ public interface CasseFacadeLocal {
     int count();
 
     Casse creerCasse(Employe agentRayon, Date dateCasse);
+    
+    List<Casse> getCasses(String query, ArrayList<Parametre> params) throws Exception ;
     
 }

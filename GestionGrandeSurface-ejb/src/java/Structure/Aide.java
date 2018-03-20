@@ -5,13 +5,19 @@
  */
 package Structure;
 
+import EntityBean.Article;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
+import EntityBean.Fournisseur;
+import EntityBean.LigneCommande;
 import EntityBean.Role;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -41,6 +47,12 @@ public abstract class Aide {
             case "Categorie":
                 o = (Categorie)o;
                break;
+            case "Etat_Livraison":
+                 o =(Etat_Livraison)o;
+                 break;
+            case "Date":
+                 o =(Date)o;
+                 break;
        }
       }catch(Exception exe){ throw  exe;}
    }
@@ -141,5 +153,7 @@ public abstract class Aide {
          }
          return nomRole; 
      }
+     
+     
     
 }

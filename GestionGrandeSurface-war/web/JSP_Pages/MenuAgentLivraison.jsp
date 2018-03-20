@@ -1,11 +1,5 @@
-<%-- 
-    Document   : MenuAgRayon
-    Created on : 19 mars 2018, 09:30:03
-    Author     : i.silvestre
---%>
-
 <div class="navbar nav_title" style="border: 0;">
-              <a href="DirecteurMagasin?action=null" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
+              <a href="ControlChef?action=Accueil" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -16,8 +10,8 @@
                 <img src="./Template/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span>Welcome</span>
-                <h2></h2>
+                <span>Welcome,</span>
+                <h2>Chef de Rayon</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -28,16 +22,10 @@
              <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=Accueil">Analyse des ventes</a></li>
+                      <li><a href="ControleAdministration?action=GoToConsulterLvraison">Consulter livraison</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> Gestion Magasin <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="DirecteurMagasin?action=passerLaCasse">Passer la casse </a></li>
-                      <li><a href="DirecteurMagasin?action=consulterCommandes">Consulter les Commandes</a></li>
-                      <li><a href="DirecteurMagasin?action=consulterLivraisons">Consulter les Livraisons</a></li>
-                    </ul>
-                  </li>
+                  
                 </ul>
               </div>
              

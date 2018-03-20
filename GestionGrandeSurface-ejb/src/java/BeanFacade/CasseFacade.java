@@ -7,10 +7,15 @@ package BeanFacade;
 
 import EntityBean.Casse;
 import EntityBean.Employe;
+import Structure.Aide;
+import Structure.Parametre;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -40,6 +45,22 @@ public class CasseFacade extends AbstractFacade<Casse> implements CasseFacadeLoc
         em.persist(casse); 
         return casse;
     } catch(Exception exe){throw exe;}
+    }
+    @Override
+    public List<Casse> getCasses(String query, ArrayList<Parametre> params) throws Exception{
+        List<Casse> casse = null;
+        try{
+         
+            Query q = em.createQuery(query);
+            if (params !=null){
+                for (Parametre p : params){
+                    Aide.Casting(p.type,p.valeur);
+                    q.setParameter(p.nom,p.valeur );
+                }
+            }
+            casse = q.getResultList();
+        }catch(Exception exe){throw exe;}
+        return casse;
     }
     
     

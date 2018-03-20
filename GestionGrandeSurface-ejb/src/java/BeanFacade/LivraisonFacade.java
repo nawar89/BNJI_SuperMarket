@@ -5,6 +5,7 @@
  */
 package BeanFacade;
 import EntityBean.BonCommande;
+import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.Livraison;
@@ -67,7 +68,14 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
             livraisons = q.getResultList();
         }catch(Exception exe){throw exe;}
         return livraisons;
-    } 
+    }
     
+    @Override
+    public void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception {
+        liv.setDate_livraison(date_livraison);
+        liv.setAgentLivraison(agentLivrasion);
+        liv.setMention(mension);
+        em.merge(liv);
+    }
     
 }

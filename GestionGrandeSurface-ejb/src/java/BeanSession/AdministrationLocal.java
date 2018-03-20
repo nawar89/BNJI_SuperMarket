@@ -9,6 +9,7 @@ import EntityBean.Article;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
 import EntityBean.Livraison;
@@ -58,9 +59,14 @@ public interface AdministrationLocal {
     
     List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
     
-    void creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) ;
+    BonCommande creerBonCommande(Employe chefRayon, Date datecommand, Fournisseur Fournisseur,List<Livraison> livrs,List<LigneCommande> listeLignes) ;
     
     List<BonCommande> getBonCommande(String query, ArrayList<Parametre> params) throws Exception;
-
+    
+    void creerLigneCommande(BonCommande command, Article article, int quantite, float prix);
+    
+    void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception;
+    
+    List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
     
 }

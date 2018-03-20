@@ -27,9 +27,9 @@
                   </li>
                   <li><a><i class="fa fa-edit"></i> Gestion Magasin <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CreerFour">Creer un Employé </a></li>
-                      <li><a href="ControlChef?action=listerFour">Consulter les Commandes</a></li>
-                      <li><a href="ControlChef?action=listerFour">Consulter les Livraisons</a></li>
+                      <li><a href="DirecteurMagasin?action=loadCreationEmployeMagasin">Creer un Employé </a></li>
+                      <li><a href="DirecteurMagasin?action=consulterCommandes">Consulter les Commandes</a></li>
+                      <li><a href="DirecteurMagasin?action=consulterLivraisons">Consulter les Livraisons</a></li>
                     </ul>
                   </li>
                 </ul>

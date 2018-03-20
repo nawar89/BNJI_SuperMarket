@@ -35,6 +35,8 @@ public interface DirecteurMagasinLocal {
     List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception ;
     
      List<Lot> getLot(String query, ArrayList<Parametre> params) throws Exception ;
+     
+     List<Casse> getCasse(String query, ArrayList<Parametre> params) throws Exception ;
 
     
 }

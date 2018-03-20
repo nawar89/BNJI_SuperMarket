@@ -7,15 +7,21 @@ package BeanSession;
 
 import BeanFacade.ArticleFacadeLocal;
 import BeanFacade.ArticleMagasinFacadeLocal;
+import BeanFacade.ElectromenagerFacadeLocal;
 import BeanFacade.FournisseurFacadeLocal;
 import BeanFacade.LivraisonFacadeLocal;
+import BeanFacade.Produit_FraisFacadeLocal;
+import BeanFacade.VetementFacadeLocal;
 import EntityBean.Article;
 import EntityBean.ArticleMagasin;
 import EntityBean.Categorie;
+import EntityBean.Electromenager;
 import EntityBean.Fournisseur;
 import EntityBean.Livraison;
 import EntityBean.Magasin;
+import EntityBean.Produit_Frais;
 import EntityBean.SousCategorie;
+import EntityBean.Vetement;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +39,15 @@ import javax.ejb.Stateless;
 public class ChefRayon implements ChefRayonLocal {
 
     @EJB
+    private Produit_FraisFacadeLocal produit_FraisFacade;
+
+    @EJB
+    private VetementFacadeLocal vetementFacade;
+
+    @EJB
+    private ElectromenagerFacadeLocal electromenagerFacade;
+
+    @EJB
     private LivraisonFacadeLocal livraisonFacade;
 
     @EJB
@@ -43,6 +58,7 @@ public class ChefRayon implements ChefRayonLocal {
 
     @EJB
     private ArticleFacadeLocal articleFacade;
+    
     
    //Création fournisseur 
    //Création Article 
@@ -94,7 +110,40 @@ public class ChefRayon implements ChefRayonLocal {
         return livraisonFacade.getLivraisons(query, params);
     }
     
+    @Override
+    public void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, Date date_peremption) throws Exception {
     
+    produit_FraisFacade.creerProduitFrais(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur,date_peremption);
+     
+    }
+    
+    @Override
+    public List<Produit_Frais> getProdFrais(String query, ArrayList<Parametre> params) throws Exception{
+        return produit_FraisFacade.getProduitFrais(query, params);
+    }
+    
+    @Override
+    public void creationVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String taille, String coloris) throws Exception {
+    
+    vetementFacade.creerVetement(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur, taille, coloris);
+     
+    }
+    
+    @Override
+    public List<Vetement> getVetement(String query, ArrayList<Parametre> params) throws Exception{
+        return vetementFacade.getVetement(query, params);
+    }
+    @Override
+    public void creationElectromenager(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,int period_garantie) throws Exception {
+    
+    electromenagerFacade.creerElec(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur,period_garantie);
+     
+    }
+    
+    @Override
+    public List<Electromenager> getElectro(String query, ArrayList<Parametre> params) throws Exception{
+        return electromenagerFacade.getElectro(query, params);
+    }
 
 }
     

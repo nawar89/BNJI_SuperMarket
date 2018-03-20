@@ -60,7 +60,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Création d'Article<small></small></h2>
+                    <h2>Modification du prix de vente<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -81,23 +81,29 @@
                   <div class="x_content">
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControlChef">
-                      <div class="form-group">
-                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Articles</label>
+                       <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Articles</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" id = "article" name="ArticleSelect">
-                            <% List<ArticleMagasin> listearticles = articles ;
-                            for(ArticleMagasin ar : listearticles) {%>
-                            <option value ="<%=ar.getId()%>" onChange="document.getElementById('ancien_prix').placeholder=<%=ar.getArticle().getPrix_achat_actuel()%>"><%=ar.getArticle().getLibelle() %></option>
-                            <% }%>
-                            </select>
+                        <select class="form-control" id="articlemag" name="ArticleSelect">
+                        <% List<ArticleMagasin> liste = articles ;
+                        for(ArticleMagasin ar : liste) {%>
+                        <option data-prix ="<%=ar.getId()%>" value ="<%=ar.getId()%>"> <%=ar.getArticle().getLibelle() %> </option>
+                        <% }%>
+                        </select>
                         </div>
                       </div>
-                        <div class="form-group">
+                         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+                        $("#articlemag").change(function(){
+                        $("#ancien").attr("placeholder", $("#articlemag").find(":selected").text());
+                        });
+                         </script>
+                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Prix actuel</label>
                         <div class="ol-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control" readonly="readonly" name="ancien_prix">
+                            <input type="text" class="form-control" readonly="readonly" id="ancien" placeholder="">
                         </div>
                       </div>
+                       
                       <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nouveauPrix">Nouveau prix<span class="required">*</span>
                         </label>
@@ -125,6 +131,7 @@
         <%@include file="footer.jsp" %>
       </div>
     </div>
+  
 
     <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>

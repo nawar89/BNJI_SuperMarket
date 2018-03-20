@@ -21,10 +21,10 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Nawar
+ * @author Jihane
  */
 @Stateless
-public class ArticleFacade extends AbstractFacade<Article> implements ArticleFacadeLocal {
+public class Produit_FraisFacade extends AbstractFacade<Produit_Frais> implements Produit_FraisFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -34,29 +34,31 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
         return em;
     }
 
-    public ArticleFacade() {
-        super(Article.class);
+    public Produit_FraisFacade() {
+        super(Produit_Frais.class);
     }
     
-   //Creation article
+    
+    //Creation article
     @Override
-    public void creerArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception {
+    public void creerProduitFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, Date date_premption) throws Exception {
         try {
-        Article article = new Article();
-        article.setLibelle(libelle);
-        article.setReference(reference);
-        article.setPrix_achat_actuel(prix_achat_actuel);
-        article.setDate_creation(date_de_creation);
-        article.setSousCategorie(sous_categorie);
-        article.setFournisseur(fournisseur);
-        em.persist(article);  
+        Produit_Frais prod = new Produit_Frais();
+        prod.setLibelle(libelle);
+        prod.setReference(reference);
+        prod.setPrix_achat_actuel(prix_achat_actuel);
+        prod.setDate_creation(date_de_creation);
+        prod.setSousCategorie(sous_categorie);
+        prod.setFournisseur(fournisseur);
+        prod.setDate_peremption(date_premption);
+        em.persist(prod);  
     } catch(Exception exe){throw exe;}
     }
     
    //Recherche d'aticle 
     @Override
-    public List<Article> getArticle(String query, ArrayList<Parametre> params) throws Exception{
-        List<Article> articles = null;
+    public List<Produit_Frais> getProduitFrais(String query, ArrayList<Parametre> params) throws Exception{
+        List<Produit_Frais> prod = null;
         try{
          
             Query q = em.createQuery(query);
@@ -66,12 +68,9 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            articles = q.getResultList();
+            prod = q.getResultList();
         }catch(Exception exe){throw exe;}
-        return articles;
+        return prod;
     }
-    
-   
-    
-    
+
 }
