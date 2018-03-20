@@ -24,7 +24,10 @@ public abstract class Requete {
     public static String getPromotions = "SELECT p FROM Promotion AS p WHERE 1=1";
     public static String getFournisseurs = "SELECT f FROM Fournisseur AS f WHERE 1=1";
     public static String getCommandes = "select b from BonCommande as b where 1=1";
+    public static String getCommandesParFournisseur = "select b from BonCommande as b join b.fournisseur f where 1=1 and b.livraisons is empty";
     public static String getCommandesParMagasin = "select b from BonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
-    
-
-}
+    public static String getEmployeParRole = "select e from Employe e join e.role r where 1=1" ;
+    public static String getLivraisonsParMagasin = "select l from Livraison l join l.bonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
+    public static String getArticlesMagasinParMagasin = "select a from ArticleMagasin a join a.magasin m where 1=1" ;
+    public static String getLotParMagasin = "select l from Lot l join l.articleMagasin a join a.magasin m where 1=1" ;
+ }

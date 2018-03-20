@@ -15,6 +15,7 @@ import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.Livraison;
+import EntityBean.Role;
 import EntityBean.SousCategorie;
 import Structure.Aide;
 import Structure.Parametre;
@@ -363,45 +364,32 @@ HttpServletResponse response) throws ServletException, IOException
              HttpSession sess=request.getSession(true);
           
           try{
-            // Récupérer les employés dont le rôle est chef de rayon 
-              int roleID= 6;
-              requete= Requete.getEmployes;
-              /*Parametre r = new Parametre("id", "int", roleID);
-              mesParam.add(r);*/
-              List<Employe> emp = administration.getEmploye(requete,null);
+             //Récupérer le rôle chef de rayon 
+             /* int roleID= 6;
+              requete= Requete.getEmployeParRole + " And r.id =:role";
+              mesParam = new ArrayList<Parametre>();
+              Parametre role = new Parametre("role","int",roleID);
+              mesParam.add(role);
+              List<Employe> emp = administration.getEmploye(requete,mesParam);
               if (emp == null){
               emp = new ArrayList<>(); 
               }
-              request.setAttribute( "employes", emp );
+              request.setAttribute( "employes", emp );*/
               //Réupérer les commandes du fournisseur connecté et qui n'ont pas encore été livrées :
               requete=Requete.getLivraisons;
               List<Livraison> listl=chefRayon.getLivraison(requete, null);
               if (listl == null){
               listl = new ArrayList<>(); 
               }
-              //ajouter l'id du fournisseur connecté dans la requete
               Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
               long fourID = fourCo.getId();
-              requete=Requete.getCommandes + " And b.fournisseur_id=:id";
+              requete=Requete.getCommandesParFournisseur + " And f.id=:id";
               mesParam= new ArrayList<Parametre>();
               Parametre c = new Parametre("id", "long", fourID);
               mesParam.add(c);
               List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
               if (listec == null){
               listec = new ArrayList<>(); 
-              }
-              else
-              {
-              for (Livraison l : listl)
-              {
-                  for(BonCommande b : listec)
-                  {
-                      if(l.getBonCommande().getId()==b.getId())
-                      {
-                          listec.remove(b);
-                      }
-                  }
-              }
               }
               request.setAttribute( "commandes", listec );
               
@@ -418,6 +406,7 @@ HttpServletResponse response) throws ServletException, IOException
             throws ServletException, IOException {
        try
        {
+       HttpSession sess=request.getSession(true);
        String date_pr = request.getParameter( "date_pr" );
        String commande = request.getParameter( "CommandeSelect" );
        if ( date_pr.trim().isEmpty() || commande.trim().isEmpty())
@@ -428,13 +417,14 @@ HttpServletResponse response) throws ServletException, IOException
        {
                 Integer commandeID= Integer.parseInt(commande);
                 java.sql.Date d = java.sql.Date.valueOf(date_pr);
+                 Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
                //Récupérer la commande
                 mesParam = new ArrayList<Parametre>();
                 requete= Requete.getCommandes+ " And b.id=:id";
                 Parametre s = new Parametre("id", "int", commandeID);
                 mesParam.add(s);
                 List<BonCommande> listeBonCommande=administration.getBonCommande(requete, mesParam);
-                chefRayon.creationLivraison(null,d,null,listeBonCommande.get(0),Etat_Livraison.ENCOURS);  
+                chefRayon.creationLivraison(null,d, fourCo,listeBonCommande.get(0),Etat_Livraison.ENCOURS);  
                 message = "Livraison créé avec succès !";  
                 jspClient = "/Jihane_JSP/Page_message.jsp";
         }

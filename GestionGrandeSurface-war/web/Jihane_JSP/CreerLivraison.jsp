@@ -24,7 +24,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> </script>
-    <jsp:useBean id="employes" scope="request" class="java.util.List"></jsp:useBean>
+   <%-- <jsp:useBean id="employes" scope="request" class="java.util.List"></jsp:useBean> --%>
     <jsp:useBean id="commandes" scope="request" class="java.util.List"></jsp:useBean>
     <link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
     <title>Gestion Grande Surface</title>
@@ -90,39 +90,38 @@
                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                         </div>
-                     <div class="form-group">
+                    <!-- <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Chercher Bon commande par magasin</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control" id = "mag" name="ChefSelect" onchange="RefreshComboBox(this,document.getElementById('commandesel'),document.getElementById('commandeseltemp'))">
-                            <% List<Employe> emp = employes ;
+                            <%--<% List<Employe> emp = employes ;
                             for(Employe e : emp) {%>
                             <option value ="<%=e.getId()%>"> <%=e.getMagasin().getNom()%> : <%=e.getNom()%> </option>
-                            <% }%>
+                            <% }%> --%>
                             </select>
                         </div>
-                       </div>
+                       </div>-->
                             
-                      <div class="form-group">
+                       <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Choisissez la commande à livrer</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control" id = "commandesel" name="CommandeSelect">
                         <% List<BonCommande> com = commandes ;
-                        if (!emp.isEmpty())  {
-                        Employe e = emp.get(0);
-                        for(BonCommande b : com ){
-                        if(b.getChefRyon().getId()==e.getId()){%>
-                        <option class="filterOption" value ="<%= b.getId()%>"><%=b.getChefRyon().getNom()%> </option>
-                            <% }}}%>
+                        //if (!emp.isEmpty())  {
+                        //Employe e = emp.get(0);
+                        for(BonCommande b : com ){//if(b.getChefRyon().getId()==e.getId()){%>
+                           <option class="filterOption" value ="<%= b.getId()%>"><%=b.getChefRyon().getNom()%> </option>
+                            <% }%>
                         </select>
                         
-                        <select class="form-control" id = "commandeseltemp" style="display: none" >
-                         <% if (!emp.isEmpty())  {
+                        <!--<select class="form-control" id = "commandeseltemp" style="display: none" >
+                         <%--<% if (!emp.isEmpty())  {
                          for (Employe e : emp){
                          for(BonCommande b : com) {
                          if(b.getChefRyon().getId()==e.getId()) {%>
                          <option class="filterOption" value ="<%= b.getId()%>"> <%=b.getChefRyon().getNom() %>  </option>
-                         <% }}}}%>
-                          </select>
+                         <% }}}}%> --%>
+                          </select>-->
                        </div>
                        </div>
                       <div class="ln_solid"></div>

@@ -271,7 +271,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Creation EmployeMagasin</title>
+    <title>Consulter Commandes magasin</title>
 
     <!-- Bootstrap -->
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -293,7 +293,7 @@
         
          <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
          <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
-         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>--%>
+         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
 
         
     </head>
@@ -317,7 +317,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Tables <small>Some examples to get you started</small></h3>
+                <h3>Tableau <small> ecrire qqch ici si on veut </small></h3>
               </div>
 
               <div class="title_right">
@@ -331,10 +331,9 @@
                 </div>
               </div>
             </div>
-              <h2>Liste des livraisons Magasin <%=employeCo.getMagasin().getNom()%></h2>
+              <h2>Liste des Commandes Magasin <%=employeCo.getMagasin().getNom()%></h2>
 
             <div class="clearfix"></div>
-
             <div class="row">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -357,9 +356,13 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
+                    
+                    
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
                     </p>
+                    
+                    <form method="post" action="DirecteurMagasin?action=afficherDetailCommande">
                     <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
@@ -388,6 +391,7 @@
                         </tr>
                       </thead>
                       <tbody>
+                        
                           <% float total = 0.01f ;
                               List<BonCommande> lesCommandes = listCommandes;
                         for( BonCommande r : lesCommandes){ 
@@ -399,9 +403,8 @@
                         <td>
 			</td>
                         <th class="sorting_1">
-                            <div class="icheckbox_flat-green" style="position: relative;">
-                                <input type="checkbox" id="check-all" value ="<%=r.getId()%>" class="flat" style="position: absolute; opacity: 0;">
-                            </div>
+                            <input type="radio" class="flat" name="idCommande" value ="<%=r.getId()%>" required="" data-parsley-multiple="commande" style="position: absolute; opacity: 0;">
+                           
                         </th>
 						  
                           <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
@@ -409,11 +412,14 @@
                           <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
                           <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
                           <td><%=total %> € </td>
-                        </tr>
+                      </tr>
+                        
                         <%;}%>
+                        
                       </tbody>
                     </table>
                             </div>
+                      
                         </div>
                       <div class="row">
                           <div class="col-sm-5">
@@ -423,6 +429,13 @@
                           </div>
                       </div>
                     </div>
+                        <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <button id="send" type="submit" class="btn btn-success">Consulter le détail d'une commande</button>
+                        </div>
+                      </div>
+                    </form>
+                        
                   </div>
                 </div>
               </div>
@@ -433,7 +446,6 @@
         
         <%@include file="footer.jsp" %>
       </div>
-    </div>
 <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
