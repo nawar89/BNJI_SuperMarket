@@ -5,16 +5,25 @@
  */
 package BeanSession;
 
+import BeanFacade.ArticleMagasinFacadeLocal;
+import BeanFacade.CasseFacadeLocal;
 import BeanFacade.ChefRyon_CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
+import BeanFacade.Ligne_CasseFacadeLocal;
+import BeanFacade.LotFacadeLocal;
+import EntityBean.ArticleMagasin;
+import EntityBean.Casse;
 import EntityBean.Magasin;
 import EntityBean.Employe ;
 import EntityBean.Categorie;
+import EntityBean.Ligne_Casse;
+import EntityBean.Lot;
 import EntityBean.Role;
 import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,9 +43,30 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
     @EJB
     private EmployeFacadeLocal employeFacade;
     
+    @EJB
+    private CasseFacadeLocal casseFacade;
+    
+    @EJB
+    private Ligne_CasseFacadeLocal ligneCasseFacade;
+    
+    @EJB
+    private ArticleMagasinFacadeLocal articleMagasinFacade;
+    
+    @EJB
+    private LotFacadeLocal lotFacade;
+    
     
          public List<Employe> getEmploye(String query, ArrayList<Parametre> params) throws Exception{
              return employeFacade.getEmploye(query, params);}
+         
+          @Override
+    public List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception{
+        return articleMagasinFacade.getArticleMagasin(query, params);
+    }
+    @Override
+    public List<Lot> getLot(String query, ArrayList<Parametre> params) throws Exception{
+        return lotFacade.getLot(query, params);
+    }
 
     public void creerEmployeMagasin(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp, Role role, Magasin magasin, List<Categorie> listeCat ) throws  Exception
     {
@@ -68,6 +98,28 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
         }
          
      }
+    
+    /** Début méthodes de l'agent de rayon **/
+    @Override
+    public Casse creerCasse(Employe agentRayon, Date date) {
+        Casse casse = casseFacade.creerCasse(agentRayon, date);
+        return casse;
+    }
+
+    @Override
+    public Ligne_Casse creerLigneCasse(Lot lot, ArticleMagasin articleMag, int quantite, Casse casse) 
+    {
+        Ligne_Casse ligne = ligneCasseFacade.creerLigneCasse(casse, articleMag, quantite);
+        articleMagasinFacade.modifierQuantiteStock(articleMag, quantite);
+        if (lot !=null)
+        {
+            lotFacade.modifierQuantiteLot(quantite, lot);   
+        }
+        
+        return ligne; 
+    }
+    
+    
 
 
 }

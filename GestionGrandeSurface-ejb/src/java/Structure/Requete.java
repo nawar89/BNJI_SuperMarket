@@ -21,4 +21,9 @@ public abstract class Requete {
     public static String getFournisseurs = "SELECT f FROM Fournisseur AS f WHERE 1=1";
     public static String getCommandesParMagasin = "select b from BonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
     public static String getCommandes = "select b from BonCommande b where 1=1";
+    public static String getLivraisons = "select l from Livraison l where 1=1";
+    public static String getLivraisonsParMagasin = "select l from Livraison l join l.bonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
+    public static String getArticlesMagasinParMagasin = "select a from ArticleMagasin a join a.magasin m where 1=1" ;
+    public static String getLotParMagasin = "select l from Lot l join l.articleMagasin a join a.magasin m where 1=1" ;
+
 }

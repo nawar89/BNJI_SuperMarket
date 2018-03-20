@@ -1,9 +1,11 @@
 <%-- 
-    Document   : MenuDirecteurMagasin
-    Created on : 12 mars 2018, 14:33:48
+    Document   : MenuAgentRayon
+    Created on : 19 mars 2018, 09:28:31
     Author     : i.silvestre
 --%>
 
+<%@page import="EntityBean.Categorie"%>
+<%@page import="java.util.List"%>
 <%@page import="EntityBean.Employe"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -42,13 +44,14 @@
     <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="./Template/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    
     <!-- Custom Theme Style -->
     <link href="./Template/css/custom.min.css" rel="stylesheet">
         
          <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
          <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
 
-        <title>Page d'accueil Directeur Magasin</title>
+        <title>Creation EmployeMagasin</title>
     </head>
     <body class="nav-md">
      
@@ -57,7 +60,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="MenuDirMag.jsp" %>
+              <%@include file ="MenuAgRayon.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>
@@ -67,7 +70,7 @@
        <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Bienvenu <%= employeCo.getPrenom() %> <%= employeCo.getNom() %><small></small></h2>
+                    <h2>Page accueil Agent de Rayon<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -86,8 +89,14 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+                      <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <a type="button" class="btn btn-round btn-primary" href ="DirecteurMagasin?action=passerLaCasse">Saisir la casse</a>
+                        </div>
+                      </div>
+                      
+                      
                   </div>
-                    /// Ajouter tableaux de bord
                 </div>
               </div>
             
@@ -111,6 +120,5 @@
     <script src="./Template/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     <!-- Custom Theme Scripts -->
    <script src="./Template/js/custom-min.js"></script>
-
     </body> 
 </html>
