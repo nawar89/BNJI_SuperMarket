@@ -790,5 +790,22 @@ function chargerDonnees(table) {
          return ok;
             
 }
+/////////////////////////////////////////////////////////////
 
+
+function RefreshComboBoxArticle(ddl1,ddl2,table) {
+   
+            var row = table.getElementsByTagName("tr");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+             console.log(selectedValue)
+            ddl2.options.length = 0;
+            for (i = 0; i < row.length; i++) {
+                if (selectedValue == row[i].getElementsByTagName("td")[0].innerHTML){
+                    createOption(ddl2, row[i].getElementsByTagName("td")[2].innerHTML,row[i].getElementsByTagName("td")[1].innerHTML );
+                    
+                }
+            }      
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
 
