@@ -4,9 +4,25 @@
         <servlet-name>ControlChef</servlet-name>
         <servlet-class>servletChefRayon.ControlChef</servlet-class>
     </servlet>
+   <servlet>
+        <servlet-name>DirecteurMagasin</servlet-name>
+        <servlet-class>Servlet.DirecteurMagasin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControleAdministration</servlet-name>
+        <servlet-class>Servlet.ControleAdministration</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControlChef</servlet-name>
         <url-pattern>/ControlChef</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirecteurMagasin</servlet-name>
+        <url-pattern>/DirecteurMagasin</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>ControleAdministration</servlet-name>
+        <url-pattern>/ControleAdministration</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
