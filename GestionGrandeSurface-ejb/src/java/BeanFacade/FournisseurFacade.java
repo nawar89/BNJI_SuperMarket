@@ -36,13 +36,14 @@ public class FournisseurFacade extends AbstractFacade<Fournisseur> implements Fo
     }
 
     @Override
-    public void creerFournisseur(String nom, String adresse, String telephone, String email) throws Exception {
+    public void creerFournisseur(String nom, String adresse, String telephone, String email,String mdp) throws Exception {
         try {
           Fournisseur fournisseur = new Fournisseur();
           fournisseur.setNom(nom);
           fournisseur.setAdresse(adresse);
           fournisseur.setTelephone(telephone);
           fournisseur.setEmail(email);
+          fournisseur.setMdp(mdp);
             em.persist(fournisseur);
         }catch (Exception ex){ throw ex;}
         

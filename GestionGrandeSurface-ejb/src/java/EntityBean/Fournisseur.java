@@ -172,6 +172,27 @@ public class Fournisseur implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+        private String mdp;
+
+    /**
+     * Get the value of mdp
+     *
+     * @return the value of mdp
+     */
+    public String getMdp() {
+        return mdp;
+    }
+
+    /**
+     * Set the value of mdp
+     *
+     * @param mdp new value of mdp
+     */
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
 
     
 }

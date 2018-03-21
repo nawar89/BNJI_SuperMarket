@@ -41,7 +41,7 @@ public class Produit_FraisFacade extends AbstractFacade<Produit_Frais> implement
     
     //Creation article
     @Override
-    public void creerProduitFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, Date date_premption) throws Exception {
+    public void creerProduitFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception {
         try {
         Produit_Frais prod = new Produit_Frais();
         prod.setLibelle(libelle);
@@ -50,7 +50,7 @@ public class Produit_FraisFacade extends AbstractFacade<Produit_Frais> implement
         prod.setDate_creation(date_de_creation);
         prod.setSousCategorie(sous_categorie);
         prod.setFournisseur(fournisseur);
-        prod.setDate_peremption(date_premption);
+        
         em.persist(prod);  
     } catch(Exception exe){throw exe;}
     }

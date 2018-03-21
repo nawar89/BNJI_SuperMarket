@@ -62,27 +62,7 @@ public class Produit_Frais extends Article implements Serializable {
     public String toString() {
         return "EntityBean.Produit_Frais[ id=" + id + " ]";
     }
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
-        private Date date_peremption;
-
-    /**
-     * Get the value of date_peremption
-     *
-     * @return the value of date_peremption
-     */
-    public Date getDate_peremption() {
-        return date_peremption;
-    }
-
-    /**
-     * Set the value of date_peremption
-     *
-     * @param date_peremption new value of date_peremption
-     */
-    public void setDate_peremption(Date date_peremption) {
-        this.date_peremption = date_peremption;
-    }
+  
     
     
     

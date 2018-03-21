@@ -14,8 +14,10 @@ import BeanFacade.Produit_FraisFacadeLocal;
 import BeanFacade.VetementFacadeLocal;
 import EntityBean.Article;
 import EntityBean.ArticleMagasin;
+import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Electromenager;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.Livraison;
 import EntityBean.Magasin;
@@ -60,17 +62,12 @@ public class ChefRayon implements ChefRayonLocal {
     private ArticleFacadeLocal articleFacade;
     
     
-   //Création fournisseur 
-   //Création Article 
-   // Modifier prix de ventes article magazin
-   // Consulter livraison non comformes 
-   // Analyser les ventes 
-   // Commander 
+   
 
     @Override
-    public void creationFournisseur(String nom, String adresse, String telephone, String email) throws Exception {
+    public void creationFournisseur(String nom, String adresse, String telephone, String email,String mdp) throws Exception {
         
-            fournisseurFacade.creerFournisseur(nom, adresse, telephone, email);
+            fournisseurFacade.creerFournisseur(nom, adresse, telephone, email,mdp);
     }
     
     @Override
@@ -111,9 +108,9 @@ public class ChefRayon implements ChefRayonLocal {
     }
     
     @Override
-    public void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, Date date_peremption) throws Exception {
+    public void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception {
     
-    produit_FraisFacade.creerProduitFrais(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur,date_peremption);
+    produit_FraisFacade.creerProduitFrais(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur);
      
     }
     
@@ -144,8 +141,15 @@ public class ChefRayon implements ChefRayonLocal {
     public List<Electromenager> getElectro(String query, ArrayList<Parametre> params) throws Exception{
         return electromenagerFacade.getElectro(query, params);
     }
+    
+    @Override
+   public void creationLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception {
+       livraisonFacade.creerLivraison(date_livraison, date_livraison_prevu, fournisseur, bon_commande, mension);
+    }
+   }
+       
 
-}
+
     
    
     

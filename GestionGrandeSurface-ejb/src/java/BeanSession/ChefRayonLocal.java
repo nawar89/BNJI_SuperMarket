@@ -7,7 +7,9 @@ package BeanSession;
 
 import EntityBean.Article;
 import EntityBean.ArticleMagasin;
+import EntityBean.BonCommande;
 import EntityBean.Electromenager;
+import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.Livraison;
 import EntityBean.Magasin;
@@ -27,7 +29,7 @@ import javax.ejb.Local;
 @Local
 public interface ChefRayonLocal {
 
-    void creationFournisseur(String nom, String adresse, String telephone, String email) throws Exception;
+    void creationFournisseur(String nom, String adresse, String telephone, String email,String mdp) throws Exception;
     List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
     void creationArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception ;
     List<Article> getArticle(String query, ArrayList<Parametre> params) throws Exception;
@@ -36,7 +38,7 @@ public interface ChefRayonLocal {
     void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix) ;
     List<Livraison> getLivraison(String query, ArrayList<Parametre> params) throws Exception;
    
-  void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, Date date_peremption) throws Exception ;
+  void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception ;
     
   List<Produit_Frais> getProdFrais(String query, ArrayList<Parametre> params) throws Exception;
     
@@ -44,6 +46,7 @@ public interface ChefRayonLocal {
     List<Vetement> getVetement(String query, ArrayList<Parametre> params) throws Exception;
     void creationElectromenager(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,int period_garantie) throws Exception;
      List<Electromenager> getElectro(String query, ArrayList<Parametre> params) throws Exception;
+     void creationLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception;
        
     
 }
