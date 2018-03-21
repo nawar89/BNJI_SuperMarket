@@ -282,6 +282,10 @@ public class Administration implements AdministrationLocal {
     public void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix) {
         articleMagasinFacade.modifierPrixVente(articleMagasin, nouveauPrix);
     }
+     @Override
+    public Livraison creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception {
+       return livraisonFacade.creerLivraison(date_livraison, date_livraison_prevu, fournisseur, bon_commande, mension);
+    }
     
     
 

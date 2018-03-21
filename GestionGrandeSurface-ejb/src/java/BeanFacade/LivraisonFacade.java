@@ -39,7 +39,7 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
     }
 
     @Override
-    public void creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception {
+    public Livraison creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception {
         try {
             Livraison livraison = new Livraison();
             livraison.setDate_livraison(date_livraison);
@@ -48,6 +48,7 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
             livraison.setBonCommande(bon_commande);
             livraison.setMention(mension);
             em.persist(livraison);
+            return livraison;
         }catch(Exception ex){throw ex;} 
     }
 

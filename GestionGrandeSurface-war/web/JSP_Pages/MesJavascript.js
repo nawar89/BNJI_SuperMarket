@@ -709,12 +709,14 @@ function refrechQuantiteLivree(table) {
 
 
 function ActualiserTableCommandeAlivrer(table,tableTemp,ddl1) {
+    document.getElementsByName('bonCommande').value = "";
  var rowsSupp = table.getElementsByTagName("tr");
   for (i = 0; i < rowsSupp.length; i++) {
       rowsSupp.deleteRow(i);
   }       
  var rows = tableTemp.getElementsByTagName("tr");
  var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+ document.getElementsByName('bonCommande').value =  selectedValue;
     for (i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
         var createClickHandler = 

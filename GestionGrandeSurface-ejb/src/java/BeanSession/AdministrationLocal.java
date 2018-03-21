@@ -104,4 +104,6 @@ public interface AdministrationLocal {
     
     void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix);
     
+    Livraison creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception;
+    
 }

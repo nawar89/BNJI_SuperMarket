@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.rmi.CORBA.Util;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,6 +56,7 @@ public class ControleAdministration extends HttpServlet {
     public String DirNAT = "DirNat";
     public String DirMAG = "DirMag";
     Employe employeConnecte = null;
+    Fournisseur fournisseurConnecte = null;
     HttpSession session=null;   
     ArrayList <Parametre> mesParam = null;
     /**
@@ -978,7 +980,22 @@ protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse res
             //Construire requete SQL 
                   String ligneslivraison = request.getParameter("ligneLivraisonQte");
                   if (!ligneslivraison.isEmpty()){
-                            ParserLignesLivraison(ligneslivraison);
+                            String DatePrevu = request.getParameter("date_pr");
+                            String bon = request.getParameter("bonCommande");
+                            mesParam = new ArrayList<Parametre>();
+                            Parametre p = new Parametre("id", "int", bon);
+                            mesParam.add(p);
+                            requete = Requete.getBonCommandes+" and b.id=:id";
+                            List<BonCommande> listebons = administration.getBonCommande(requete, mesParam);
+                            
+                            if (listebons !=null){
+                                BonCommande bonCom = (BonCommande)Aide.getObjectDeListe(listebons.toArray());
+                                Date date = java.sql.Date.valueOf(DatePrevu);
+                                Livraison liv = administration.creerLivraison(null, date, fournisseurConnecte, bonCom, Etat_Livraison.ENCOURS);
+                                ParserLigneCommandeVersLignesLivraison(ligneslivraison,liv);
+                           
+                            }else message = "Bon Commande n'existe pas ";
+                            
                             jspClient = "/JSP_Pages/Page_Message.jsp";
                         }
                   else {
@@ -996,103 +1013,54 @@ protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse res
 }
 
 
-public  void ParserLigneCommandeVersLignesLivraison(String input){
+public  void ParserLigneCommandeVersLignesLivraison(String input,Livraison liv){
          
          mesParam = new ArrayList<Parametre>();
          try{
             String [] temp  = input.split(",");
             int count = 0;
-            int quantiteAccepte = 0;
-            String reclamationType = "";
-            String rec = "";
-            Ligne_livraison ligne = null;
-            Ligne_livraison l = new Ligne_livraison();
+            int quantiteLivree = 0;
+            Date datePermertion = null;
+            Article art = null;
+            BonCommande bon = null;
+            
             for (int i=0;i<temp.length;i++){
                 if ((i)%4==0 || i==0){
                     count = 1;
-                    reclamationType = "";
-                    rec = "";
-                }
-                if(count==1){
+                    art = null;
+                    quantiteLivree = 0;
                     
-                    Integer ligneID = Integer.parseInt(temp[i]);
-                    Parametre p = new Parametre("id", "int", ligneID);
-                      mesParam.add(p);
-                      String requete = Requete.getLigneLivraisons+" and l.id=:id";
-                      List<Ligne_livraison> listelignes = administration.getLignesLivraison(requete, mesParam);
-                    if (listelignes !=null){
-                        ligne = (Ligne_livraison)Aide.getObjectDeListe(listelignes.toArray());
-                    }
+                }
+                if (count==2){
+                       Integer artID = Integer.parseInt(temp[i]); 
+                       
+                       mesParam = new ArrayList<Parametre>();
+                       Parametre p = new Parametre("id", "int", artID);
+                       mesParam.add(p);
+                       requete = Requete.getArticles+" and a.id=:id";
+                       List<Article> listeArts = administration.getArticle(requete, mesParam);
+                       
+                       if (listeArts !=null){
+                           art = (Article)Aide.getObjectDeListe(listeArts.toArray());
+                      
+                       }else message = "un article n'existe pas";
+                }else if (count==3){
+                    quantiteLivree =   Integer.parseInt(temp[i]); 
+                
                 }
                 else if (count==4){
-                       quantiteAccepte = Integer.parseInt(temp[i]); 
-                       administration.modifierLigneLivraison(ligne, quantiteAccepte);
-                       //Article magasin treatement
-                       mesParam = new ArrayList<Parametre>();
-                       Parametre p = new Parametre("article", "Article", ligne.getArticle());
-                       mesParam.add(p);
-                       requete = Requete.getArticleMagasin+" and a.article=:article";
-                       List<ArticleMagasin> listeArts = administration.getArticleMagasin(requete, mesParam);
-                       ArticleMagasin artMag = null;
-                       if (listeArts !=null){
-                           artMag = (ArticleMagasin)Aide.getObjectDeListe(listeArts.toArray());
-                           administration.ajouterQuantite(artMag, quantiteAccepte);
-                       }else{
-                           artMag = administration.creerArticleMag(quantiteAccepte, 0.0f, ligne.getArticle(), employeConnecte.getMagasin());
-                       }
-                       //Lot tratement
-                       if(ligne.getDate_de_peremption()!=null){
-                           
-                           //verifer si lot existe deja 
-                           mesParam = new ArrayList<Parametre>();
-                           p = new Parametre("articleMagasin", "ArticleMagasin", artMag);
-                           mesParam.add(p);
-                           p = new Parametre("date_de_peremption", "Date", ligne.getDate_de_peremption());
-                           mesParam.add(p);
-                           requete = Requete.getLots+" and l.articleMagasin=:articleMagasin and l.date_de_peremption=:date_de_peremption";
-                            List<Lot> lots = administration.getLots(requete, mesParam);
-                            Lot lot = null;
-                            if (lots !=null){
-                                lot = (Lot)Aide.getObjectDeListe(lots.toArray());
-                                administration.ajouterQuantiteLot(lot, quantiteAccepte);
-                                
-                            }else  administration.creerLot(ligne.getDate_de_peremption(), quantiteAccepte, artMag);
-                            
-                            
-                           
-                       }
-                       
-                        if (!rec.isEmpty() && !reclamationType.isEmpty()){
-                            switch(reclamationType){
-                                case "RECLAMATION_LIVRAISON":
-                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_LIVRAISON, ligne, new Date());
-                                    break;
-                                case "RECLAMATION_COMMANDE":
-                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_COMMANDE, ligne, new Date());
-                                    break;
-                                    
-                                case "RECLAMATION_QUALITE":
-                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_QUALITE, ligne, new Date());
-                                    break;
-                            
-                            }
-                            administration.modifierEtat(ligne.getLivraison(),Etat_Livraison.EN_RECLAMATION);
-                        }
-                    
-                    message = "Livraison est bien traité";
-                       
-                 }else if (count==3){
-                     if (!temp[i].isEmpty())
-                       rec = temp[i];
-                 }else if (count==2){
-                        //creerLigneCommande
-                        if (!temp[i].isEmpty())
-                           reclamationType =  temp[i];
-                        
-                       
-                  }
+                    if (!temp[i].isEmpty()){
+                        datePermertion = java.sql.Date.valueOf(temp[i]);
+                    }
+                   administration.creerLigneLivraison(quantiteLivree, 0, art, liv, datePermertion);
+                   
+                }
+ 
                  count++;   
                 
+            }
+            if (!message.isEmpty()){
+                message = "livraison est créé";
             }
          }catch(Exception exe){message = exe.getMessage();
             jspClient = "/JSP_Pages/Page_Message.jsp";

@@ -201,6 +201,7 @@
                           <input type="hidden" name="acepte" class="form-control" />
                           <input type="hidden" name="dateTemp" class="form-control" />
                           <input type="hidden" name="ligneLivraisonQte" class="form-control" />
+                          <input type="hidden" name="bonCommande" class="form-control" />
                           <button type="submit" class="btn btn-success">Créer</button>
                         </div>
                       </div>
