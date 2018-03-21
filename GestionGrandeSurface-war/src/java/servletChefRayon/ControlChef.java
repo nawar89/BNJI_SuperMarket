@@ -15,6 +15,7 @@ import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.Livraison;
+import EntityBean.Reclamation;
 import EntityBean.Role;
 import EntityBean.SousCategorie;
 import Structure.Aide;
@@ -72,6 +73,9 @@ public class ControlChef extends HttpServlet {
                 case "Accueil":
                     jspClient="/Jihane_JSP/Accueil.jsp";
                     break;
+                case "AccueilFournisseur":
+                    jspClient="/Jihane_JSP/AccueilFournisseur.jsp";
+                    break;
                 case "CreerArticle":
                     GoTOArticle(request,response);
                    break;
@@ -107,9 +111,14 @@ public class ControlChef extends HttpServlet {
                doActionCommandeRecues(request,response); 
                request.setAttribute( "message", message );
                break;
-              
-                
-                
+            case "ReclamationsRecues":
+               doActionReclamationsRecues(request,response); 
+               request.setAttribute( "message", message );
+               break; 
+            case "ConsulterLivraisons":
+                doActionLivraisons(request,response); 
+               request.setAttribute( "message", message );
+               break;
             }
            }
         else {
@@ -285,23 +294,30 @@ HttpServletResponse response) throws ServletException, IOException
        else 
        {
                 Integer souscatID= Integer.parseInt(souscategory);
+                System.out.println(souscatID);
                 Integer fourniID = Integer.parseInt(fourni);
-                Integer prix_actuel = Integer.parseInt(prix);
-                
-               
-                
+                Float prix_actuel = Float.parseFloat(prix);
                 //Récupérer la sous-categorie
                 mesParam = new ArrayList<Parametre>();
                 requete= Requete.getSousCategories + " And s.id=:id";
                 Parametre s = new Parametre("id", "int", souscatID);
                 mesParam.add(s);
                 List<SousCategorie> listeSousCat=administration.getSousCategories(requete, mesParam);
+                System.out.println(listeSousCat.size());
+                if(listeSousCat==null)
+                {
+                    listeSousCat= new ArrayList<>();
+                }
                 //Récupérer le fournisseur
                 mesParam = new ArrayList<Parametre>();
                 requete=Requete.getFournisseurs + " And f.id=:id";
                 Parametre f = new Parametre("id", "int", fourniID);
                 mesParam.add(f);
                 List<Fournisseur> listeFour=chefRayon.getFournisseur(requete, mesParam);
+                if(listeFour==null)
+                {
+                    listeFour = new ArrayList<>();
+                }
                 switch (type)
                 {
                    case "0":
@@ -342,7 +358,7 @@ HttpServletResponse response) throws ServletException, IOException
           message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. ";
        } 
        else {
-          Integer newPrice = Integer.parseInt(prix);
+          Float newPrice = Float.parseFloat(prix);
           Integer articleID = Integer.parseInt(article);
            requete= Requete.getArticleMagasin + " And a.id=:id";
            Parametre a = new Parametre("id", "int", articleID);
@@ -439,7 +455,8 @@ HttpServletResponse response) throws ServletException, IOException
           protected void doActionCommandeRecues(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-        try {
+       
+    try {
             HttpSession sess=request.getSession(true);
             mesParam = new ArrayList<Parametre>();
             Parametre p = null;
@@ -453,9 +470,72 @@ HttpServletResponse response) throws ServletException, IOException
             if (listec == null){
             listec = new ArrayList<>(); 
             }
-            jspClient = "/Jihane_JSP/CommandesReçues.jsp"; 
             request.setAttribute("listCommandes", listec);
-            message = "";
+            message = "redirection....";
+            jspClient = "/Jihane_JSP/CommandesReçues.jsp"; 
+            
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }
+
+   
+    
+}
+          
+          
+          protected void doActionReclamationsRecues(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+       
+    try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+            long fourID = fourCo.getId();
+            requete=Requete.getReclamationParFournisseur+ " And f.id = ?1";
+            mesParam= new ArrayList<Parametre>();
+            Parametre c = new Parametre("1", "long", fourID);
+            mesParam.add(c);
+            List<Reclamation> lister=administration.getReclamations(requete, mesParam);
+            if (lister == null){
+            lister = new ArrayList<>(); 
+            }
+            request.setAttribute("listReclamations", lister);
+            message = "redirection....";
+            jspClient = "/Jihane_JSP/ReclamationsReçues.jsp"; 
+            
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }
+
+   
+    
+}
+          protected void doActionLivraisons(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+       
+    try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+            long fourID = fourCo.getId();
+            requete=Requete.getLivraisonsParFournisseur + " And f.id =:1" ;
+            mesParam= new ArrayList<Parametre>();
+            Parametre c = new Parametre("1", "long", fourID);
+            mesParam.add(c);
+            List<Livraison> listel=administration.getLivraisons(requete, mesParam);
+            if (listel == null){
+            listel = new ArrayList<>(); 
+            }
+            request.setAttribute("listLivraisons", listel);
+            message = "redirection....";
+            jspClient = "/Jihane_JSP/HistoriqueLivraison.jsp"; 
+            
         } catch (Exception exe) {
             message = exe.getMessage();
             jspClient = "/JSP_Pages/Page_Message.jsp";   

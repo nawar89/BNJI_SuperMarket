@@ -160,7 +160,7 @@
                         <% if (!listeCat.isEmpty())  {
                         Categorie cat = listeCat.get(0);
                         for(SousCategorie s : cat.getSousCategories() ) {%>
-                        <option class="filterOption" value ="<%= cat.getId()%>"> <%=s.getLibelle() %>  </option>
+                        <option class="filterOption" value ="<%=s.getId()%>"> <%=s.getLibelle() %>  </option>
                             <% }}%>
                         </select>
                         
@@ -168,7 +168,7 @@
                          <% if (!listeCat.isEmpty())  {
                          for (Categorie cat : listeCat){
                          for(SousCategorie s : cat.getSousCategories() ) {%>
-                         <option class="filterOption" value ="<%= cat.getId()%>"> <%=s.getLibelle() %>  </option>
+                         <option class="filterOption" value ="<%=s.getId()%>"> <%=s.getLibelle() %>  </option>
                          <% }}}%>
                           </select>
                        </div>
