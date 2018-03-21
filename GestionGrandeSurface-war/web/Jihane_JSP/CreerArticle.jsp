@@ -144,7 +144,7 @@
                       <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Catégorie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" id = "catsel" name="CategorieSelect" onchange="RefreshComboBox(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
+                            <select class="form-control" id = "catsel" name="CategorieSelect" onchange="RefreshComboBoxArticle(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
                             <% List<Categorie> listeCat = categories ;
                             for(Categorie cat : listeCat) {%>
                             <option value ="<%=cat.getId()%>"> <%=cat.getLibelle() %>  </option>
@@ -163,14 +163,18 @@
                         <option class="filterOption" value ="<%=s.getId()%>"> <%=s.getLibelle() %>  </option>
                             <% }}%>
                         </select>
-                        
-                         <select class="form-control" id = "souscatseltemp" style="display: none" >
-                         <% if (!listeCat.isEmpty())  {
-                         for (Categorie cat : listeCat){
+                        <table  id = "souscatseltemp" style="display: none">
+                            <% if (!listeCat.isEmpty())  {
+                            for (Categorie cat : listeCat){
                          for(SousCategorie s : cat.getSousCategories() ) {%>
-                         <option class="filterOption" value ="<%=s.getId()%>"> <%=s.getLibelle() %>  </option>
+                         <tr>
+                             <td><%=cat.getId()%></td>      
+                             <td><%=s.getId()%></td>
+                             <td><%=s.getLibelle() %></td>
+                            </tr>
                          <% }}}%>
-                          </select>
+                         </table>
+                        
                        </div>
                        </div>
                        <div class="form-group">
@@ -207,6 +211,21 @@
 
     <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>
+    <script>
+       function RefreshComboBoxArticle(ddl1,ddl2,table) {
+   
+            var row = table.getElementsByTagName("tr");
+            var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+             console.log(selectedValue)
+            ddl2.options.length = 0;
+            for (i = 0; i < row.length; i++) {
+                if (selectedValue == row[i].getElementsByTagName("td")[0].innerHTML){
+                    createOption(ddl2, row[i].getElementsByTagName("td")[2].innerHTML,row[i].getElementsByTagName("td")[1].innerHTML );
+                    
+                }
+            }      
+    } 
+  </script>
     <!-- Bootstrap -->
     <script src="./Template/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->

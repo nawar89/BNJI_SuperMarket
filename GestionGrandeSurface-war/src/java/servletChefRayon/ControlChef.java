@@ -524,9 +524,9 @@ HttpServletResponse response) throws ServletException, IOException
             Parametre p = null;
             Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
             long fourID = fourCo.getId();
-            requete=Requete.getLivraisonsParFournisseur + " And f.id =:1" ;
+            requete=Requete.getLivraisonsParFournisseur + " And f.id =:id" ;
             mesParam= new ArrayList<Parametre>();
-            Parametre c = new Parametre("1", "long", fourID);
+            Parametre c = new Parametre("id", "long", fourID);
             mesParam.add(c);
             List<Livraison> listel=administration.getLivraisons(requete, mesParam);
             if (listel == null){

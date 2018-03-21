@@ -4,16 +4,20 @@
     Author     : Jihane
 --%>
 
-<%@page import="EntityBean.Reclamation"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.util.List"%>
+<%@page import="EntityBean.Employe"%>
+<%@page import="EntityBean.Livraison"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="listLivraisons" scope="request" class="java.util.List"></jsp:useBean>
+ <jsp:useBean id="listLivraisons" scope="request" class="java.util.List"></jsp:useBean>
 <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
+      
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -21,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> </script>
     <link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
-    <title>Reclamations</title>
+    <title>Livraisons</title>
     <!-- Bootstrap -->
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -32,6 +36,7 @@
     <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="./Template/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    
     <!-- Custom Theme Style -->
     <link href="./Template/css/custom.min.css" rel="stylesheet">
     <!-- Datatables -->
@@ -53,12 +58,13 @@
           </div>
         </div>
               <%@include file="header.jsp" %>
+ 
         <!-- page content -->
         <div class="right_col" role="main">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Vos Reclamations reçues<small></small></h2>
+                    <h2>Historique des livraisons<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -84,39 +90,35 @@
                             <div class="col-sm-6">
                                 <div class="dataTables_length" id="datatable-checkbox_length">
                                 </div>
-                                    
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
+                               <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
                       <thead>
                         <tr role="row">
                            
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Type de réclamation : activer pour ordonner" style="width: 167px;">Type de réclamation</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de livraison : activer pour ordonner" style="width: 167px;">Date de livraison</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Chef de Rayon et magasin : activer pour ordonner" style="width: 126px;">Chef de Rayon et magasin </th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de réclamation : activer pour ordonner" style="width: 124px;">Date de réclamation</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Détail : activer pour ordonner" style="width: 96px;">Détail</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Quantité livrée : activer pour ordonner" style="width: 96px;">Quantité livrée</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Quantité recue : activer pour ordonner" style="width: 96px;">Quantité Reçue</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Etat de livraison : activer pour ordonner" style="width: 124px;">Etat de livraison</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Référence du Bon de commande : activer pour ordonner" style="width: 96px;">Référence du Bon de commande</th>
                         </tr>
                       </thead>
                       <tbody>
                         <% 
-                        List<Reclamation> lesrecs = listReclamations;
-                        for( Reclamation r : lesrecs){ 
+                        List<Livraison> leslivr = listLivraisons;
+                        for( Livraison l : leslivr){ 
                          %>
                          <tr role="row" class="odd">
-                          <td><%= r.getEtat_Reclamation().name()%></td>
-                          <td><%=r.getLigneLivraison().getLivraison().getBonCommande().getChefRyon().getNom()%> : <%=r.getLigneLivraison().getLivraison().getBonCommande().getChefRyon().getMagasin().getNom()%></td>
-                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_reclamation()) %></td>
-                          <td><%=r.getReclamation() %></td>
-                          <td><%=r.getLigneLivraison().getQuantite_livree()%></td>
-                          <td><%=r.getLigneLivraison().getQuantite_accepte()%></td>
+                          <td><%=new SimpleDateFormat("yyyy-MM-dd").format(l.getDate_livraison())%></td>
+                          <td><%=l.getBonCommande().getChefRyon().getNom()%> : <%=l.getBonCommande().getChefRyon().getMagasin().getNom()%></td>
+                          <td><%=l.getMention().name()%></td>
+                          <td><%=l.getBonCommande().getId()%></td>
                          </tr>
                         <%;}%>
                       </tbody>
-                    </table>
+                    </table>     
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                              
                             </div>
                       
                         </div>
@@ -139,6 +141,7 @@
         <%@include file="footer.jsp" %>
       </div>
     </div>
+
     <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
