@@ -178,6 +178,7 @@
                     </div>
                          <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
+                            <input type ="hidden" name ="idCasse" value ="<%=casse.getId() %>"/>
                           <button id="send" type="submit" class="btn btn-success">Choisir article</button>
                         </div>
                       </div>
@@ -191,7 +192,7 @@
         <%@include file="footer.jsp" %>
       </div>
     </div>
-
+</div>
     <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

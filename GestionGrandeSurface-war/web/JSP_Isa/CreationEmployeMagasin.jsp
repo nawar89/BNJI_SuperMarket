@@ -3,38 +3,29 @@
     Created on : 12 mars 2018, 16:51:30
     Author     : i.silvestre
 --%>
-
+<!DOCTYPE html>
 <%@page import="EntityBean.Categorie"%>
 <%@page import="java.util.List"%>
 <%@page import="EntityBean.Employe"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+  <head>
+         <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
+         <jsp:useBean id="listTitres" scope="request" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="listCategorie" scope="request" class="java.util.List"></jsp:useBean>
+         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
+
+    <title>Gestion Grande Surface</title>
+
     <!-- Bootstrap -->
-    <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="./Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="./Template/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- bootstrap-wysiwyg -->
-    <link href="./Template/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
-    <!-- Select2 -->
-    <link href="./Template/select2/dist/css/select2.min.css" rel="stylesheet">
-    <!-- Switchery -->
-    <link href="./Template/switchery/dist/switchery.min.css" rel="stylesheet">
-    <!-- starrr -->
-    <link href="./Template/starrr/dist/starrr.css" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link href="./Template/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="./Template/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -44,18 +35,11 @@
     <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="./Template/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    
     <!-- Custom Theme Style -->
     <link href="./Template/css/custom.min.css" rel="stylesheet">
-        
-         <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
-         <jsp:useBean id="listTitres" scope="request" class="java.util.List"></jsp:useBean>
-         <jsp:useBean id="listCategorie" scope="request" class="java.util.List"></jsp:useBean>
-         <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
+  </head>
 
-        <title>Creation EmployeMagasin</title>
-    </head>
-    <body class="nav-md">
+  <body class="nav-md">
      
     <div class="container body">
       <div class="main_container">
@@ -70,7 +54,7 @@
         <!-- page content -->
         <div class="right_col" role="main">
        <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
+           <div class="x_panel">
                   <div class="x_title">
                     <h2>Création Employé magasin<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -148,37 +132,35 @@
                            <span class="fa fa-user form-control-feedback  right" aria-hidden="true"></span>
                         </div> 
                         </div>
-                                
-                    <div class="form-group"style="padding: 5px;">
-                            
-                        <label for="categorie">Séléctionner une ou plusieurs catégories :</label>
-                        <% List<Categorie> lesCategories = listCategorie;
+                               
+                    <div class="form-group">
+                        <br>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="categorie">Séléctionner une ou plusieurs catégories :</label>
+                    <div class="col-md-9 col-sm-9 col-xs-12"> 
+                    
+                            <% List<Categorie> lesCategories = listCategorie;
                         for( Categorie r : lesCategories){%>
-                      <table class="icheckbox_flat-green" style="position: relative;">
-                      <td>
-                          <input type="checkbox" value="<%=r.getId()%>" name="categorie" class="flat" style="position: absolute; opacity: 0;" /><%=r.getLibelle() %>
-                          <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
-                              
-                          </ins>
-                          <br />
-                      </td>
-                      </table>
-                      <%}%>
+                        <div class="icheckbox_flat-green" style="position: relative;">
+                            <input type="checkbox" name="categorie" value="<%=r.getId()%>"class="flat" data-parsley-multiple="categorie" style="position: absolute; opacity: 0;">
+                            
+                        </div> <%=r.getLibelle() %> 
+                        <br>
+                        <%}%>
+                    </div>
                     </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <button class="btn btn-primary" type="button">Annuler</button>
 		          <button class="btn btn-primary" type="reset">Reset</button>
-                          <input type="hidden" name="action" value="CreerF"/>
                           <button type="submit" class="btn btn-success">Ajouter</button>
                         </div>
                       </div>
 
                     </form>
                   </div>
-                </div>
-              </div>
+                </div>  
+       </div>
             
         </div>
         <%@include file="footer.jsp" %>
@@ -195,10 +177,10 @@
     <script src="./Template/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="./Template/iCheck/icheck.min.js"></script>
-    <!--input Mask-->
-     <!-- jquery.inputmask -->
-    <script src="./Template/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     <!-- Custom Theme Scripts -->
-   <script src="./Template/js/custom-min.js"></script>
-    </body> 
+    <script src="./Template/js/custom.min.js"></script>
+    <!-- jquery.inputmask -->
+    <script src="./Template/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+	
+  </body>
 </html>

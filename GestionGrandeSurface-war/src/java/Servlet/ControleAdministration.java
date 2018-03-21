@@ -18,6 +18,7 @@ import EntityBean.Livraison;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
+import EntityBean.Type_Reclamation;
 import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
@@ -803,8 +804,8 @@ HttpServletResponse response) throws ServletException, IOException
         //Construire requete SQL 
               String ligneslivraison = request.getParameter("livlignes");
               if (!ligneslivraison.isEmpty()){
-                        
-                        jspClient = "/JSP_Pages/LivraisonDetail.jsp";
+                        ParserLignesLivraison(ligneslivraison);
+                        jspClient = "/JSP_Pages/Page_Message.jsp";
                     }
               else {
                 message = "il y pas de ligne de livraison";
@@ -830,36 +831,64 @@ public  void ParserLignesLivraison(String input){
          try{
             String [] temp  = input.split(",");
             int count = 0;
-            int quantite = 0;
-            float prix = 0;
-            Article art = null;
+            int quantiteAccepte = 0;
+            String reclamationType = "";
+            String rec = "";
+            Ligne_livraison ligne = null;
             Ligne_livraison l = new Ligne_livraison();
             for (int i=0;i<temp.length;i++){
-                if ((i)%7==0 || i==0){
-                    count = 0;
+                if ((i)%4==0 || i==0){
+                    count = 1;
+                    reclamationType = "";
+                    rec = "";
                 }
                 if(count==1){
                     
                     Integer ligneID = Integer.parseInt(temp[i]);
                     Parametre p = new Parametre("id", "int", ligneID);
                       mesParam.add(p);
-                      String requete = Requete.+" and a.id=:id";
-                      List<Article> listearts = administration.getArticle(requete, mesParam);
-                    if (listearts !=null){
-                        art = (Article)Aide.getObjectDeListe(listearts.toArray());
+                      String requete = Requete.getLigneLivraisons+" and l.id=:id";
+                      List<Ligne_livraison> listelignes = administration.getLignesLivraison(requete, mesParam);
+                    if (listelignes !=null){
+                        ligne = (Ligne_livraison)Aide.getObjectDeListe(listelignes.toArray());
                     }
                 }
-                else if (count==3){
-                       prix = Float.parseFloat(temp[i]); 
-                 }else if (count==4){
-                       quantite = Integer.parseInt(temp[i]);
-                 }else if (count==5){
-                        //creerLigneCommande
-                        if (com !=null && art !=null){
-                            administration.creerLigneCommande(com, art, quantite, prix);
-                        }else{ message = "article n'exite pas";
-                            break;
+                else if (count==4){
+                       quantiteAccepte = Integer.parseInt(temp[i]); 
+                       administration.modifierLigneLivraison(ligne, quantiteAccepte);
+                       
+                       if(ligne.getDate_de_peremption()!=null){
+                           
+                       }
+                       
+                        if (!rec.isEmpty() && !reclamationType.isEmpty()){
+                            switch(reclamationType){
+                                case "RECLAMATION_LIVRAISON":
+                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_LIVRAISON, ligne, new Date());
+                                    break;
+                                case "RECLAMATION_COMMANDE":
+                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_COMMANDE, ligne, new Date());
+                                    break;
+                                    
+                                case "RECLAMATION_QUALITE":
+                                    administration.creerReclamation(rec, Type_Reclamation.RECLAMATION_QUALITE, ligne, new Date());
+                                    break;
+                            
+                            }
+                            administration.modifierEtat(ligne.getLivraison(),Etat_Livraison.EN_RECLAMATION);
                         }
+                    
+                    message = "Livraison est bien traité";
+                       
+                 }else if (count==3){
+                     if (!temp[i].isEmpty())
+                       rec = temp[i];
+                 }else if (count==2){
+                        //creerLigneCommande
+                        if (!temp[i].isEmpty())
+                           reclamationType =  temp[i];
+                        
+                       
                   }
                  count++;   
                 

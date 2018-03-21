@@ -71,7 +71,7 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
     
     @Override
     public List<Lot> getLot(String query, ArrayList<Parametre> params) throws Exception{
-        return lotFacade.getLot(query, params);
+        return lotFacade.getLots(query, params);
     }
 
     public void creerEmployeMagasin(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp, Role role, Magasin magasin, List<Categorie> listeCat ) throws  Exception
@@ -119,7 +119,7 @@ public class DirecteurMagasin implements DirecteurMagasinLocal {
         articleMagasinFacade.modifierQuantiteStock(articleMag, quantite);
         if (lot !=null)
         {
-            lotFacade.modifierQuantiteLot(quantite, lot);   
+            lotFacade.enleverQuantiteLot(lot, quantite);   
         }
         
         return ligne; 

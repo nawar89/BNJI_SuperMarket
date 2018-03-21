@@ -11,6 +11,7 @@ import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Casse;
 import EntityBean.Categorie;
+import EntityBean.ChefRyon_Categorie;
 import EntityBean.Employe;
 import EntityBean.Livraison;
 import EntityBean.Lot;
@@ -148,6 +149,8 @@ public class DirecteurMagasin extends HttpServlet {
             request.setAttribute("message", message);
         }else if (act.equals("choixArticleCasse")){
             finaliserLigneCasse(request,response);
+        }else if (act.equals("enregistreLigneCasse")){
+            enregistrerLigneCasse(request,response);
         }
 
     }
@@ -425,13 +428,47 @@ HttpServletResponse response) throws ServletException, IOException
             mesParam = new ArrayList<Parametre>();
             Employe employeCo = (Employe) sess.getAttribute("employeCo");
             Parametre p = null;
-            p = new Parametre("1","long",employeCo.getMagasin().getId());
+            /// je récupère les affectations de mon agent de rayon
+            List<ChefRyon_Categorie> listeCatEmploye = employeCo.getChefRyon_Categories();
+            
+            List<Long> idCategories;
+            idCategories = new ArrayList<Long>();
+            for (ChefRyon_Categorie association : listeCatEmploye)
+            {
+                Long i = association.getCategorie().getId();
+                idCategories.add(i);
+            }
+            /// je construit ma requete avec les catégories (la taille de la requete dépend du nombre d'affectation de mon employé
+            String requeteArticle = Requete.getArticlesMagasinParMagasinCategorie;
+            
+            
+            for (int i = 1; i<= idCategories.size(); i++)
+            {
+                if(i==1){
+                    requeteArticle = requeteArticle + " AND (";
+                }
+                if(i>1){
+                    requeteArticle = requeteArticle+" OR";
+                }
+                requeteArticle = requeteArticle + " c.id = ?"+i;
+                String position = Integer.toString(i);
+                p = new Parametre(position,"long",idCategories.get(i-1));
+                mesParam.add(p);
+                if (i == (idCategories.size()))
+                {
+                   requeteArticle = requeteArticle + " )" ; 
+                }  
+            }
+            String lastPosition = Integer.toString(idCategories.size()+1);
+            requeteArticle = requeteArticle + " AND m.id =?"+lastPosition;
+            p = new Parametre(lastPosition,"long",employeCo.getMagasin().getId());
             mesParam.add(p);
-            List<ArticleMagasin> listeArticlesMagasin = directeurMagasin.getArticleMagasin(Requete.getArticlesMagasinParMagasin+" AND m.id =?1", mesParam);
-            //List<Lot> listeLots = directeurMagasin.getLot(Requete.getLotParMagasin+ " AND m.id = ?1 ", mesParam);
+            List<ArticleMagasin> listeArticlesMagasin = directeurMagasin.getArticleMagasin(requeteArticle, mesParam);
             mesParam.clear();
             
             Date d = new Date();
+            long time = d.getTime();
+            d.setTime((time / 1000) * 1000);
             d.setHours(0);
             d.setMinutes(0);
             d.setSeconds(0);
@@ -470,15 +507,78 @@ HttpServletResponse response) throws ServletException, IOException
 {
         try {
             HttpSession sess=request.getSession(true);
-            String idArticleMagasin = request.getParameter( "idArticleMagasin" );
+            String[] articlesMagasin = request.getParameterValues("idArticle" );
             Employe employeCo =(Employe)sess.getAttribute("employeCo");
+            String idCasse = request.getParameter("idCasse");
             mesParam = new ArrayList<Parametre>();
+            List<String> listIdArticle = new ArrayList<>();
+            listIdArticle =  Arrays.asList(articlesMagasin);
+            String idArticleMagasin= listIdArticle.get(0);
             
-            List<Casse> listeCasses = directeurMagasin.getCasse(Requete.getCasseParEmploye + " AND a.id = ?1 AND c.date_casse = ?2", mesParam);
+            Integer idArticle = Integer.parseInt(idArticleMagasin); 
+            
+            Parametre p = new Parametre("1", "int",idArticle);
+            mesParam.add(p);
+            ArticleMagasin article = (ArticleMagasin)Aide.getObjectDeListe(directeurMagasin.getArticleMagasin(Requete.getArticleMagasin+ " AND a.id = ?1", mesParam).toArray());
+            List<Lot> listeLots = administration.getLots(Requete.getLotParMagasin + " AND a.id = ?1", mesParam);
+            mesParam.clear();
+            Integer i = Integer.parseInt(idCasse);
+            p = new Parametre("1", "long", i);
+            mesParam.add(p);
+            Casse casse = (Casse)Aide.getObjectDeListe(directeurMagasin.getCasse(Requete.getCasses+ " AND c.id = ?1", mesParam).toArray());
             jspClient = "/JSP_Isa/CreerLigneCasse.jsp"; 
+            
             sess.setAttribute("employeCo", employeCo);
+            request.setAttribute("listeLots", listeLots);
             request.setAttribute("casse", casse);
+            request.setAttribute("articleMag", article);
             message = "";
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";   
+        }  
+}
+      
+                  /////////////////////////////////////////////////////////////
+      protected void enregistrerLigneCasse(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+        try {
+            HttpSession sess=request.getSession(true);
+            String idLot = request.getParameter( "idLot" );
+            Employe employeCo =(Employe)sess.getAttribute("employeCo");
+            String idCasse = request.getParameter("idCasse");
+            String quantite = request.getParameter("quantite");
+            String idArticleMagasin = request.getParameter("idArticleMag");
+            message = "";
+            Integer q = Integer.parseInt(quantite);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Lot lot = null;
+            
+            if (idLot != null)
+            {
+                Integer i = Integer.parseInt(idLot);
+                p = new Parametre("id","long", i);
+                mesParam.add(p);
+                List<Lot> listeLots = directeurMagasin.getLot(Requete.getLots+ " AND l.id = :id", mesParam);
+                lot = (Lot)Aide.getObjectDeListe(listeLots.toArray());
+            }
+            mesParam.clear();
+            Integer i = Integer.parseInt(idArticleMagasin);
+            p = new Parametre("1", "long", i);
+            mesParam.add(p);
+            ArticleMagasin article = (ArticleMagasin)Aide.getObjectDeListe(directeurMagasin.getArticleMagasin(Requete.getArticleMagasin+ " AND a.id = ?1", mesParam).toArray());
+            mesParam.clear();
+            Integer id = Integer.parseInt(idCasse);
+            
+            p = new Parametre("id", "long", id);
+            mesParam.add(p);
+            Casse casse = (Casse)Aide.getObjectDeListe(directeurMagasin.getCasse(Requete.getCasses+ " AND c.id = :id", mesParam).toArray());
+            
+            directeurMagasin.creerLigneCasse(lot, article, q, casse);
+            creationCasse(request,response);
+            request.setAttribute("message", message);   
         } catch (Exception exe) {
             message = exe.getMessage();
             jspClient = "/JSP_Pages/Page_Message.jsp";   

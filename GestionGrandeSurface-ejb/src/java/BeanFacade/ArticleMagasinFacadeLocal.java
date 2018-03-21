@@ -38,6 +38,10 @@ public interface ArticleMagasinFacadeLocal {
     List<ArticleMagasin> getArticleMagasin(String query, ArrayList<Parametre> params) throws Exception;
 
     void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix);
+    
+    void ajouterQuantite(ArticleMagasin articleMagasin, int quantite) ;
+    
+    void enleverQuantite(ArticleMagasin articleMagasin, int quantite);
 
     void modifierQuantiteStock(ArticleMagasin article, int quantite);
 }

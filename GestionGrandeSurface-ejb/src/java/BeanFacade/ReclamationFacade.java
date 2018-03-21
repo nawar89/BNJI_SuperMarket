@@ -5,8 +5,9 @@
  */
 package BeanFacade;
 
-import EntityBean.ArticleMagasin;
-import EntityBean.Lot;
+import EntityBean.Ligne_livraison;
+import EntityBean.Reclamation;
+import EntityBean.Type_Reclamation;
 import Structure.Aide;
 import Structure.Parametre;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import javax.persistence.Query;
  * @author Nawar
  */
 @Stateless
-public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
+public class ReclamationFacade extends AbstractFacade<Reclamation> implements ReclamationFacadeLocal {
 
     @PersistenceContext(unitName = "GestionGrandeSurface-ejbPU")
     private EntityManager em;
@@ -32,22 +33,24 @@ public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
         return em;
     }
 
-    public LotFacade() {
-        super(Lot.class);
+    public ReclamationFacade() {
+        super(Reclamation.class);
     }
 
     @Override
-    public void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article) {
-        Lot l = new Lot();
-        l.setDate_promption(date_de_peremption);
-        l.setDate_promption(date_de_peremption);
-        l.setArticleMagasin(article);
-        em.persist(l);
+    public void creerReclamation(String rec, Type_Reclamation type, Ligne_livraison ligne,Date dateRec) {
+        Reclamation r = new Reclamation();
+        r.setReclamation(rec);
+        r.setEtat_Reclamation(type);
+        r.setLigneLivraison(ligne);
+        r.setDate_reclamation(dateRec);
+        em.persist(r);
     }
     
-     @Override
-    public List<Lot> getLots(String query, ArrayList<Parametre> params) throws Exception{
-        List<Lot> lots = null;
+    
+      @Override
+    public List<Reclamation> getReclamations(String query, ArrayList<Parametre> params) throws Exception{
+        List<Reclamation> recs = null;
         try{
          
             Query q = em.createQuery(query);
@@ -57,23 +60,12 @@ public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            lots = q.getResultList();
+            recs = q.getResultList();
         }catch(Exception exe){throw exe;}
-        return lots;
-    }
-
-    @Override
-    public void ajouterQuantiteLot(Lot lot, int quantite) {
-        lot.setQuantite_de_lot(lot.getQuantite_de_lot()+quantite);
-        em.merge(lot);
+        return recs;
     }
     
-    @Override
-    public void enleverQuantiteLot(Lot lot, int quantite) {
-        lot.setQuantite_de_lot(lot.getQuantite_de_lot()-quantite);
-        em.merge(lot);
-    }
-
+    
     
     
 }

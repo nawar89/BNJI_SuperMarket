@@ -5,15 +5,17 @@
  */
 package BeanFacade;
 
+import EntityBean.ArticleMagasin;
 import EntityBean.Lot;
 import Structure.Parametre;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author i.silvestre
+ * @author Nawar
  */
 @Local
 public interface LotFacadeLocal {
@@ -32,9 +34,13 @@ public interface LotFacadeLocal {
 
     int count();
 
-    void modifierQuantiteLot(int quantite, Lot lot);
+    void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article);
     
-    public List<Lot> getLot(String query, ArrayList<Parametre> params) throws Exception ; 
+    List<Lot> getLots(String query, ArrayList<Parametre> params) throws Exception;
+
+    void ajouterQuantiteLot(Lot lot, int quantite);
+    
+    void enleverQuantiteLot(Lot lot, int quantite);
     
     
 }

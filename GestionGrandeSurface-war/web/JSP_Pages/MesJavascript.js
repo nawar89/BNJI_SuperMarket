@@ -569,6 +569,8 @@ function AfficherReclamationLigneLivraison(div,table) {
                                             div.style.display = "block";
                                             //document.getElementById('recDev').style.visibility = 'visible';
                                             document.getElementsByName('ligneLivraisonID').value = row.getElementsByTagName("td")[1].innerHTML;
+                                            row.getElementsByTagName("td")[7].innerHTML= acepte;
+                                            console.log("row7 "+row.getElementsByTagName("td")[7].innerHTML);
          
                                      }else {
                                          cell2.value = livre;
@@ -638,8 +640,20 @@ function doSaveLivraisonLigneAgent(table) {
               for (var j=0;j < tableData.length;j++){
                  arrayOfThisRow.push(tableData[j].innerHTML);
                  //alert(tableData[j].innerHTML);
+                 
                  ok = true;
-                 document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[j].innerHTML+",";
+                 if (j===1 || j===5 || j===6)
+                 {
+                      document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[j].innerHTML+",";
+                 }else
+                 if (j===7){
+                     if (tableData[j].innerHTML !== ""){
+                         
+                       document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[j].innerHTML+",";   
+                     }else document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[3].innerHTML+",";   
+                    
+                 }
+                
                  
               }
             myTableArray.push(arrayOfThisRow);
@@ -654,4 +668,4 @@ function doSaveLivraisonLigneAgent(table) {
             
 }
 
-//////////////////////////////////////////////////////:
+////////////////////////////////////////////////////////////////////////////////////

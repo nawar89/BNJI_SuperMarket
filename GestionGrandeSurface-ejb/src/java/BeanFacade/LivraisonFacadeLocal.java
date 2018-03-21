@@ -42,4 +42,6 @@ public interface LivraisonFacadeLocal {
     List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
     
     void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception;
+    
+    void modifierEtat(Livraison liv, Etat_Livraison mension) throws Exception ;
 }

@@ -6,17 +6,22 @@
 package BeanSession;
 
 import EntityBean.Article;
+import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
+import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
+import EntityBean.Lot;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
+import EntityBean.Reclamation;
 import EntityBean.Role;
 import EntityBean.SousCategorie;
+import EntityBean.Type_Reclamation;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +59,6 @@ public interface AdministrationLocal {
     
     List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception;
     
-
     List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
     
     List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;
@@ -68,5 +72,29 @@ public interface AdministrationLocal {
     void modifierLivraison(Date date_livraison, Etat_Livraison mension, Livraison liv,Employe agentLivrasion) throws Exception;
     
     List<Livraison> getLivraisons(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void creerLigneLivraison(int quantite_livree, int quantite_aceptee, Article article, Livraison livraison,Date date_de_peremption);
+    
+    void modifierLigneLivraison(Ligne_livraison lignelivraison, int quantite_accepte) ;
+    
+    List<Ligne_livraison> getLignesLivraison(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void creerReclamation(String rec, Type_Reclamation type, Ligne_livraison ligne,Date dateRec) ;
+    
+    List<Reclamation> getReclamations(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void modifierEtat(Livraison liv, Etat_Livraison mension) throws Exception;
+    
+    void creerLot(Date date_de_peremption, int quantite, ArticleMagasin article);
+    
+    List<Lot> getLots(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void ajouterQuantite(ArticleMagasin articleMagasin, int quantite);
+    
+    void enleverQuantite(ArticleMagasin articleMagasin, int quantite);
+    
+    void ajouterQuantiteLot(Lot lot, int quantite);
+    
+    void enleverQuantiteLot(Lot lot, int quantite);
     
 }
