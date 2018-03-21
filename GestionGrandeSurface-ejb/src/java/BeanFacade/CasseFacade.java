@@ -59,7 +59,9 @@ public class CasseFacade extends AbstractFacade<Casse> implements CasseFacadeLoc
                 }
             }
             casse = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return casse;
     }
     

@@ -64,7 +64,9 @@ public class ArticleMagasinFacade extends AbstractFacade<ArticleMagasin> impleme
                 }
             }
             articles = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return articles;
     }
     //Modifier Prix de vente : 

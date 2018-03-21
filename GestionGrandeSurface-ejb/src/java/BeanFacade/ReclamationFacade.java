@@ -61,7 +61,9 @@ public class ReclamationFacade extends AbstractFacade<Reclamation> implements Re
                 }
             }
             recs = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return recs;
     }
     

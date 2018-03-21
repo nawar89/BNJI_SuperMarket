@@ -53,7 +53,9 @@ public class CategorieFacade extends AbstractFacade<Categorie> implements Catego
                 }
             }
             cats = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return cats;
     }
     

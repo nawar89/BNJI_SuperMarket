@@ -71,7 +71,9 @@ public class PromotionFacade extends AbstractFacade<Promotion> implements Promot
                 }
             }
             pros = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return pros;
     }
     

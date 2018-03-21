@@ -8,10 +8,13 @@ package BeanSession;
 import BeanFacade.ArticleFacadeLocal;
 import BeanFacade.ArticleMagasinFacadeLocal;
 import BeanFacade.BonCommandeFacadeLocal;
+import BeanFacade.CasseFacadeLocal;
 import BeanFacade.CategorieFacadeLocal;
+import BeanFacade.ChefRyon_CategorieFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.FournisseurFacadeLocal;
 import BeanFacade.LigneCommandeFacadeLocal;
+import BeanFacade.Ligne_CasseFacadeLocal;
 import BeanFacade.Ligne_livraisonFacadeLocal;
 import BeanFacade.LivraisonFacadeLocal;
 import BeanFacade.LotFacadeLocal;
@@ -23,11 +26,13 @@ import BeanFacade.SousCategorieFacadeLocal;
 import EntityBean.Article;
 import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
+import EntityBean.Casse;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
+import EntityBean.Ligne_Casse;
 import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
 import EntityBean.Lot;
@@ -39,8 +44,10 @@ import EntityBean.Reclamation;
 
 import EntityBean.SousCategorie;
 import EntityBean.Type_Reclamation;
+import Structure.Aide;
 
 import Structure.Parametre;
+import Structure.Requete;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +60,15 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private Ligne_CasseFacadeLocal ligne_CasseFacade;
+
+    @EJB
+    private ChefRyon_CategorieFacadeLocal chefRyon_CategorieFacade;
+
+    @EJB
+    private CasseFacadeLocal casseFacade;
 
     @EJB
     private ArticleMagasinFacadeLocal articleMagasinFacade1;
@@ -286,6 +302,62 @@ public class Administration implements AdministrationLocal {
     public Livraison creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception {
        return livraisonFacade.creerLivraison(date_livraison, date_livraison_prevu, fournisseur, bon_commande, mension);
     }
+    
+     @Override
+    public List<Casse> getCasse(String query, ArrayList<Parametre> params) throws Exception{
+        return casseFacade.getCasses(query, params);
+    }
+    @Override
+     public void creerEmployeMagasin(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp, Role role, Magasin magasin, List<Categorie> listeCat ) throws  Exception
+    {
+        employeFacade.creerEmployee(nom, prenom, adresse, telephone, email, login, mdp, role, magasin );
+        if (role.getNom().equals("ChefRayon") || role.getNom().equals("AgRayon"))
+        {
+            try {
+                ArrayList<Parametre> mesParam = new ArrayList<>();
+                Parametre p = new Parametre("login", "String", login);
+                mesParam.add(p);
+                p = new Parametre("mdp", "String", mdp);
+                mesParam.add(p);
+                
+                List<Employe> listeEmp = getEmploye(Requete.getEmployes + " AND e.login = :login AND e.mdp = :mdp", mesParam);
+                if(!listeEmp.isEmpty() && listeEmp.size()==1)
+                {
+                    Employe employe = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
+                
+                    listeCat.forEach((cat) -> {
+                        chefRyon_CategorieFacade.creerRelationEmployeRayon(employe, cat);
+                    });
+                }
+                
+                
+            } catch (Exception ex) {
+                throw ex;
+            }
+            
+        }
+         
+     }
+     
+      @Override
+    public Casse creerCasse(Employe agentRayon, Date date) {
+        Casse casse = casseFacade.creerCasse(agentRayon, date);
+        return casse;
+    }
+
+    @Override
+    public Ligne_Casse creerLigneCasse(Lot lot, ArticleMagasin articleMag, int quantite, Casse casse) 
+    {
+        Ligne_Casse ligne = ligne_CasseFacade.creerLigneCasse(casse, articleMag, quantite);
+        articleMagasinFacade.modifierQuantiteStock(articleMag, quantite);
+        if (lot !=null)
+        {
+            lotFacade.enleverQuantiteLot(lot, quantite);   
+        }
+        
+        return ligne; 
+    }
+    
     
     
 

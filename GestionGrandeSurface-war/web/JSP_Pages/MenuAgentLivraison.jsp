@@ -23,7 +23,7 @@
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="ControleAdministration?action=GoToConsulterLvraison">Consulter livraison</a></li>
-                      <li><a href="ControleAdministration?action=CreerLivraison">Creer Livraison</a></li>
+                      <li><a href="ControleAdministration?action=GOTOCreerLivraison">Creer Livraison</a></li>
                     </ul>
                   </li>
                   

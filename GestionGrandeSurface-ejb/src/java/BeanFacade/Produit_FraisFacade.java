@@ -69,7 +69,9 @@ public class Produit_FraisFacade extends AbstractFacade<Produit_Frais> implement
                 }
             }
             prod = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return prod;
     }
 

@@ -8,11 +8,13 @@ package BeanSession;
 import EntityBean.Article;
 import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
+import EntityBean.Casse;
 import EntityBean.Categorie;
 import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
 import EntityBean.LigneCommande;
+import EntityBean.Ligne_Casse;
 import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
 import EntityBean.Lot;
@@ -104,5 +106,13 @@ public interface AdministrationLocal {
     void modifierPrixVente(ArticleMagasin articleMagasin, float nouveauPrix);
     
     Livraison creerLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception;
+    
+    List<Casse> getCasse(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void creerEmployeMagasin(String nom, String prenom, String adresse, String telephone, String email, String login, String mdp, Role role, Magasin magasin, List<Categorie> listeCat ) throws  Exception;
+    
+    Casse creerCasse(Employe agentRayon, Date date);
+    
+    Ligne_Casse creerLigneCasse(Lot lot, ArticleMagasin articleMag, int quantite, Casse casse) ;
     
 }

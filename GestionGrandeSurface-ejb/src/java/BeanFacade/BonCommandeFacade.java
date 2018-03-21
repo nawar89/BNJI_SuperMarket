@@ -65,7 +65,7 @@ public class BonCommandeFacade extends AbstractFacade<BonCommande> implements Bo
                 }
             }
             commandes = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){}
         return commandes;
     }
     

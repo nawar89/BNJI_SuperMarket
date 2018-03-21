@@ -58,7 +58,9 @@ public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
                 }
             }
             lots = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return lots;
     }
 

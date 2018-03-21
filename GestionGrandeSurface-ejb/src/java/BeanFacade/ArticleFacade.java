@@ -67,7 +67,8 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
                 }
             }
             articles = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){//throw exe;
+        }
         return articles;
     }
     

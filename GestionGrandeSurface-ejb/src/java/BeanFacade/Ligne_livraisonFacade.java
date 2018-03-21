@@ -67,7 +67,9 @@ public class Ligne_livraisonFacade extends AbstractFacade<Ligne_livraison> imple
                 }
             }
             lignes = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return lignes;
     }
     

@@ -56,7 +56,9 @@ public class SousCategorieFacade extends AbstractFacade<SousCategorie> implement
                 }
             }
             cats = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return cats;
     }
     

@@ -63,7 +63,9 @@ public class EmployeFacade extends AbstractFacade<Employe> implements EmployeFac
                 }
             }
             employes = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return employes;
     }
      @Override

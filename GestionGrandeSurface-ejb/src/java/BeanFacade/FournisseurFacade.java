@@ -63,7 +63,9 @@ public class FournisseurFacade extends AbstractFacade<Fournisseur> implements Fo
                 }
             }
             articles = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){//throw exe;
+            
+        }
         return articles;
     }
     

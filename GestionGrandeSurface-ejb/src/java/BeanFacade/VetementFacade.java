@@ -68,7 +68,9 @@ public class VetementFacade extends AbstractFacade<Vetement> implements Vetement
                 }
             }
             vetement = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return vetement;
     }
     

@@ -67,7 +67,9 @@ public class LivraisonFacade extends AbstractFacade<Livraison> implements Livrai
                 }
             }
             livraisons = q.getResultList();
-        }catch(Exception exe){throw exe;}
+        }catch(Exception exe){
+            //throw exe;
+        }
         return livraisons;
     }
     
