@@ -669,3 +669,124 @@ function doSaveLivraisonLigneAgent(table) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
+
+
+function refrechQuantiteLivree(table) {
+    
+ var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                                 
+                                
+                                 var acepte = document.getElementsByName('acepte').value;
+                                  document.getElementsByName('acepte').value="";
+                                  
+                                 row.getElementsByTagName("td")[6].innerHTML= document.getElementsByName('dateTemp').value;
+                                 row.getElementsByTagName("td")[5].innerHTML= acepte;
+                                 console.log("row4 "+row.getElementsByTagName("td")[5].innerHTML);
+                                 document.getElementsByName('dateTemp').value="";
+         
+                                    
+                                         
+                      };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+        
+        
+    }  
+    
+            
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+function ActualiserTableCommandeAlivrer(table,tableTemp,ddl1) {
+ var rowsSupp = table.getElementsByTagName("tr");
+  for (i = 0; i < rowsSupp.length; i++) {
+      rowsSupp.deleteRow(i);
+  }       
+ var rows = tableTemp.getElementsByTagName("tr");
+ var selectedValue = ddl1.options[ddl1.selectedIndex].value;
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                       if (row.getElementsByTagName("td")[0].innerHTML == selectedValue){
+                           row.style.display = "none";
+                           var Newrow = table.insertRow(1);
+                            var cell1 = Newrow.insertCell(0);
+                            var cell2 = Newrow.insertCell(1);
+                            var cell3 = Newrow.insertCell(2);
+                            var cell4 = Newrow.insertCell(3);
+                            var cell5 = Newrow.insertCell(4);
+                            var cell6 = Newrow.insertCell(5);
+                            cell1.innerHTML = row.getElementsByTagName("td")[0];
+                            cell2.innerHTML = row.getElementsByTagName("td")[1];
+                            cell3.innerHTML = row.getElementsByTagName("td")[2];;
+                            cell4.innerHTML = row.getElementsByTagName("td")[3];
+                            cell5.innerHTML = row.getElementsByTagName("td")[6];
+                            cell6.innerHTML = row.getElementsByTagName("td")[7];
+                            
+                           
+                           
+                       } else  row.style.display = "";        
+                                         
+                };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+        
+        
+    }  
+    
+            
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
+
+
+function chargerDonnees(table) {
+            var ok = false;
+            document.forms["demo-form2"]["ligneLivraisonQte"].value = "";
+            var myTableArray = [];
+            var tr = table.getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+            //document.getElementsByName('lignes').innerHTML = document.getElementsByName('lignes').innerHTML+"Ligne,"
+            var arrayOfThisRow = [];
+            var tableData = tr[i].getElementsByTagName("td");
+            if (tableData.length > 0) {
+              for (var j=0;j < tableData.length;j++){
+                 arrayOfThisRow.push(tableData[j].innerHTML);
+                 //alert(tableData[j].innerHTML);
+                 
+                 ok = true;
+                 if(j===0 || j===1 || j===4 || j===5 )
+                 document.forms["demo-form2"]["ligneLivraisonQte"].value= document.forms["demo-form2"]["ligneLivraisonQte"].value + tableData[j].innerHTML+",";
+                 
+                
+                 
+              }
+            myTableArray.push(arrayOfThisRow);
+             }
+           }
+          
+           console.log("lignes: " +document.forms["demo-form2"]["ligneLivraisonQte"].value);
+           //document.forms["CommandeForm"]["lignes"].value = "1";
+         //myTableArray = myTableArray.join(", ");
+        
+         return ok;
+            
+}
+
+

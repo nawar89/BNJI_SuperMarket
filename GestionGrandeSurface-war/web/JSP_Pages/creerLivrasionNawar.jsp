@@ -4,6 +4,7 @@
     Author     : Jihane
 --%>
 
+<%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.BonCommande"%>
 <%@page import="EntityBean.Employe"%>
@@ -82,7 +83,7 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControleAdministration">
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  onclick="chargerDonnees(document.getElementById('tableCache'))" method="post" action="ControleAdministration">
                         <div class="form-group">
                         <label for="date_p" class="control-label col-md-3 col-sm-3 col-xs-12">Date de Livraison prévu</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -90,29 +91,96 @@
                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                         </div>
-                    <!-- <div class="form-group">
-                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Chercher Bon commande par magasin</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" id = "mag" name="ChefSelect" onchange="RefreshComboBox(this,document.getElementById('commandesel'),document.getElementById('commandeseltemp'))">
-                            <%--<% List<Employe> emp = employes ;
-                            for(Employe e : emp) {%>
-                            <option value ="<%=e.getId()%>"> <%=e.getMagasin().getNom()%> : <%=e.getNom()%> </option>
-                            <% }%> --%>
-                            </select>
-                        </div>
-                       </div>-->
-                            
+                   
                        <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Choisissez la commande à livrer</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" id = "commandesel" name="CommandeSelect">
+                            <select class="form-control" id = "commandesel" name="CommandeSelect" onchange="ActualiserTableCommandeAlivrer(document.getElementById('tableCache'),document.getElementById('myTable'),this)">
                         <% List<BonCommande> com = commandes ;
                         //if (!emp.isEmpty())  {
                         //Employe e = emp.get(0);
                         for(BonCommande b : com ){//if(b.getChefRyon().getId()==e.getId()){%>
-                           <option class="filterOption" value ="<%= b.getId()%>"><%=b.getChefRyon().getNom()%> </option>
+                           <option class="filterOption" value ="<%= b.getId()%>"><%=b.getChefRyon().getMagasin().getNom()+"("+b.getDate_commande()+")" %> </option>
                             <% }%>
                         </select>
+                        
+                         
+                        <br />   
+                          
+                          
+                       <table id = "myTable" class="table table-striped jambo_table bulk_action">
+                      <thead>
+                        <tr role="row">
+                            
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">#</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">ID Article</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Quantité commandée</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité livrée</th> 
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date permeption</th> 
+                        </tr>
+                      </thead>
+                      <tbody style="cursor:pointer">
+                        <% if (com !=null){
+                            for (int i=0;i<com.size();i++){
+                            for(LigneCommande ligne:com.get(i).getLigneCommandes()){
+                                String disp = "";
+                                if (i!=0) disp = "style='display: none'"; 
+                        %>
+                      <tr <%=disp%>>
+                      <td><%=ligne.getBonCommande().getId()%></td>
+                      <td><%=ligne.getArticle().getId() %></td>
+                      <td><%=ligne.getArticle().getLibelle() %></td>
+                      <td><%=ligne.getQuantite()%></td>
+                      <td><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;refrechQuantiteLivree(document.getElementById('myTable'));" name="nom" class="form-control" value ="<%=ligne.getQuantite()%>" /></td>
+                      <td><input id="date_pr" class="form-control col-md-7 col-xs-12" type="date" name="date_p"></td>
+                      <td style="display: none"><%=ligne.getQuantite()%></td>
+                      <td style="display: none"></td>
+                            
+                        </tr>
+                        <%}}}%>
+                           
+                        
+                      </tbody>
+                   
+                    </table>
+                        
+                        
+                        
+                        
+                        
+                        <table id = "tableCache" class="table table-striped jambo_table bulk_action" style="display: none">
+                      <thead>
+                        <tr role="row">
+                            
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">#</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">ID Article</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Quantité commandée</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité livrée</th> 
+                        </tr>
+                      </thead>
+                      <tbody style="cursor:pointer">
+                        <% if (com !=null){
+                            for (BonCommande bon:com){
+                            for(LigneCommande ligne:bon.getLigneCommandes()){
+                        %>
+                      <td><%=ligne.getBonCommande().getId() %></td>
+                      <td><%=ligne.getArticle().getId() %></td>
+                      <td><%=ligne.getArticle().getLibelle() %></td>
+                      <td><%=ligne.getQuantite()%></td>
+                     
+                      <td ><%=ligne.getQuantite()%></td>
+                       <td></td>
+                      
+                            
+                        
+                        <%}}}%>
+                           
+                        
+                      </tbody>
+                   
+                    </table>
                         
                         <!--<select class="form-control" id = "commandeseltemp" style="display: none" >
                          <%--<% if (!emp.isEmpty())  {
@@ -127,9 +195,12 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <a href="ControlChef?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
+                          <a href="ControleAdministration?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
 		          <button class="btn btn-primary" type="reset">Reset</button>
-                          <input type="hidden" name="action" value="CreerL"/>
+                          <input type="hidden" name="action" value="FromCreerLivraison"/>
+                          <input type="hidden" name="acepte" class="form-control" />
+                          <input type="hidden" name="dateTemp" class="form-control" />
+                          <input type="hidden" name="ligneLivraisonQte" class="form-control" />
                           <button type="submit" class="btn btn-success">Créer</button>
                         </div>
                       </div>

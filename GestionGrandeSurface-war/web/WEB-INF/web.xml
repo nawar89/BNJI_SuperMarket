@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <servlet>
+        <servlet-name>DirecteurMagasin</servlet-name>
+        <servlet-class>Servlet.DirecteurMagasin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControleAdministration</servlet-name>
+        <servlet-class>Servlet.ControleAdministration</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>ControlChef</servlet-name>
         <servlet-class>servletChefRayon.ControlChef</servlet-class>
     </servlet>
     <servlet-mapping>
+        <servlet-name>DirecteurMagasin</servlet-name>
+        <url-pattern>/DirecteurMagasin</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>ControleAdministration</servlet-name>
+        <url-pattern>/ControleAdministration</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
         <servlet-name>ControlChef</servlet-name>
         <url-pattern>/ControlChef</url-pattern>
     </servlet-mapping>
