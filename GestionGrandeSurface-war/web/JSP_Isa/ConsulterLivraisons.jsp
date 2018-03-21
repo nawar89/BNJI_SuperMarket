@@ -145,24 +145,28 @@
                         
                           <% float total = 0.01f ;
                               List<Livraison> lesLivraisons = listLivraisons;
-                        for( BonCommande r : lesCommandes){ 
-                        for (LigneCommande l : r.getLigneCommandes()) {
-                            total = total + (l.getPrix_achat()*l.getQuantite()) ;}
-                          total = total - 0.01f ;%>
+                        for(Livraison l : lesLivraisons){ %>
                           
                       <tr role="row" class="odd">
                         <td>
 			</td>
                         <th class="sorting_1">
-                            <input type="radio" class="flat" name="idCommande" value ="<%=r.getId()%>" required="" data-parsley-multiple="commande" style="position: absolute; opacity: 0;">
+                            <input type="radio" class="flat" name="idLivraison" value ="<%=l.getId()%>" required="" data-parsley-multiple="livraison" style="position: absolute; opacity: 0;">
                            
                         </th>
-						  
-                          <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
-                          <td><%= r.getFournisseur().getNom()%></td>
-                          <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
-                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
-                          <td><%=total %> € </td>
+			  <td><%= l.getFournisseur().getNom() %></td> 
+                          <td><%= l.getMention() %></td>
+                          
+                          <% if (l.getAgentLivraison()!= null) { %>
+                          
+                          <td><%= l.getAgentLivraison().getPrenom() %> <%= l.getAgentLivraison().getNom() %></td>
+                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(l.getDate_livraison_prevu()) %></td>
+                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(l.getDate_livraison()) %></td> 
+                          <%} else {%>
+                          <td>Pas d'agent en charge </td>
+                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(l.getDate_livraison_prevu()) %></td>
+                          <td> Livraison non reçue </td> 
+                          <%}%>
                       </tr>
                         
                         <%;}%>
@@ -183,7 +187,7 @@
                     </div>
                         <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                          <button id="send" type="submit" class="btn btn-success">Consulter le détail d'une commande</button>
+                          <button id="send" type="submit" class="btn btn-success">Consulter le détail d'une livraison</button>
                         </div>
                       </div>
                     </form>

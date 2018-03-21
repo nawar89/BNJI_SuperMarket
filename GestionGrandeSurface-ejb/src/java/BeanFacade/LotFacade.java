@@ -73,8 +73,7 @@ public class LotFacade extends AbstractFacade<Lot> implements LotFacadeLocal {
         lot.setQuantite_de_lot(lot.getQuantite_de_lot()-quantite);
         em.merge(lot);
     }
-    
-    
+
     
     
 }

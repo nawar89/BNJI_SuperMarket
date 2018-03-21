@@ -166,7 +166,6 @@
                         <%;}%>
                         
                       </tbody>
-                      </form>
                     </table>
                             </div>
                       
@@ -196,7 +195,6 @@
         
         <%@include file="footer.jsp" %>
       </div>
-    </div>
 <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

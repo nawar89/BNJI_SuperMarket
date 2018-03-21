@@ -28,8 +28,16 @@ public abstract class Requete {
     public static String getCommandesParMagasin = "select b from BonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
     public static String getLivraisonParMagasin = "select l from Livraison l join l.bonCommande c join c.chefRyon cr join cr.magasin m where 1=1" ;
     public static String getCommandes = "select b from BonCommande b where 1=1";
-    public static String getLigneLivraisons = "select l from Ligne_livraison l where 1=1";
+    public static String getLivraisonsParMagasin = "select l from Livraison l join l.bonCommande b join b.chefRyon cr join cr.magasin m where 1=1" ;
+    public static String getArticlesMagasinParMagasin = "select a from ArticleMagasin a join a.magasin m where 1=1" ;
+    public static String getLotParMagasin = "select l from Lot l join l.articleMagasin a join a.magasin m where 1=1" ;
     public static String getLots = "select l from Lot l where 1=1";
+    public static String getCasseParEmploye = "select c from Casse c join c.agentRayon a where 1=1";
+    public static String getLigneLivraisons = "select l from Ligne_livraison l where 1=1";
+    public static String getArticlesMagasinParMagasinCategorie = "select a from ArticleMagasin a join a.magasin m join a.article art join art.sousCategorie s join s.categorie c where 1=1" ;
+    public static String getCasses ="select c from Casse c where 1=1";
+    
     
 }
+
 

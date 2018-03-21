@@ -42,4 +42,6 @@ public interface ArticleMagasinFacadeLocal {
     void ajouterQuantite(ArticleMagasin articleMagasin, int quantite) ;
     
     void enleverQuantite(ArticleMagasin articleMagasin, int quantite);
+
+    void modifierQuantiteStock(ArticleMagasin article, int quantite);
 }

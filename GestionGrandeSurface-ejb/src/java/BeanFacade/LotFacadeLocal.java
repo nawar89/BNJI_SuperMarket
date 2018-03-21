@@ -43,5 +43,4 @@ public interface LotFacadeLocal {
     void enleverQuantiteLot(Lot lot, int quantite);
     
     
-    
 }

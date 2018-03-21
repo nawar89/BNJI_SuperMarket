@@ -85,6 +85,14 @@ public class ArticleMagasinFacade extends AbstractFacade<ArticleMagasin> impleme
         articleMagasin.setQuantite(articleMagasin.getQuantite()-quantite);
         em.merge(articleMagasin);
     }
+
+    @Override
+    public void modifierQuantiteStock(ArticleMagasin article, int quantite) {
+        int nouvQuantite = article.getQuantite() - quantite ;
+        article.setQuantite(nouvQuantite);
+        em.merge(article);
+    }
+    
    
     
 }

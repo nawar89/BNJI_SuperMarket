@@ -59,7 +59,6 @@ public interface AdministrationLocal {
     
     List<Promotion> getPromotions(String query, ArrayList<Parametre> params) throws Exception;
     
-
     List<SousCategorie> getSousCategories(String query, ArrayList<Parametre> params) throws Exception;
     
     List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception;

@@ -1,4 +1,4 @@
- <div class="navbar nav_title" style="border: 0;">
+  <div class="navbar nav_title" style="border: 0;">
               <a href="ControlChef?action=Accueil" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
             </div>
 
@@ -10,8 +10,8 @@
                 <img src="./Template/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>Chef de Rayon</h2>
+                <span>Welcome</span>
+                <h2></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -25,22 +25,11 @@
                       <li><a href="ControlChef?action=Accueil">Analyse des ventes</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> Fournisseurs <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i> Gestion Magasin <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CreerFour">Creer un Fournisseur </a></li>
-                      <li><a href="ControlChef?action=listerFour">Afficher Fournisseurs</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-desktop"></i> Articles <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CreerArticle">Créer un Article</a></li>
-                      <li><a href="modifierArticle">Modifier le prix de vente d'un article du magasin</a></li>
-                      <li><a href="ControlChef?action=listerArticle">Consulter les articles de votre rayon</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-table"></i> Livraisons <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="MainServlet?action=consulterLivr">Consulter les livraisons non comforme</a></li>
+                      <li><a href="DirecteurMagasin?action=loadCreationEmployeMagasin">Creer un Employé </a></li>
+                      <li><a href="DirecteurMagasin?action=consulterCommandes">Consulter les Commandes</a></li>
+                      <li><a href="DirecteurMagasin?action=consulterLivraisons">Consulter les Livraisons</a></li>
                     </ul>
                   </li>
                 </ul>
