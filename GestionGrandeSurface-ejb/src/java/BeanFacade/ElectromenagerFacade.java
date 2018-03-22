@@ -40,7 +40,7 @@ public class ElectromenagerFacade extends AbstractFacade<Electromenager> impleme
     
      //Creation article
     @Override
-    public void creerElec(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, int period_garantie) throws Exception {
+    public void creerElec(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img, int period_garantie) throws Exception {
         try {
         Electromenager elec = new Electromenager();
         elec.setLibelle(libelle);
@@ -50,6 +50,7 @@ public class ElectromenagerFacade extends AbstractFacade<Electromenager> impleme
         elec.setSousCategorie(sous_categorie);
         elec.setFournisseur(fournisseur);
         elec.setPeriod_garantie(period_garantie);
+        elec.setImg(img);
         em.persist(elec);  
     } catch(Exception exe){throw exe;}
     }

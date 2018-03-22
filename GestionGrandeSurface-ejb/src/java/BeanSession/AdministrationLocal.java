@@ -10,6 +10,7 @@ import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Casse;
 import EntityBean.Categorie;
+import EntityBean.Electromenager;
 import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
@@ -19,11 +20,13 @@ import EntityBean.Ligne_livraison;
 import EntityBean.Livraison;
 import EntityBean.Lot;
 import EntityBean.Magasin;
+import EntityBean.Produit_Frais;
 import EntityBean.Promotion;
 import EntityBean.Reclamation;
 import EntityBean.Role;
 import EntityBean.SousCategorie;
 import EntityBean.Type_Reclamation;
+import EntityBean.Vetement;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,5 +117,25 @@ public interface AdministrationLocal {
     Casse creerCasse(Employe agentRayon, Date date);
     
     Ligne_Casse creerLigneCasse(Lot lot, ArticleMagasin articleMag, int quantite, Casse casse) ;
+    
+    void creationFournisseur(String nom, String adresse, String telephone, String email,String mdp) throws Exception;
+    
+    void creationArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img) throws Exception ;
+    
+ void creationArticleMag(int quantite, float prix_vente_actuel, Article article, Magasin magasin) throws Exception;
+ 
+ void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img) throws Exception ;
+ 
+ List<Produit_Frais> getProdFrais(String query, ArrayList<Parametre> params) throws Exception;
+ 
+ void creationVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img,String taille, String coloris) throws Exception ;
+ 
+ List<Vetement> getVetement(String query, ArrayList<Parametre> params) throws Exception;
+ 
+ void creationElectromenager(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img,int period_garantie) throws Exception ;
+ 
+ List<Electromenager> getElectro(String query, ArrayList<Parametre> params) throws Exception;
+ 
+ void creationLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception ;
     
 }

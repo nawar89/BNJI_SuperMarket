@@ -39,7 +39,7 @@ public class VetementFacade extends AbstractFacade<Vetement> implements Vetement
     }
     //Creation article
     @Override
-    public void creerVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, String taille,String coloris) throws Exception {
+    public void creerVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img, String taille,String coloris) throws Exception {
         try {
         Vetement vetement = new Vetement();
         vetement.setLibelle(libelle);
@@ -50,6 +50,7 @@ public class VetementFacade extends AbstractFacade<Vetement> implements Vetement
         vetement.setFournisseur(fournisseur);
         vetement.setTaille(taille);
         vetement.setColoris(coloris);
+        vetement.setImg(img);
         em.persist(vetement);  
     } catch(Exception exe){throw exe;}
     }

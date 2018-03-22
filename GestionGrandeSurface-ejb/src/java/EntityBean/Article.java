@@ -256,6 +256,29 @@ public class Article implements Serializable {
     public void setFournisseur(Fournisseur fournisseur) {
         this.fournisseur = fournisseur;
     }
+    
+        private String img;
+
+    /**
+     * Get the value of img
+     *
+     * @return the value of img
+     */
+    public String getImg() {
+        return img;
+    }
+
+    /**
+     * Set the value of img
+     *
+     * @param img new value of img
+     */
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    
+    
    
     
 }

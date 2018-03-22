@@ -32,7 +32,7 @@ public interface Produit_FraisFacadeLocal {
     List<Produit_Frais> findAll();
 
     List<Produit_Frais> findRange(int[] range);
-    void creerProduitFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception;
+    void creerProduitFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img) throws Exception;
     List<Produit_Frais> getProduitFrais(String query, ArrayList<Parametre> params) throws Exception;
     int count();
     

@@ -23,11 +23,13 @@ import EntityBean.Lot;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
 import EntityBean.Role;
+import EntityBean.SousCategorie;
 import EntityBean.Type_Reclamation;
 import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
 import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Parameter;
@@ -57,6 +59,7 @@ public class ControleAdministration extends HttpServlet {
     public String jspClient = null;
     public String message   = null; 
     public String requete   = null;
+    public Date date = new Date();
     public final String DirNAT = "DirNat";
     public final String DirMag = "DirMag";
     public final String ChefRayon = "ChefRayon";
@@ -88,7 +91,7 @@ public class ControleAdministration extends HttpServlet {
             if ((act == null)||(act.equals("null")))
             {
                 // jspClient="/JSP_Pages/MenuDirectionNational.jsp";
-                jspClient="/Jihane_JSP/login.jsp";
+                jspClient="/JSP_Pages/Accueil.jsp";
             }else {  
 
                   verifierConnexion(request, response);
@@ -118,7 +121,7 @@ public class ControleAdministration extends HttpServlet {
     }
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-        protected void seConnecter(HttpServletRequest request,
+protected void seConnecter(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
    HttpSession sess=request.getSession(true);
@@ -146,7 +149,7 @@ HttpServletResponse response) throws ServletException, IOException
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case ChefRayon:
-                             jspClient = "/JSP_Pages/MenuChefRayon.jsp";
+                             jspClient = "/Jihane_JSP/Accueil.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
@@ -180,7 +183,7 @@ HttpServletResponse response) throws ServletException, IOException
         session.setAttribute("employeCo", employeConnecte);
         String act=request.getParameter("action");
         if (employeConnecte ==null && !act.equals("loginEmp") && !act.equals("loginFournisseur")){
-            jspClient="/Jihane_JSP/login.jsp";
+            jspClient="/JSP_Pages/Accueil.jsp";
         
         }else {
         
@@ -268,7 +271,18 @@ HttpServletResponse response) throws ServletException, IOException
         else if (act.equals("FromCreerLivraison")){
             FromLivraison(request,response); 
             request.setAttribute( "message", message );
-        }        
+        }  
+                
+        else if (act.equals("CreerArticle")){
+            GoTOArticle(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
+        else if (act.equals("FromCreerArticle")){
+            doActionCreerA(request,response); 
+            request.setAttribute( "message", message );
+        }
+        
         
       }
     }
@@ -1522,7 +1536,111 @@ HttpServletResponse response) throws ServletException, IOException
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////JIHANE///////////////////////////////////////////////////
+      
+protected void GoTOArticle(HttpServletRequest request, HttpServletResponse response) 
+              throws ServletException, IOException
+      {
+          
+          try{
+              requete=Requete.getCategories;
+              List<Categorie> listeCat = administration.getCategories(requete, null);
+              
+              if (listeCat == null){
+              listeCat = new ArrayList<>(); 
+              }
+              request.setAttribute( "categories", listeCat );
+              String req = "";
+              req=Requete.getFournisseurs;
+              List<Fournisseur> listeFour = administration.getFournisseur(req, null);
+              if (listeFour == null){
+              listeFour = new ArrayList<>(); 
+              }
+              request.setAttribute( "fournisseurs", listeFour );
+              jspClient="/Jihane_JSP/CreerArticle.jsp";
+              message = "";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/Jihane_JSP/Page_message.jsp";
+}
+}  
+
+
+protected void doActionCreerA(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+           
+       String libelle= request.getParameter("libelle");
+       String reference = request.getParameter("reference");
+       String description=request.getParameter("description");
+       String prix=request.getParameter("prix_achat_actuel");
+       String souscategory = request.getParameter( "SousCategorieSelect" );
+       String fourni= request.getParameter( "FournisseurSelect" );
+       String img = request.getParameter( "pic" );
+       String type = request.getParameter( "TypeSelect" );
+       
+       
+       if ( libelle.trim().isEmpty() || reference.trim().isEmpty() || prix.trim().isEmpty())
+       {
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
+       } 
+       else 
+       {
+                Integer souscatID= Integer.parseInt(souscategory);
+                System.out.println(souscatID);
+                Integer fourniID = Integer.parseInt(fourni);
+                Float prix_actuel = Float.parseFloat(prix);
+                
+                //Récupérer la sous-categorie
+                mesParam = new ArrayList<Parametre>();
+                requete= Requete.getSousCategories + " And s.id=:id";
+                Parametre s = new Parametre("id", "int", souscatID);
+                mesParam.add(s);
+                List<SousCategorie> listeSousCat=administration.getSousCategories(requete, mesParam);
+                System.out.println(listeSousCat.size());
+                if(listeSousCat==null)
+                {
+                    listeSousCat= new ArrayList<>();
+                }
+                //Récupérer le fournisseur
+                mesParam = new ArrayList<Parametre>();
+                requete=Requete.getFournisseurs + " And f.id=:id";
+                Parametre f = new Parametre("id", "int", fourniID);
+                mesParam.add(f);
+                List<Fournisseur> listeFour=administration.getFournisseur(requete, mesParam);
+                if(listeFour==null)
+                {
+                    listeFour = new ArrayList<>();
+                }
+                switch (type)
+                {
+                   case "0":
+                   administration.creationProdFrais(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0),img);  
+                   break;
+                   case "1":
+                   String taille = request.getParameter("taille");
+                   String coloris = request.getParameter("coloris");
+                   administration.creationVetement(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0),img, taille, coloris);
+                   break;
+                   case "2": 
+                   String garantie = request.getParameter("period_garantie");
+                   Integer periode_garantie=Integer.parseInt(garantie);
+                   administration.creationElectromenager(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0),img,periode_garantie);
+                   break;
+                   case "3":
+                   administration.creationArticle(libelle, reference, prix_actuel, date, description, listeSousCat.get(0), listeFour.get(0),img);
+                   break;
+                  }
+                message = "Article créé avec succès !";  
+                jspClient = "/Jihane_JSP/Page_message.jsp";
+        }
+         }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/Jihane_JSP/Page_message.jsp";
+         }
+      } 
+ //////////////////////////////////////////////////////////////////////////
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

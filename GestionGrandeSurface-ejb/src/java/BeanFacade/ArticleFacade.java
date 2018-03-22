@@ -40,7 +40,7 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
     
    //Creation article
     @Override
-    public void creerArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception {
+    public void creerArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img) throws Exception {
         try {
         Article article = new Article();
         article.setLibelle(libelle);
@@ -49,6 +49,7 @@ public class ArticleFacade extends AbstractFacade<Article> implements ArticleFac
         article.setDate_creation(date_de_creation);
         article.setSousCategorie(sous_categorie);
         article.setFournisseur(fournisseur);
+        article.setImg(img);
         em.persist(article);  
     } catch(Exception exe){throw exe;}
     }

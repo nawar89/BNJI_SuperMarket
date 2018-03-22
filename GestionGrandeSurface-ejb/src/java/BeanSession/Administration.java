@@ -11,6 +11,7 @@ import BeanFacade.BonCommandeFacadeLocal;
 import BeanFacade.CasseFacadeLocal;
 import BeanFacade.CategorieFacadeLocal;
 import BeanFacade.ChefRyon_CategorieFacadeLocal;
+import BeanFacade.ElectromenagerFacadeLocal;
 import BeanFacade.EmployeFacadeLocal;
 import BeanFacade.FournisseurFacadeLocal;
 import BeanFacade.LigneCommandeFacadeLocal;
@@ -19,15 +20,18 @@ import BeanFacade.Ligne_livraisonFacadeLocal;
 import BeanFacade.LivraisonFacadeLocal;
 import BeanFacade.LotFacadeLocal;
 import BeanFacade.MagasinFacadeLocal;
+import BeanFacade.Produit_FraisFacadeLocal;
 import BeanFacade.PromotionFacadeLocal;
 import BeanFacade.ReclamationFacadeLocal;
 import BeanFacade.RoleFacadeLocal;
 import BeanFacade.SousCategorieFacadeLocal;
+import BeanFacade.VetementFacadeLocal;
 import EntityBean.Article;
 import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Casse;
 import EntityBean.Categorie;
+import EntityBean.Electromenager;
 import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
@@ -38,12 +42,14 @@ import EntityBean.Livraison;
 import EntityBean.Lot;
 import EntityBean.Role;
 import EntityBean.Magasin;
+import EntityBean.Produit_Frais;
 
 import EntityBean.Promotion;
 import EntityBean.Reclamation;
 
 import EntityBean.SousCategorie;
 import EntityBean.Type_Reclamation;
+import EntityBean.Vetement;
 import Structure.Aide;
 
 import Structure.Parametre;
@@ -60,6 +66,15 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class Administration implements AdministrationLocal {
+
+    @EJB
+    private ElectromenagerFacadeLocal electromenagerFacade;
+
+    @EJB
+    private VetementFacadeLocal vetementFacade;
+
+    @EJB
+    private Produit_FraisFacadeLocal produit_FraisFacade;
 
     @EJB
     private Ligne_CasseFacadeLocal ligne_CasseFacade;
@@ -357,6 +372,69 @@ public class Administration implements AdministrationLocal {
         
         return ligne; 
     }
+    
+    
+    @Override
+    public void creationFournisseur(String nom, String adresse, String telephone, String email,String mdp) throws Exception {
+        
+            fournisseurFacade.creerFournisseur(nom, adresse, telephone, email,mdp);
+    }
+    
+    @Override
+    public void creationArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img) throws Exception {
+    
+    articleFacade.creerArticle(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur,img);
+     
+    }
+    
+    @Override
+    public void creationArticleMag(int quantite, float prix_vente_actuel, Article article, Magasin magasin) throws Exception {
+        articleMagasinFacade.creerArticleMag(quantite, prix_vente_actuel, article, magasin);
+    }
+    
+     @Override
+    public void creationProdFrais(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img) throws Exception {
+    
+    produit_FraisFacade.creerProduitFrais(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur,img);
+     
+    }
+    
+    @Override
+    public List<Produit_Frais> getProdFrais(String query, ArrayList<Parametre> params) throws Exception{
+        return produit_FraisFacade.getProduitFrais(query, params);
+    }
+    
+     @Override
+    public void creationVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img,String taille, String coloris) throws Exception {
+    
+    vetementFacade.creerVetement(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur, img, taille, coloris);
+     
+    }
+    
+    @Override
+    public List<Vetement> getVetement(String query, ArrayList<Parametre> params) throws Exception{
+        return vetementFacade.getVetement(query, params);
+    }
+    
+     @Override
+    public void creationElectromenager(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img,int period_garantie) throws Exception {
+    
+    electromenagerFacade.creerElec(libelle, reference, prix_achat_actuel, date_de_creation, description, sous_categorie, fournisseur,img,period_garantie);
+     
+    }
+    @Override
+    public List<Electromenager> getElectro(String query, ArrayList<Parametre> params) throws Exception{
+        return electromenagerFacade.getElectro(query, params);
+    }
+   
+    
+    @Override
+   public void creationLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception {
+       livraisonFacade.creerLivraison(date_livraison, date_livraison_prevu, fournisseur, bon_commande, mension);
+    }
+   
+   
+    
     
     
     

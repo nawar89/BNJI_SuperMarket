@@ -34,7 +34,7 @@
                   </li>
                   <li><a><i class="fa fa-desktop"></i> Articles <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CreerArticle">Créer un Article</a></li>
+                      <li><a href="ControleAdministration?action=CreerArticle">Créer un Article</a></li>
                       <li><a href="ControlChef?action=ModifierArticleMag">Modifier le prix de vente d'un article du magasin</a></li>
                       <li><a href="ControlChef?action=listerArticle">Consulter les articles de votre rayon</a></li>
                     </ul>

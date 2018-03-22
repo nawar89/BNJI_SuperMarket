@@ -78,7 +78,7 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControlChef">
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="ControleAdministration">
                       <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Type d'article</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -150,6 +150,8 @@
                             <option value ="<%=cat.getId()%>"> <%=cat.getLibelle() %>  </option>
                             <% }%>
                             </select>
+                            
+                            
                         </div>
                        </div>
                             
@@ -186,6 +188,14 @@
                         <option value ="<%=four.getId()%>"> <%=four.getNom() %>  </option>
                         <% }%>
                         </select>
+                        
+                        </div>
+                      </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                        <input type="file" name="pic" accept="image/*">
                         </div>
                       </div>
                         
@@ -194,7 +204,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <a href="ControlChef?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
 		          <button class="btn btn-primary" type="reset">Reset</button>
-                          <input type="hidden" name="action" value="CreerA"/>
+                          <input type="hidden" name="action" value="FromCreerArticle"/>
                           <button type="submit" class="btn btn-success">Créer</button>
                         </div>
                       </div>

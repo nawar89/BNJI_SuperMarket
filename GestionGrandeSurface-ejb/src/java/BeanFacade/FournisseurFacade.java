@@ -52,7 +52,7 @@ public class FournisseurFacade extends AbstractFacade<Fournisseur> implements Fo
        //Recherche d'aticle 
     @Override
     public List<Fournisseur> getFournisseur(String query, ArrayList<Parametre> params) throws Exception {
-        List<Fournisseur> articles = null;
+        List<Fournisseur> fors = null;
         try{
          
             Query q = em.createQuery(query);
@@ -62,11 +62,11 @@ public class FournisseurFacade extends AbstractFacade<Fournisseur> implements Fo
                     q.setParameter(p.nom,p.valeur );
                 }
             }
-            articles = q.getResultList();
+            fors = q.getResultList();
         }catch(Exception exe){//throw exe;
-            
+            System.err.println("");
         }
-        return articles;
+        return fors;
     }
     
     

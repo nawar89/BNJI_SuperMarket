@@ -35,6 +35,6 @@ public interface ArticleFacadeLocal {
 
     int count();
 
-    void creerArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur) throws Exception;
+    void creerArticle(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img) throws Exception;
    List<Article> getArticle(String query, ArrayList<Parametre> params) throws Exception;
 }

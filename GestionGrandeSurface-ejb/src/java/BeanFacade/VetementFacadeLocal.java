@@ -34,6 +34,6 @@ public interface VetementFacadeLocal {
     List<Vetement> findRange(int[] range);
 
     int count();
-    void creerVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, String taille,String coloris) throws Exception;
+    void creerVetement(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img ,String taille,String coloris) throws Exception;
     List<Vetement> getVetement(String query, ArrayList<Parametre> params) throws Exception;
 }

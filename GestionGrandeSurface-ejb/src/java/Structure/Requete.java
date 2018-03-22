@@ -38,6 +38,7 @@ public abstract class Requete {
     public static String getCasses ="select c from Casse c where 1=1";
     public static String getReclamationParFournisseur = "select r from Reclamation As r join r.ligneLivraison lv join lv.livraison liv join liv.fournisseur f where 1=1";
     public static String getLivraisonsParFournisseur = "SELECT L FROM Livraison L join L.fournisseur f WHERE 1=1";
+    public static String getClients = "SELECT c FROM Client AS c WHERE 1=1";
     
     
 }

@@ -35,5 +35,5 @@ public interface ElectromenagerFacadeLocal {
 
     int count();
     List<Electromenager> getElectro(String query, ArrayList<Parametre> params) throws Exception;
-    void creerElec(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur, int period_garantie) throws Exception;
+    void creerElec(String libelle, String reference, float prix_achat_actuel, Date date_de_creation, String description, SousCategorie sous_categorie, Fournisseur fournisseur,String img, int period_garantie) throws Exception;
 }
