@@ -7,6 +7,7 @@ package Servlet;
 
 import BeanSession.AdministrationLocal;
 import BeanSession.ClientSessionLocal;
+import EntityBean.Article;
 import EntityBean.Categorie;
 import EntityBean.Client;
 import EntityBean.Employe;
@@ -126,6 +127,10 @@ public class controleClient extends HttpServlet {
             GOHOME(request,response);
             request.setAttribute( "message", message );
         }
+        else if (act.equals("FromHOME")){
+            FromHOME(request,response);
+            request.setAttribute( "message", message );
+        }
        
         
         
@@ -165,7 +170,7 @@ HttpServletResponse response) throws ServletException, IOException
 
 }
     
-    
+//////////////////////////////////////////////////////////////////////////////////    
     
 protected void GOHOME(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
@@ -202,6 +207,26 @@ HttpServletResponse response) throws ServletException, IOException
 
 } 
 
+
+
+
+protected void FromHOME(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   
+    try{
+        //Construire requete SQL        
+             String artMag = request.getParameter( "produitSel" );
+           
+        
+             
+              jspClient = "/JSP_Client/Home.jsp";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+} 
 ///////////////////////
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

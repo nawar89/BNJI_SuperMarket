@@ -77,7 +77,7 @@
 			<div class="wrap_header">
 				<!-- Logo -->
 				<a href="index.html" class="logo">
-					<img src="images/icons/logo.png" alt="IMG-LOGO">
+					<img src="./TemplateClient/images/icons/logo.png" alt="IMG-LOGO">
 				</a>
 
 				<!-- Menu -->
@@ -105,13 +105,13 @@
 				<!-- Header Icon -->
 				<div class="header-icons">
 					<a href="#" class="header-wrapicon1 dis-block">
-						<img src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+						<img src="./TemplateClient/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
 					</a>
 
 					<span class="linedivide1"></span>
 
 					<div class="header-wrapicon2">
-						<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+						<img src="./TemplateClient/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
                                                 <%String num = "0";
                                                     if (Panier!=null){
                                                       if (Panier.getLigneCommandeEnLignes()!=null){
@@ -214,14 +214,19 @@
 						<span class="s-text8 p-t-5 p-b-5">
                                                     <% String numC = "0";
                                                     Magasin mag = magasin;
-                                                    if(mag!=null) 
-                                                        numC=""+mag.getArticleMagasins().size(); %>
-							Showing 1?12 of <%=numC%> results
+                                                    if(mag!=null)
+                                                        if (mag.getArticleMagasins()!=null)
+                                                             numC=""+mag.getArticleMagasins().size(); %>
+                                                        Showing 1?12 of <%=numC%> results
 						</span>
 					</div>
 
 					<!-- Product -->
+                                        <form name="PanierForm" onsubmit="" method="post" action="controleClient">
+                                            <input type="hidden" name="action" value="FromHOME">
+                                            <input type="hidden" name = "produitSel" >
 					<div class="row">
+                                           
                                             <% List<Promotion> listePro = promotions;
                                                 if (mag.getArticleMagasins()!=null){
                                                for (ArticleMagasin artMag:mag.getArticleMagasins()) {
@@ -232,7 +237,14 @@
 							<!-- Block2 -->
 							<div class="block2">
 								<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
-                                                                    <img src="images/<%=artMag.getArticle().getImg()%>" alt="IMG-PRODUCT">
+                                                                    <% String img = "./TemplateClient/images/item-12.jpg";
+                                                                      if (artMag.getArticle()!=null){
+                                                                          if (artMag.getArticle().getImg()!="" && artMag.getArticle().getImg()!=null){
+                                                                              img =artMag.getArticle().getImg();
+                                                                          }
+                                                                      }
+                                                                    %>
+                                                                    <img src="./TemplateClient/images/item-12.jpg" alt="IMG-PRODUCT">
 
 									<div class="block2-overlay trans-0-4">
 										<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
@@ -243,7 +255,7 @@
 										<div class="block2-btn-addcart w-size1 trans-0-4">
 											<!-- Button -->
                                                                                         
-                                                                                        <button  class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                                                        <button  onclick="document.forms['PanierForm']['produitSel'].value=this.value;alert(document.forms['PanierForm']['produitSel'].value);document.getElementById('PanierForm').submit();" value = "<%=artMag.getId()%>" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
 												Ajouter au panier
 											</button>
 										</div>
@@ -282,6 +294,7 @@
 						</div>
                                                 <%}}%>
 					</div>
+                                    </form>
 				</div>
 			</div>
 		</div>
@@ -399,23 +412,23 @@
 
 		<div class="t-center p-l-15 p-r-15">
 			<a href="#">
-				<img class="h-size2" src="images/icons/paypal.png" alt="IMG-PAYPAL">
+				<img class="h-size2" src="./TemplateClient/images/icons/paypal.png" alt="IMG-PAYPAL">
 			</a>
 
 			<a href="#">
-				<img class="h-size2" src="images/icons/visa.png" alt="IMG-VISA">
+				<img class="h-size2" src="./TemplateClient/images/icons/visa.png" alt="IMG-VISA">
 			</a>
 
 			<a href="#">
-				<img class="h-size2" src="images/icons/mastercard.png" alt="IMG-MASTERCARD">
+				<img class="h-size2" src="./TemplateClient/images/icons/mastercard.png" alt="IMG-MASTERCARD">
 			</a>
 
 			<a href="#">
-				<img class="h-size2" src="images/icons/express.png" alt="IMG-EXPRESS">
+				<img class="h-size2" src="./TemplateClient/images/icons/express.png" alt="IMG-EXPRESS">
 			</a>
 
 			<a href="#">
-				<img class="h-size2" src="images/icons/discover.png" alt="IMG-DISCOVER">
+				<img class="h-size2" src="./TemplateClient/images/icons/discover.png" alt="IMG-DISCOVER">
 			</a>
 
 			<div class="t-center s-text8 p-t-20">
