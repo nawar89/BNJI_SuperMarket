@@ -17,6 +17,7 @@ import EntityBean.CommandeClientEnLigne;
 import EntityBean.Etat_Commande;
 import EntityBean.Livraison_Client;
 import EntityBean.Magasin;
+import EntityBean.ligneCommandeEnLigne;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,8 +75,8 @@ public class ClientSession implements ClientSessionLocal {
     }
     
     @Override
-    public void creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo){
-        ligneCommandeEnLigneFacade.creerLigneCommandeEnligne(commande, article, quantite, prix, promo);
+    public ligneCommandeEnLigne creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo){
+        return ligneCommandeEnLigneFacade.creerLigneCommandeEnligne(commande, article, quantite, prix, promo);
     }
     
     @Override

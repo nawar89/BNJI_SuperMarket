@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -58,6 +59,7 @@ public class Promotion implements Serializable {
         return "EntityBean.Promotion[ id=" + id + " ]";
     }
     
+    @Temporal(javax.persistence.TemporalType.DATE)
         private Date date_debut;
 
     /**
@@ -79,6 +81,7 @@ public class Promotion implements Serializable {
     }
 
     
+    @Temporal(javax.persistence.TemporalType.DATE)
         private Date date_fin;
 
     /**

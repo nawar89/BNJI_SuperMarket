@@ -46,6 +46,7 @@ public class ClientFacade extends AbstractFacade<Client> implements ClientFacade
         c.setEmail(email);
         c.setLogin(login);
         c.setMdp(mdp);
+        em.persist(c);
         return c;
     }
     

@@ -33,6 +33,6 @@ public interface ligneCommandeEnLigneFacadeLocal {
     int count();
 
     
-    void creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo);
+    ligneCommandeEnLigne creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo);
     
 }

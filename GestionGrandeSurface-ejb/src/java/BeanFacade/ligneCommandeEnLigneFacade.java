@@ -32,7 +32,7 @@ public class ligneCommandeEnLigneFacade extends AbstractFacade<ligneCommandeEnLi
     }
 
     @Override
-    public void creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo) {
+    public ligneCommandeEnLigne creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo) {
         ligneCommandeEnLigne l = new ligneCommandeEnLigne();
         l.setArticleMagasin(article);
         l.setCommandeClient(commande);
@@ -40,6 +40,7 @@ public class ligneCommandeEnLigneFacade extends AbstractFacade<ligneCommandeEnLi
         l.setPrix_vente(prix);
         l.setEnPromo(promo);
         em.persist(l);
+        return l;
     }
     
 }

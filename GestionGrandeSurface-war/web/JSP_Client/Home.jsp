@@ -1,8 +1,4 @@
-<%-- 
-    Document   : Home
-    Created on : Mar 22, 2018, 2:07:32 PM
-    Author     : Jihane
---%>
+
 <%@page import="EntityBean.ligneCommandeEnLigne"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.Date"%>
@@ -255,7 +251,7 @@
 										<div class="block2-btn-addcart w-size1 trans-0-4">
 											<!-- Button -->
                                                                                         
-                                                                                        <button  onclick="document.forms['PanierForm']['produitSel'].value=this.value;alert(document.forms['PanierForm']['produitSel'].value);document.getElementById('PanierForm').submit();" value = "<%=artMag.getId()%>" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                                                        <button  onclick="document.forms['PanierForm']['produitSel'].value=this.value;document.getElementById('PanierForm').submit();" value = "<%=artMag.getId()%>" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
 												Ajouter au panier
 											</button>
 										</div>

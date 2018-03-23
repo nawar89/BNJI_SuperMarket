@@ -44,8 +44,8 @@
              <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/JSP_Client/loginClient">Je suis Client!</a></li>
-                      <li><a href="controleClient?action=home">Creer Livraison</a></li>
+                      <li><a href="controleClient?action=login">Je suis Client!</a></li>
+                      <li><a href="controleClient?action=home">TEST</a></li>
                     </ul>
                   </li>
                   

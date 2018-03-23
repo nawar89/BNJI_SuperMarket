@@ -809,3 +809,19 @@ function RefreshComboBoxArticle(ddl1,ddl2,table) {
     
     //////////////////////////////////////////////////////////////////////////////////////////
 
+  
+    
+function verifierInputClient(d1,d2,d3) {
+            console.log(d1.value+" "+d2.value)
+           if (d1.value !== d2.value){
+               
+              // alert("Mdp et confirmation ne correspondent pas");
+               d3.classList.toggle("show");
+               return false;
+               
+           }else
+           return true;
+    }
+    
+    
+    

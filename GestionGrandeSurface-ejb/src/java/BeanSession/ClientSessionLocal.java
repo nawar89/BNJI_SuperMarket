@@ -11,6 +11,7 @@ import EntityBean.CommandeClientEnLigne;
 import EntityBean.Etat_Commande;
 import EntityBean.Livraison_Client;
 import EntityBean.Magasin;
+import EntityBean.ligneCommandeEnLigne;
 import Structure.Parametre;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +32,7 @@ public interface ClientSessionLocal {
     
     List<CommandeClientEnLigne> getCommandeEnligne(String query, ArrayList<Parametre> params) throws Exception;
     
-    void creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo);
+    ligneCommandeEnLigne creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo);
     
     Livraison_Client creerLivraisonClient(Date dateLiv, Date datePrevu, CommandeClientEnLigne commande);
     
