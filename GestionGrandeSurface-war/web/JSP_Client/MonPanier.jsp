@@ -65,7 +65,7 @@
 				</div>
                                 <div class="topbar-child2">
 					<span class="topbar-email">
-						Client_connecté@example.com
+                                        <%=ClientCo.getEmail() %>
 					</span>
                                </div>
 			</div>
@@ -98,71 +98,6 @@
 					</nav>
 				</div>
 
-				<!-- Header Icon -->
-				<div class="header-icons">
-					<a href="#" class="header-wrapicon1 dis-block">
-						<img src="./TemplateClient/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
-					</a>
-
-					<span class="linedivide1"></span>
-
-					<div class="header-wrapicon2">
-						<img src="./TemplateClient/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-                                                <%String num = "0";
-                                                    if (Panier!=null){
-                                                      if (Panier.getLigneCommandeEnLignes()!=null){
-                                                          num = ""+Panier.getLigneCommandeEnLignes().size();
-                                                }}%>
-						<span class="header-icons-noti"><%=num%></span>
-
-						<!-- Header cart noti -->
-						<div class="header-cart header-dropdown">
-                                                    <!-- les élements du panier -->
-                                                    <% if (Panier!=null){
-                                                      if (Panier.getLigneCommandeEnLignes()!=null){
-                                                          
-                                                            float total = 0;
-                                                            for (ligneCommandeEnLigne l:Panier.getLigneCommandeEnLignes()){%>
-							<ul class="header-cart-wrapitem">
-                                                           <li class="header-cart-item">
-									
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											<%=l.getArticleMagasin().getArticle().getLibelle()%>
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x €<%=l.getArticleMagasin().getPrix_vente_actuel()%>
-										</span>
-									</div>
-								</li>
-							</ul>
-                                                                                
-                                                        <% total+=l.getPrix_vente();}%>
-							<div class="header-cart-total">
-                                                               
-								Total: €<%=total %>
-							</div>
-
-							<div class="header-cart-buttons">
-								<div class="header-cart-wrapbtn">
-									<!-- Button cart.html-->
-									<a href="controleClient?action=voirPanier" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-										Voir Panier
-									</a>
-								</div>
-
-								<div class="header-cart-wrapbtn">
-									<!-- Button -->
-									<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-										Payer
-									</a>
-								</div>
-							</div>
-                                                       <%}}%> 
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
               
@@ -171,128 +106,43 @@
         <!-- Content page -->
 	<section class="bgwhite p-t-55 p-b-65">
 		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
-					<div class="leftbar p-r-20 p-r-0-sm">
-						<!--  -->
-						<h4 class="m-text14 p-b-7">
-							Categories
-						</h4>
-
-						<ul class="p-b-54">
-                                                <% List<Categorie> lcat = cats;
-                                                   for (Categorie c:lcat){
-                                                %>
-							<li class="p-t-4">
-								<a href="#" class="s-text13 active1">
-							            <%=c.getLibelle() %>
-								</a>
-							</li>
-                                                    <%}%>
-							
-						</ul>
-
-						<div class="search-product pos-relative bo4 of-hidden">
-							<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
-
-							<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
-								<i class="fs-12 fa fa-search" aria-hidden="true"></i>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
-					<!--  -->
-					<div class="flex-sb-m flex-w p-b-35">
-						
-
-						<span class="s-text8 p-t-5 p-b-5">
-                                                    <% String numC = "0";
-                                                    Magasin mag = magasin;
-                                                    if(mag!=null)
-                                                        if (mag.getArticleMagasins()!=null)
-                                                             numC=""+mag.getArticleMagasins().size(); %>
-                                                        Showing 1?12 of <%=numC%> results
-						</span>
-					</div>
-
-					<!-- Product -->
-                                        <form name="PanierForm" onsubmit="" method="post" action="controleClient">
-                                            <input type="hidden" name="action" value="FromHOME">
-                                            <input type="hidden" name = "produitSel" >
-					<div class="row">
-                                           
-                                            <% List<Promotion> listePro = promotions;
-                                                if (mag.getArticleMagasins()!=null){
-                                               for (ArticleMagasin artMag:mag.getArticleMagasins()) {
-                                                
-                                               
-                                            %>
-						<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
-							<!-- Block2 -->
-							<div class="block2">
-								<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
-                                                                    <% String img = "./TemplateClient/images/item-12.jpg";
-                                                                      if (artMag.getArticle()!=null){
-                                                                          if (artMag.getArticle().getImg()!="" && artMag.getArticle().getImg()!=null){
-                                                                              img =artMag.getArticle().getImg();
-                                                                          }
-                                                                      }
-                                                                    %>
-                                                                    <img src="./TemplateClient/images/item-12.jpg" alt="IMG-PRODUCT">
-
-									<div class="block2-overlay trans-0-4">
-										<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
-											<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
-											<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
-										</a>
-
-										<div class="block2-btn-addcart w-size1 trans-0-4">
-											<!-- Button -->
-                                                                                        
-                                                                                        <button  onclick="document.forms['PanierForm']['produitSel'].value=this.value;document.getElementById('PanierForm').submit();" value = "<%=artMag.getId()%>" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-												Ajouter au panier
-											</button>
-										</div>
-									</div>
-								</div>
-
-								<div class="block2-txt p-t-20">
-									<a href="" class="block2-name dis-block s-text3 p-b-5">
-										<%=artMag.getArticle().getLibelle() %>
-									</a>
-                                                                        
-                                                                         <% String prix_promo = "";
-                                                                            if (listePro!=null){
-                                                                           for (Promotion p:listePro){  
-                                                                               if (p.getArticle().getId()==artMag.getArticle().getId() && p.getDate_fin().compareTo(new Date()) > 0){
-                                                                                   prix_promo = ""+p.getPrix_prmotion();
-         
-                                                                        }}} %>
-                                                                        <% if (prix_promo!=""){%>
-                                                                            <span class="block2-oldprice m-text7 p-r-5">
-                                                                                    €<%=artMag.getPrix_vente_actuel()%>
-                                                                            </span>
-                                                                            <span class="block2-newprice m-text8 p-r-5">
-										$<%=prix_promo%>
-                                                                            </span>
-                                                                        <%}else {%>
-                                                                               
-                                                                            <span  class="block2-price m-text6 p-r-5">
-                                                                                    €<%=artMag.getPrix_vente_actuel()%>
-                                                                            </span>
-                                                                        <%}%>
-
-									
-								</div>
-							</div>
-						</div>
-                                                <%}}%>
-					</div>
-                                    </form>
-				</div>
-			</div>
+			
+                     <table id = "myTable" class="table table-striped jambo_table bulk_action">
+                      <thead>
+                        <tr role="row">
+                            
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">#</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Quantité livrée</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité acceptée</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Type Reclamation</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Reclamation</th>
+                        </tr>
+                      </thead>
+                      <tbody style="cursor:pointer">
+                        
+                      <%  if (Panier!=null){
+                          if (Panier.getLigneCommandeEnLignes()!=null){
+                            List<ligneCommandeEnLigne> ligs = Panier.getLigneCommandeEnLignes();
+                            
+                        for(ligneCommandeEnLigne lg : ligs) {%>
+                        <tr >
+                           
+                                 <td><%=lg.getId()%></td>
+                                 <td><%=lg.getArticleMagasin().getArticle().getLibelle() %></td>
+                                 <td><%=lg.getQuantite() %></td>
+                                 <td onchange=""><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;AfficherReclamationLigneLivraison(document.getElementById('recDev'),document.getElementById('myTable'));" name="nom" class="form-control" value ="<%=lg.getQuantite_livree() %>" /></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td style="display: none"></td>
+                               </tr>
+                             <% }}}%>
+                        
+                      </tbody>
+                   
+                    </table>
+                    
+                    
 		</div>
 	</section>
 

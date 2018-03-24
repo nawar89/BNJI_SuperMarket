@@ -150,7 +150,10 @@ public class controleClient extends HttpServlet {
             creerClient(request,response);
             request.setAttribute( "message", message );
         }
-        
+        else if (act.equals("voirPanier")){
+            voirPanier(request,response);
+            request.setAttribute( "message", message );
+        }
         
       }
     }
@@ -253,7 +256,7 @@ HttpServletResponse response) throws ServletException, IOException
 } 
 
 
-
+////////////////////////////////////////////////////////////////////////////////
 
 protected void FromHOME(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
@@ -340,7 +343,38 @@ HttpServletResponse response) throws ServletException, IOException
 }
 
 } 
-///////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+protected void voirPanier(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   
+    try{
+        //Construire requete SQL        
+             monPanier = (CommandeClientEnLigne)session.getAttribute("Panier");
+             if (monPanier!=null){
+                 if (monPanier.getLigneCommandeEnLignes()!=null){
+                      session.setAttribute("Panier", monPanier);
+                      session.setAttribute("ClientCo", clientConnecte);
+                      jspClient = "/JSP_Client/MonPanier.jsp";
+                 
+                 }else {
+                      message = "Vous n'avez aucune produit dans votre panier";
+                      jspClient = "/JSP_Pages/Page_Message.jsp";
+                 }
+             
+             }else {
+                  message = "Vous n'avez aucune produit dans votre panier";
+                  jspClient = "/JSP_Pages/Page_Message.jsp";
+             } 
+             
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+} 
+////////////////////////////////////////////////////////////////////////////////
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
