@@ -5,6 +5,7 @@
  */
 package BeanSession;
 
+import BeanFacade.CommandeClientEnLigneFacade;
 import EntityBean.ArticleMagasin;
 import EntityBean.Client;
 import EntityBean.CommandeClientEnLigne;
@@ -37,6 +38,14 @@ public interface ClientSessionLocal {
     Livraison_Client creerLivraisonClient(Date dateLiv, Date datePrevu, CommandeClientEnLigne commande);
     
     List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception;
+    
+    void modifierLigneCommandeEnLigne(ligneCommandeEnLigne ligne, int quantite);
+    
+    void supprimerLigneCommandeEnLigne(ligneCommandeEnLigne ligne);
+    
+    void supprimerCommandeEnLigne(CommandeClientEnLigne commande);
+    
+    List<ligneCommandeEnLigne> getLigneCommandeEnligne(String query, ArrayList<Parametre> params) throws Exception;
     
     
     

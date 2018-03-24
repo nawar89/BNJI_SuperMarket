@@ -38,6 +38,8 @@ public interface CommandeClientEnLigneFacadeLocal {
     CommandeClientEnLigne creerCommandeEnligne(Date date, Etat_Commande etat, Client client);
     
      List<CommandeClientEnLigne> getCommandeEnligne(String query, ArrayList<Parametre> params) throws Exception;
+
+    void supprimerCommandeEnLigne(CommandeClientEnLigne commande);
      
     
     

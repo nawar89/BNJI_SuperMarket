@@ -154,7 +154,10 @@ public class controleClient extends HttpServlet {
             voirPanier(request,response);
             request.setAttribute( "message", message );
         }
-        
+        else if (act.equals("validerPanier")){
+            validerPanier(request,response);
+            request.setAttribute( "message", message );
+        }
       }
     }
     
@@ -225,7 +228,8 @@ HttpServletResponse response) throws ServletException, IOException
 {
    
     try{
-        //Construire requete SQL        
+        //Construire requete SQL
+              monPanier = null;
               requete = Requete.getPromotions;
               List<Promotion> listeP = administration.getPromotions(requete, null);
               if (listeP == null){
@@ -375,6 +379,86 @@ HttpServletResponse response) throws ServletException, IOException
 
 } 
 ////////////////////////////////////////////////////////////////////////////////
+
+
+
+protected void validerPanier(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   
+    try{
+        //Construire requete SQL        
+             //monPanier = (CommandeClientEnLigne)session.getAttribute("Panier");
+             String res   = request.getParameter("res");
+             ParserLigneCommandeVersLignesLivraison(res); 
+             if (monPanier!=null){
+                session.setAttribute("Panier", monPanier);
+                session.setAttribute("ClientCo", clientConnecte);
+                 
+             }else GOHOME(request, response);
+
+             
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_Message.jsp";
+}
+
+}
+
+////////////////////////////////////////////////////////////
+
+
+public  void ParserLigneCommandeVersLignesLivraison(String input){
+         
+         mesParam = new ArrayList<Parametre>();
+         try{
+             boolean supprimerCommande = true;
+            String [] temp  = input.split(",");
+            int count = 0;
+            ligneCommandeEnLigne ligne = null;
+            int quantite = 0;
+            for (int i=0;i<temp.length;i++){
+                if ((i)%2==0 || i==0){
+                    count = 1;   
+                }
+                if (count==1){
+                       Integer LigneID = Integer.parseInt(temp[i]); 
+                       
+                       mesParam = new ArrayList<Parametre>();
+                       Parametre p = new Parametre("id", "int", LigneID);
+                       mesParam.add(p);
+                       requete = Requete.getLigneCommandeEnLigne+" and l.id=:id";
+                       List<ligneCommandeEnLigne> listeLigns = clientSession.getLigneCommandeEnligne(requete, mesParam);
+                       
+                       if (listeLigns !=null){
+                           ligne = (ligneCommandeEnLigne)Aide.getObjectDeListe(listeLigns.toArray());
+                      
+                       }else message = "un article n'existe pas";
+                }
+                else if (count==2){
+                    quantite = Integer.parseInt(temp[i]); 
+                    if (quantite==0){
+                        supprimerCommande = false;
+                        clientSession.supprimerLigneCommandeEnLigne(ligne);
+                        
+                    }else clientSession.modifierLigneCommandeEnLigne(ligne, quantite); 
+                   
+                }
+                 count++;    
+            }
+            if (supprimerCommande){
+                clientSession.supprimerCommandeEnLigne(monPanier);
+                monPanier = null;
+            }
+            
+         }catch(Exception exe){message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_Message.jsp";
+         }
+        
+ }
+
+
+/////////////////////////////////////////////////////////////////////////////////
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

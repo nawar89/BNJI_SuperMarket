@@ -38,8 +38,10 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="./TemplateClient/vendor/slick/slick.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="./TemplateClient/vendor/noui/nouislider.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./TemplateClient/css/util.css">
+	<link rel="stylesheet" type="text/css" href="./TemplateClient/css/main.css">
 <!--===============================================================================================-->
 </head>
 <body class="animsition">
@@ -113,20 +115,25 @@
 	</section>
 
 	<!-- Cart -->
-	<section class="cart bgwhite p-t-70 p-b-100">
+        
+        <form name="PanierForm"  method="post" action="controleClient">
+            <input type="hidden" name="action" value="validerPanier">
             <input type="hidden" id = "temp" >
+            <input type="hidden" id = "res" >
+	<section class="cart bgwhite p-t-70 p-b-100">
+            
             <%if (Panier!=null){
                 if (Panier.getLigneCommandeEnLignes()!=null){
                                            
              %>
-		<div class="container">
+		<div class="container"> 
 			<!-- Cart item -->
 			<div class="container-table-cart pos-relative">
 				<div class="wrap-table-shopping-cart bgwhite">
                                     
 					<table id = "MyTable" class="table-shopping-cart">
 						<tr class="table-head">
-							<th class="column-1"></th>
+							
 							<th class="column-2">Product</th>
 							<th class="column-3">Price</th>
 							<th class="column-4 p-l-70">Quantity</th>
@@ -137,7 +144,7 @@
                                                    total=total+ligne.getPrix_vente();
                                             %>
 						<tr class="table-row">
-							
+							<td style="display: none" class="column-5"><%=ligne.getId() %></td>
 							<td class="column-2"><%=ligne.getArticleMagasin().getArticle().getLibelle()%></td>
 							<td class="column-3">€<%=ligne.getPrix_vente() %></td>
 							<td class="column-4">
@@ -153,8 +160,9 @@
 									</button>
 								</div>
 							</td>
-							<td class="column-5">€<%=ligne.getPrix_vente()%></td>
+							<td class="column-5"><%=ligne.getPrix_vente()%></td>
                                                         <td style="display: none" class="column-5">1</td>
+                                                        
 						</tr>
                                                 <%}%>
 					</table>
@@ -165,7 +173,7 @@
 			<div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
 				<div class="size10 trans-0-4 m-t-10 m-b-10">
 					<!-- Button -->
-					<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+                                        <button onclick="chargerDonneesPanier(document.getElementById('MyTable'));document.getElementById('PanierForm').submit();" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
 						Update Cart
 					</button>
 				</div>
@@ -199,7 +207,7 @@
 		</div>
                 <%}}%>
 	</section>
-
+       </form>
 
 
 	<!-- Footer -->

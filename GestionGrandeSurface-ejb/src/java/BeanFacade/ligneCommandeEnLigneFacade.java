@@ -8,9 +8,14 @@ package BeanFacade;
 import EntityBean.ArticleMagasin;
 import EntityBean.CommandeClientEnLigne;
 import EntityBean.ligneCommandeEnLigne;
+import Structure.Aide;
+import Structure.Parametre;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -42,5 +47,40 @@ public class ligneCommandeEnLigneFacade extends AbstractFacade<ligneCommandeEnLi
         em.persist(l);
         return l;
     }
+
+    @Override
+    public void modifierLigneCommandeEnLigne(ligneCommandeEnLigne ligne, int quantite) {
+        ligne.setQuantite(quantite);
+        em.merge(ligne);
+    }
+
+    @Override
+    public void supprimerLigneCommandeEnLigne(ligneCommandeEnLigne ligne) {
+        em.remove(ligne);
+    }
+    
+      @Override
+    public List<ligneCommandeEnLigne> getLigneCommandeEnligne(String query, ArrayList<Parametre> params) throws Exception{
+        List<ligneCommandeEnLigne> listeLigne = null;
+        try{
+         
+            Query q = em.createQuery(query);
+            if (params !=null){
+                for (Parametre p : params){
+                    Aide.Casting(p.type,p.valeur);
+                    q.setParameter(p.nom,p.valeur );
+                }
+            }
+            listeLigne = q.getResultList();
+        }catch(Exception exe){
+            //throw exe;
+        }
+        return listeLigne;
+    }
+
+    
+    
+    
+    
     
 }

@@ -8,6 +8,8 @@ package BeanFacade;
 import EntityBean.ArticleMagasin;
 import EntityBean.CommandeClientEnLigne;
 import EntityBean.ligneCommandeEnLigne;
+import Structure.Parametre;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -34,5 +36,11 @@ public interface ligneCommandeEnLigneFacadeLocal {
 
     
     ligneCommandeEnLigne creerLigneCommandeEnligne(CommandeClientEnLigne commande, ArticleMagasin article, int quantite,float prix,boolean promo);
+
+    void modifierLigneCommandeEnLigne(ligneCommandeEnLigne ligne, int quantite);
+
+    void supprimerLigneCommandeEnLigne(ligneCommandeEnLigne ligne);
+    
+    List<ligneCommandeEnLigne> getLigneCommandeEnligne(String query, ArrayList<Parametre> params) throws Exception;
     
 }

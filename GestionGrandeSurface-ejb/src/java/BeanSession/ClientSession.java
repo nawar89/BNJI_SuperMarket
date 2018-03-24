@@ -7,6 +7,7 @@ package BeanSession;
 
 import BeanFacade.ArticleFacadeLocal;
 import BeanFacade.ClientFacadeLocal;
+import BeanFacade.CommandeClientEnLigneFacade;
 import BeanFacade.CommandeClientEnLigneFacadeLocal;
 import BeanFacade.Livraison_ClientFacadeLocal;
 import BeanFacade.MagasinFacadeLocal;
@@ -87,6 +88,24 @@ public class ClientSession implements ClientSessionLocal {
        @Override
     public List<Magasin> getMagasins(String query, ArrayList<Parametre> params) throws Exception{
         return magasinFacade.getMagasins(query, params);
+    }
+    @Override
+    public void modifierLigneCommandeEnLigne(ligneCommandeEnLigne ligne, int quantite) {
+        ligneCommandeEnLigneFacade.modifierLigneCommandeEnLigne(ligne, quantite);
+    }
+    
+    @Override
+    public void supprimerLigneCommandeEnLigne(ligneCommandeEnLigne ligne) {
+        ligneCommandeEnLigneFacade.supprimerLigneCommandeEnLigne(ligne);
+    }
+    
+    @Override
+    public void supprimerCommandeEnLigne(CommandeClientEnLigne commande) {
+        commandeClientEnLigneFacade.supprimerCommandeEnLigne(commande);
+    }
+    @Override
+    public List<ligneCommandeEnLigne> getLigneCommandeEnligne(String query, ArrayList<Parametre> params) throws Exception{
+        return ligneCommandeEnLigneFacade.getLigneCommandeEnligne(query, params);
     }
     
 }

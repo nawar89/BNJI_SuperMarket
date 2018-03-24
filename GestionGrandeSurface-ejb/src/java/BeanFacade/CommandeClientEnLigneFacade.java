@@ -65,6 +65,13 @@ public class CommandeClientEnLigneFacade extends AbstractFacade<CommandeClientEn
         }
         return listeComs;
     }
+
+    @Override
+    public void supprimerCommandeEnLigne(CommandeClientEnLigne commande) {
+        em.remove(commande);
+    }
+    
+    
     
     
 
