@@ -1,4 +1,3 @@
-
 <%@page import="EntityBean.ligneCommandeEnLigne"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.Date"%>
@@ -8,16 +7,12 @@
 <%@page import="java.util.List"%>
 <%@page import="EntityBean.Categorie"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    
         <jsp:useBean id ="ClientCo" scope="session" class="EntityBean.Client"></jsp:useBean>
         <jsp:useBean id ="Panier" scope="session" class="EntityBean.CommandeClientEnLigne"></jsp:useBean>
-        <jsp:useBean id ="cats" scope="request" class="List"></jsp:useBean>
-        <jsp:useBean id ="magasin" scope="request" class="Magasin"></jsp:useBean>
-        <jsp:useBean id ="promotions" scope="request" class="List"></jsp:useBean>
-        
-	<title>Product</title>
+	<title>Cart</title>
+        <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> </script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -43,10 +38,8 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="./TemplateClient/vendor/slick/slick.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="./TemplateClient/vendor/noui/nouislider.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="./TemplateClient/css/util.css">
-	<link rel="stylesheet" type="text/css" href="./TemplateClient/css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 </head>
 <body class="animsition">
@@ -63,11 +56,11 @@
 					<a href="#" class="topbar-social-item fa fa-snapchat-ghost"></a>
 					<a href="#" class="topbar-social-item fa fa-youtube-play"></a>
 				</div>
-                                <div class="topbar-child2">
+				<div class="topbar-child2">
 					<span class="topbar-email">
-                                        <%=ClientCo.getEmail() %>
-					</span>
-                               </div>
+						fashe@example.com
+					</span>	
+				</div>
 			</div>
 
 			<div class="wrap_header">
@@ -98,53 +91,115 @@
 					</nav>
 				</div>
 
+				<!-- Header Icon -->
+				<div class="header-icons">
+					<a href="#" class="header-wrapicon1 dis-block">
+						<img src="./TemplateClient/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+					</a>
+
+					<span class="linedivide1"></span>
+
+				</div>
 			</div>
 		</div>
-              
+
 	</header>
 
-        <!-- Content page -->
-	<section class="bgwhite p-t-55 p-b-65">
-		<div class="container">
-			
-                     <table id = "myTable" class="table table-striped jambo_table bulk_action">
-                      <thead>
-                        <tr role="row">
-                            
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">#</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Quantité livrée</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité acceptée</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Type Reclamation</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Reclamation</th>
-                        </tr>
-                      </thead>
-                      <tbody style="cursor:pointer">
-                        
-                      <%  if (Panier!=null){
-                          if (Panier.getLigneCommandeEnLignes()!=null){
-                            List<ligneCommandeEnLigne> ligs = Panier.getLigneCommandeEnLignes();
-                            
-                        for(ligneCommandeEnLigne lg : ligs) {%>
-                        <tr >
-                           
-                                 <td><%=lg.getId()%></td>
-                                 <td><%=lg.getArticleMagasin().getArticle().getLibelle() %></td>
-                                 <td><%=lg.getQuantite() %></td>
-                                 <td onchange=""><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;AfficherReclamationLigneLivraison(document.getElementById('recDev'),document.getElementById('myTable'));" name="nom" class="form-control" value ="<%=lg.getQuantite_livree() %>" /></td>
-                                 <td></td>
-                                 <td></td>
-                                 <td style="display: none"></td>
-                               </tr>
-                             <% }}}%>
-                        
-                      </tbody>
-                   
-                    </table>
-                    
-                    
-		</div>
+	<!-- Title Page -->
+	<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/heading-pages-01.jpg);">
+		<h2 class="l-text2 t-center">
+			Cart
+		</h2>
 	</section>
+
+	<!-- Cart -->
+	<section class="cart bgwhite p-t-70 p-b-100">
+            <input type="hidden" id = "temp" >
+            <%if (Panier!=null){
+                if (Panier.getLigneCommandeEnLignes()!=null){
+                                           
+             %>
+		<div class="container">
+			<!-- Cart item -->
+			<div class="container-table-cart pos-relative">
+				<div class="wrap-table-shopping-cart bgwhite">
+                                    
+					<table id = "MyTable" class="table-shopping-cart">
+						<tr class="table-head">
+							<th class="column-1"></th>
+							<th class="column-2">Product</th>
+							<th class="column-3">Price</th>
+							<th class="column-4 p-l-70">Quantity</th>
+							<th class="column-5">Total</th>
+						</tr>
+                                            <%  float total = 0;
+                                                for (ligneCommandeEnLigne ligne:Panier.getLigneCommandeEnLignes()){
+                                                   total=total+ligne.getPrix_vente();
+                                            %>
+						<tr class="table-row">
+							
+							<td class="column-2"><%=ligne.getArticleMagasin().getArticle().getLibelle()%></td>
+							<td class="column-3">€<%=ligne.getPrix_vente() %></td>
+							<td class="column-4">
+								<div class="flex-w bo5 of-hidden w-size17">
+									<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
+										<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
+									</button>
+                                                                     <%String max = "max='"+ligne.getArticleMagasin().getQuantite()+"'";%>
+                                                                     <input class="size8 m-text18 t-center num-product" onchange = "document.getElementById('temp').value = this.value;updateTablePanier(document.getElementById('MyTable'),document.getElementById('temp'));updateTotal(document.getElementById('MyTable'),document.getElementById('total'));" type="number" min="0" <%=max%> name="num-product1" value="1">
+                                                                     
+									<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
+										<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+							<td class="column-5">€<%=ligne.getPrix_vente()%></td>
+                                                        <td style="display: none" class="column-5">1</td>
+						</tr>
+                                                <%}%>
+					</table>
+                                        
+				</div>
+			</div>
+
+			<div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
+				<div class="size10 trans-0-4 m-t-10 m-b-10">
+					<!-- Button -->
+					<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+						Update Cart
+					</button>
+				</div>
+			</div>
+
+			<!-- Total -->
+			<div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-l-auto p-lr-15-sm">
+				<h5 class="m-text20 p-b-24">
+					Cart Totals
+				</h5>
+
+				<!--  -->
+				<div class="flex-w flex-sb-m p-b-12">
+					<span class="s-text18 w-size19 w-full-sm">
+						Subtotal:
+					</span>
+                                        
+					<span id = "total" class="s-text18 w-size19 w-full-sm">
+						€<%=total%>
+					</span>
+				</div>
+				<!--  -->				
+
+				<div class="size15 trans-0-4">
+					<!-- Button -->
+					<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+						Proceed to Checkout
+					</button>
+				</div>
+			</div>
+		</div>
+                <%}}%>
+	</section>
+
 
 
 	<!-- Footer -->
@@ -197,38 +252,6 @@
 					<li class="p-b-9">
 						<a href="#" class="s-text7">
 							Returns
-						</a>
-					</li>
-				</ul>
-			</div>
-
-			<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
-				<h4 class="s-text12 p-b-30">
-					Help
-				</h4>
-
-				<ul>
-					<li class="p-b-9">
-						<a href="#" class="s-text7">
-							Track Order
-						</a>
-					</li>
-
-					<li class="p-b-9">
-						<a href="#" class="s-text7">
-							Returns
-						</a>
-					</li>
-
-					<li class="p-b-9">
-						<a href="#" class="s-text7">
-							Shipping
-						</a>
-					</li>
-
-					<li class="p-b-9">
-						<a href="#" class="s-text7">
-							FAQs
 						</a>
 					</li>
 				</ul>
@@ -317,55 +340,6 @@
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect2')
 		});
-	</script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="./TemplateClient/vendor/daterangepicker/moment.min.js"></script>
-	<script type="text/javascript" src="./TemplateClient/vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="./TemplateClient/vendor/slick/slick.min.js"></script>
-	<script type="text/javascript" src="./TemplateClient/js/slick-custom.js"></script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="./TemplateClient/vendor/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">
-		$('.block2-btn-addcart').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
-			});
-		});
-
-		$('.block2-btn-addwishlist').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to wishlist !", "success");
-			});
-		});
-	</script>
-
-<!--===============================================================================================-->
-	<script type="text/javascript" src="./TemplateClient/vendor/noui/nouislider.min.js"></script>
-	<script type="text/javascript">
-		/*[ No ui ]
-	    ===========================================================*/
-	    var filterBar = document.getElementById('filter-bar');
-
-	    noUiSlider.create(filterBar, {
-	        start: [ 50, 200 ],
-	        connect: true,
-	        range: {
-	            'min': 50,
-	            'max': 200
-	        }
-	    });
-
-	    var skipValues = [
-	    document.getElementById('value-lower'),
-	    document.getElementById('value-upper')
-	    ];
-
-	    filterBar.noUiSlider.on('update', function( values, handle ) {
-	        skipValues[handle].innerHTML = Math.round(values[handle]) ;
-	    });
 	</script>
 <!--===============================================================================================-->
 	<script src="./TemplateClient/js/main.js"></script>

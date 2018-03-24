@@ -512,7 +512,7 @@ function affectuerLivraisonAgent(table) {
        document.forms["LivraisonForm"]["livraison"].value = "";    
      //var table = document.getElementById("myTable");
     var rows = table.getElementsByTagName("tr");
-    for (i = 0; i < rows.length; i++) {
+    for (var i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
         var createClickHandler = 
             function(row) 
@@ -547,7 +547,7 @@ function affectuerLivraisonAgent(table) {
 function AfficherReclamationLigneLivraison(div,table) {
     
      var rows = table.getElementsByTagName("tr");
-    for (i = 0; i < rows.length; i++) {
+    for (var i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
         var createClickHandler = 
             function(row) 
@@ -603,7 +603,7 @@ function test() {
 function creerReclamationLigneLivraison(table,ddl1,div) {
     
      var rows = table.getElementsByTagName("tr");
-    for (i = 1; i < rows.length; i++) {
+    for (var i = 1; i < rows.length; i++) {
         var currentRow = table.rows[i];
         //console.log('GGGGGGG' + rows.length);
         if (currentRow.getElementsByTagName("td")[1].innerHTML === document.getElementsByName('ligneLivraisonID').value){
@@ -674,7 +674,7 @@ function doSaveLivraisonLigneAgent(table) {
 function refrechQuantiteLivree(table) {
     
  var rows = table.getElementsByTagName("tr");
-    for (i = 0; i < rows.length; i++) {
+    for (var i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
         var createClickHandler = 
             function(row) 
@@ -711,13 +711,13 @@ function refrechQuantiteLivree(table) {
 function ActualiserTableCommandeAlivrer(table,tableTemp,ddl1) {
     document.getElementsByName('bonCommande').value = "";
  var rowsSupp = table.getElementsByTagName("tr");
-  for (i = 0; i < rowsSupp.length; i++) {
+  for (var i = 0; i < rowsSupp.length; i++) {
       rowsSupp.deleteRow(i);
   }       
  var rows = tableTemp.getElementsByTagName("tr");
  var selectedValue = ddl1.options[ddl1.selectedIndex].value;
  document.getElementsByName('bonCommande').value =  selectedValue;
-    for (i = 0; i < rows.length; i++) {
+    for (var i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
         var createClickHandler = 
             function(row) 
@@ -821,6 +821,44 @@ function verifierInputClient(d1,d2,d3) {
                
            }else
            return true;
+    }
+    
+    /////////////////////////////////////////////////////
+    
+    
+    function updateTablePanier(table,temp) {
+          var rows = table.getElementsByTagName("tr");
+          var selectedVal = temp.value;
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                                 
+                                row.getElementsByTagName("td")[4].innerHTML = selectedVal;
+                                row.getElementsByTagName("td")[3].innerHTML = row.getElementsByTagName("td")[1].innerHTML * selectedVal;
+                
+                                         
+                      };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+        
+        
+    }    
+          
+    }
+   //////////////////////////////////////////// 
+    function updateTotal(table,totalCh) {
+          var rows = table.getElementsByTagName("tr");
+    var total = 0;      
+    for (var i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        total += rows[i].getElementsByTagName("td")[4].innerHTML * row.getElementsByTagName("td")[1].innerHTML;      
+        
+    }    
+     totalCh.innerHTML =  "€"+total;    
     }
     
     
