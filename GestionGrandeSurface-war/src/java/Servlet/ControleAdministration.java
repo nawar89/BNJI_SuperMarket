@@ -144,7 +144,7 @@ HttpServletResponse response) throws ServletException, IOException
                   Employe emp = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
                      switch (emp.getRole().getNom()){
                          case DirMag:
-                             jspClient = "/JSP_Isa/MenuDirecteurMagasin.jsp";
+                             jspClient = "/JSP_Pages/MenuDirecteurMagasin.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
@@ -159,7 +159,7 @@ HttpServletResponse response) throws ServletException, IOException
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case agentRayon:
-                             jspClient = "/JSP_Isa/MenuAgentRayon.jsp";
+                             jspClient = "/JSP_Pages/MenuAgentRayon.jsp";
                              sess.setAttribute("employeCo", emp);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
@@ -293,6 +293,39 @@ HttpServletResponse response) throws ServletException, IOException
         else if (act.equals("FromCreerArticle")){
             doActionCreerA(request,response); 
             request.setAttribute( "message", message );
+        }
+        else if (act.equals("loadCreationEmployeMagasin"))
+        {
+            chargerPageCreationEmployeMagasin(request, response);
+            
+            request.setAttribute("message", message);
+        }
+        else if (act.equals("creerEmployeMagasin")){
+            creerEmployeMagasin(request, response);
+            request.setAttribute( "message", message );
+            
+        } else if (act.equals("consulterCommandes")){
+            chargerPageConsultationCommandes(request,response);
+            request.setAttribute("message", message);
+
+        } else if (act.equals("afficherDetailCommande")){
+            afficherDetailCommande(request, response);
+            request.setAttribute("message", message);
+            
+       } else if (act.equals("consulterLivraisons")){
+            chargerPageConsultationLivraisons(request,response);
+            request.setAttribute("message", message);
+        } else if (act.equals("afficherDetailLivraison")){
+            afficherDetailLivraison(request,response);
+            request.setAttribute("message", message);
+        }/** ici, début if/else agent de rayon**/
+        else if (act.equals("passerLaCasse")){
+            creationCasse(request,response);
+            request.setAttribute("message", message);
+        }else if (act.equals("choixArticleCasse")){
+            finaliserLigneCasse(request,response);
+        }else if (act.equals("enregistreLigneCasse")){
+            enregistrerLigneCasse(request,response);
         }
         
         
@@ -1216,7 +1249,7 @@ HttpServletResponse response) throws ServletException, IOException
                //Aide.envoyerEmail(email);  il faut envoyer l'email 
                message = "Employe est créé";
                sess.setAttribute("employeCo", employeCo);
-               jspClient = "/JSP_Isa/MenuDirecteurMagasin.jsp";
+               jspClient = "/JSP_Pages/MenuDirecteurMagasin.jsp";
                          
     }catch(Exception exe){
     message = exe.getMessage();
@@ -1241,7 +1274,7 @@ HttpServletResponse response) throws ServletException, IOException
               List<Role> listRoles = administration.getRoles(Requete.getRoles+" AND r.nom <> :dirmag AND r.nom <> :dirnat", mesParam);
            
             List<String> listTitles = Aide.rolesToTitles(listRoles);
-            jspClient = "/JSP_Isa/CreationEmployeMagasin.jsp";
+            jspClient = "/JSP_Pages/CreationEmployeMagasin.jsp";
             request.setAttribute( "listCategorie", listCat );
             request.setAttribute("listTitres", listTitles);
             sess.setAttribute("employeCo", employeCo); 
@@ -1268,7 +1301,7 @@ HttpServletResponse response) throws ServletException, IOException
             mesParam.add(p);
             List<BonCommande> listeCommandes = administration.getBonCommande(Requete.getCommandesParMagasin+ " AND m.id = ?1 ", mesParam);
             
-            jspClient = "/JSP_Isa/ConsulterCommandes.jsp"; 
+            jspClient = "/JSP_Pages/ConsulterCommandes.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("listCommandes", listeCommandes);
             message = "";
@@ -1304,7 +1337,7 @@ HttpServletResponse response) throws ServletException, IOException
             BonCommande commande = (BonCommande)Aide.getObjectDeListe(listeCommandes.toArray());
             
             
-            jspClient = "/JSP_Isa/AffichageDetailCommande.jsp"; 
+            jspClient = "/JSP_Pages/AffichageDetailCommande.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("commande", commande);
             message = "";
@@ -1341,7 +1374,7 @@ HttpServletResponse response) throws ServletException, IOException
             Livraison livraison = (Livraison)Aide.getObjectDeListe(listeLivraisons.toArray());
             
             
-            jspClient = "/JSP_Isa/AfficherDetailLivraison.jsp"; 
+            jspClient = "/JSP_Pages/AfficherDetailLivraison.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("livraison", livraison);
             message = "";
@@ -1368,7 +1401,7 @@ HttpServletResponse response) throws ServletException, IOException
             mesParam.add(p);
             List<BonCommande> listeLivraisons = administration.getBonCommande(Requete.getLivraisonsParMagasin+ " AND m.id = ?1 ", mesParam);
             
-            jspClient = "/JSP_Isa/ConsulterLivraisons.jsp"; 
+            jspClient = "/JSP_Pages/ConsulterLivraisons.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("listLivraisons", listeLivraisons);
             message = "";
@@ -1442,7 +1475,7 @@ HttpServletResponse response) throws ServletException, IOException
             {
             Casse casse = administration.creerCasse(employeCo, d);
             
-            jspClient = "/JSP_Isa/CreationCasse.jsp"; 
+            jspClient = "/JSP_Pages/CreationCasse.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("listeArticles", listeArticlesMagasin);
             request.setAttribute("casse", casse);
@@ -1451,7 +1484,7 @@ HttpServletResponse response) throws ServletException, IOException
             }else
             {
                 Casse casse = (Casse)Aide.getObjectDeListe(listeCasses.toArray());
-             jspClient = "/JSP_Isa/CreationCasse.jsp"; 
+             jspClient = "/JSP_Pages/CreationCasse.jsp"; 
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("listeArticles", listeArticlesMagasin);
             request.setAttribute("casse", casse);   
@@ -1486,7 +1519,7 @@ HttpServletResponse response) throws ServletException, IOException
             p = new Parametre("1", "long", i);
             mesParam.add(p);
             Casse casse = (Casse)Aide.getObjectDeListe(administration.getCasse(Requete.getCasses+ " AND c.id = ?1", mesParam).toArray());
-            jspClient = "/JSP_Isa/CreerLigneCasse.jsp"; 
+            jspClient = "/JSP_Pages/CreerLigneCasse.jsp"; 
             
             sess.setAttribute("employeCo", employeCo);
             request.setAttribute("listeLots", listeLots);

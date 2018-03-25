@@ -1,8 +1,3 @@
-<%-- 
-    Document   : AffichageDetailCommande
-    Created on : 16 mars 2018, 08:47:11
-    Author     : i.silvestre
---%>
 
 <%@page import="EntityBean.Livraison"%>
 <%@page import="EntityBean.ChefRyon_Categorie"%>

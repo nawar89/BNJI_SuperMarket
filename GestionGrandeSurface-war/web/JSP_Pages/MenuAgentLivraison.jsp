@@ -1,5 +1,5 @@
 <div class="navbar nav_title" style="border: 0;">
-              <a href="ControlChef?action=Accueil" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
+              <a href="ControleAdministration?action=AccueilAgntLiv" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
             </div>
 
             <div class="clearfix"></div>

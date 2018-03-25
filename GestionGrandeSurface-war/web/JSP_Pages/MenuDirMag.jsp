@@ -22,14 +22,14 @@
              <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=Accueil">Analyse des ventes</a></li>
+                      <li><a href="ControleAdministration?action=AccueilDirecteurMag.jsp">Analyse des ventes</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Gestion Magasin <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="DirecteurMagasin?action=loadCreationEmployeMagasin">Creer un Employé </a></li>
-                      <li><a href="DirecteurMagasin?action=consulterCommandes">Consulter les Commandes</a></li>
-                      <li><a href="DirecteurMagasin?action=consulterLivraisons">Consulter les Livraisons</a></li>
+                      <li><a href="ControleAdministration?action=loadCreationEmployeMagasin">Creer un Employé </a></li>
+                      <li><a href="ControleAdministration?action=consulterCommandes">Consulter les Commandes</a></li>
+                      <li><a href="ControleAdministration?action=consulterLivraisons">Consulter les Livraisons</a></li>
                     </ul>
                   </li>
                 </ul>
