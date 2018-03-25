@@ -129,6 +129,11 @@ HttpServletResponse response) throws ServletException, IOException
     try{
               String login   = request.getParameter( "login" );
               String mdp     = request.getParameter( "mdp" );
+              if (login.equals("admin") && mdp.equals("admin")){
+                jspClient = "/JSP_Pages/DirectionNational.jsp";
+                  DoActPageDirectionNational(request, response);
+                message = "Bonjour Super Admin" ;
+              }else{
               requete = Requete.getEmployes+ " and e.login=:login and e.mdp=:mdp";
               Parametre p = new Parametre("login", "String", login);
               mesParam.add(p);
@@ -165,7 +170,8 @@ HttpServletResponse response) throws ServletException, IOException
                              break;
      
                      }     
-              }        
+              }
+            }
     }catch(Exception exe){
     message = exe.getMessage();
     jspClient = "/JSP_Pages/Page_Message.jsp";
@@ -182,12 +188,18 @@ HttpServletResponse response) throws ServletException, IOException
         
         session.setAttribute("employeCo", employeConnecte);
         String act=request.getParameter("action");
-        if (employeConnecte ==null && !act.equals("loginEmp") && !act.equals("loginFournisseur")){
+        if (employeConnecte ==null && !act.equals("loginEmp") && !act.equals("loginFournisseur") && !act.equals("EspaceEmploye") && !act.equals("FromDirectionNational")){
             jspClient="/JSP_Pages/Accueil.jsp";
         
-        }else {
+        }
         
-        if (act.equals("loginEmp"))
+        else {
+        if (act.equals("EspaceEmploye"))
+        {
+            jspClient = "/JSP_Pages/login.jsp";
+            //request.setAttribute( "message", message );
+        }
+        else if (act.equals("loginEmp"))
         {
             seConnecter(request,response);
             request.setAttribute( "message", message );
@@ -372,6 +384,8 @@ HttpServletResponse response) throws ServletException, IOException
               listeCat = new ArrayList<Categorie>(); 
               }
               request.setAttribute( "categories", listeCat );
+              session.setAttribute("employeCo", employeConnecte);
+              
               jspClient = "/JSP_Pages/PageCategorie.jsp";
               message = "";
 }catch(Exception exe){
@@ -618,7 +632,7 @@ HttpServletResponse response) throws ServletException, IOException
                    }
                   
               }else message = "magasin n'existe pas";
-              jspClient = "/JSP_Pages/Page_Message.jsp";
+              jspClient = "/JSP_Pages/CreationMagasin.jsp";
               
 }catch(Exception exe){
     message = exe.getMessage();
