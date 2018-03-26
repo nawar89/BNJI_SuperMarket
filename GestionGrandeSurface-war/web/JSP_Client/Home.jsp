@@ -226,7 +226,7 @@
                                             <% List<Promotion> listePro = promotions;
                                                 if (mag.getArticleMagasins()!=null){
                                                for (ArticleMagasin artMag:mag.getArticleMagasins()) {
-                                                
+                                                if(artMag.getQuantite()>0){
                                                
                                             %>
 						<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
@@ -288,7 +288,7 @@
 								</div>
 							</div>
 						</div>
-                                                <%}}%>
+                                                <%}}}%>
 					</div>
                                     </form>
 				</div>
@@ -428,7 +428,7 @@
 			</a>
 
 			<div class="t-center s-text8 p-t-20">
-				Copyright © 2018 All rights reserved. | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+				Copyright © 2018 All rights reserved.
 			</div>
 		</div>
 	</footer>

@@ -1,8 +1,4 @@
-<%-- 
-    Document   : CreationEmployeMagasin
-    Created on : 12 mars 2018, 16:51:30
-    Author     : i.silvestre
---%>
+
 <!DOCTYPE html>
 <%@page import="EntityBean.Categorie"%>
 <%@page import="java.util.List"%>
@@ -12,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+         <script   type="text/javascript"   src="JSP_Pages/MesJavascript.js"> </script>
          <jsp:useBean id ="employeCo" scope="session" class="Employe"></jsp:useBean>
          <jsp:useBean id="listTitres" scope="request" class="java.util.List"></jsp:useBean>
          <jsp:useBean id="listCategorie" scope="request" class="java.util.List"></jsp:useBean>
@@ -80,7 +77,7 @@
                         <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="role">Séléctionner un type d'employé*</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="select2_multiple form-control" name="role" multiple="multiple">
+                            <select class="select2_multiple form-control" onchange="changetextbox(this,document.getElementById('divCat'))" name="role" multiple="multiple">
                               <% List<String> lesRoles = listTitres;
                                 for(String r : lesRoles){%>
                                 <option value ="<%=r%>"><%=r %></option>
@@ -133,15 +130,15 @@
                         </div> 
                         </div>
                                
-                    <div class="form-group">
+                    <div id = "divCat" class="form-group">
                         <br>
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="categorie">Séléctionner une ou plusieurs catégories :</label>
                     <div class="col-md-9 col-sm-9 col-xs-12"> 
                     
                             <% List<Categorie> lesCategories = listCategorie;
                         for( Categorie r : lesCategories){%>
-                        <div class="icheckbox_flat-green" style="position: relative;">
-                            <input type="checkbox" name="categorie" value="<%=r.getId()%>"class="flat" data-parsley-multiple="categorie" style="position: absolute; opacity: 0;">
+                        <div  class="icheckbox_flat-green" style="position: relative;">
+                            <input type="checkbox" id = "cat" name="categorie" value="<%=r.getId()%>" class="flat" data-parsley-multiple="categorie" style="position: absolute; opacity: 0;">
                             
                         </div> <%=r.getLibelle() %> 
                         <br>

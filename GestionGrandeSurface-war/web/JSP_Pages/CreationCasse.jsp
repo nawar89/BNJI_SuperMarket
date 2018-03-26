@@ -117,7 +117,7 @@
                     <div class="clearfix"></div>
                   </div>
                 <div class ="x_content">
-               <form method="post" action="DirecteurMagasin?action=choixArticleCasse">
+               <form method="post" action="ControleAdministration?action=choixArticleCasse">
                         <h2 class="StepTitle">Etape 1 : choix article</h2>
                     <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">

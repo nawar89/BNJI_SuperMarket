@@ -11,8 +11,49 @@
 <head>
         <jsp:useBean id ="ClientCo" scope="session" class="EntityBean.Client"></jsp:useBean>
         <jsp:useBean id ="Panier" scope="session" class="EntityBean.CommandeClientEnLigne"></jsp:useBean>
+        <jsp:useBean id ="dates" scope="request" class="List"></jsp:useBean>
 	<title>Cart</title>
-        <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> </script>
+        <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> 
+            <%  String x = "";
+                List<String> dd = dates;
+                if (dd!=null){
+                for (String d:dd){
+                    if (x.equals("")){
+                        x += d;
+                    }else
+                        x += ","+d;
+                }}%>
+            var disableddates = [<%=x%>];
+ 
+                    function DisableSpecificDates(date) {
+
+                     var m = date.getMonth();
+                     var d = date.getDate();
+                     var y = date.getFullYear();
+
+                     // First convert the date in to the mm-dd-yyyy format 
+                     // Take note that we will increment the month count by 1 
+                     var currentdate = (m + 1) + '-' + d + '-' + y ;
+
+                      // We will now check if the date belongs to disableddates array 
+                     for (var i = 0; i < disableddates.length; i++) {
+
+                     // Now check if the current date is in disabled dates array. 
+                     if ($.inArray(currentdate, disableddates) != -1 ) {
+                     return [false];
+                     }
+                     }
+
+                  }
+
+
+                 $(function() {
+                   $( "#datepicker" ).datepicker({
+                   beforeShowDay: DisableSpecificDates
+                 });
+               });
+            
+        </script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -115,13 +156,13 @@
 	</section>
 
 	<!-- Cart -->
-        
-        <form name="PanierForm"  method="post" action="controleClient">
+       
+	<section class="cart bgwhite p-t-70 p-b-100">
+             
+        <form name="PanierForm"  onsubmit="chargerDonneesPanier(document.getElementById('MyTable'));" method="post" action="controleClient">
             <input type="hidden" name="action" value="validerPanier">
             <input type="hidden" id = "temp" >
-            <input type="hidden" id = "res" >
-	<section class="cart bgwhite p-t-70 p-b-100">
-            
+            <input type="hidden" name = "vals" >
             <%if (Panier!=null){
                 if (Panier.getLigneCommandeEnLignes()!=null){
                                            
@@ -140,28 +181,37 @@
 							<th class="column-5">Total</th>
 						</tr>
                                             <%  float total = 0;
+                                                int count = 1;
+                                                String name = "";
+                                                String id = "";
                                                 for (ligneCommandeEnLigne ligne:Panier.getLigneCommandeEnLignes()){
                                                    total=total+ligne.getPrix_vente();
+                                                   name = "chp"+count;
+                                                   id = "id='"+name+"'";
+                                                   count++;
                                             %>
 						<tr class="table-row">
-							<td style="display: none" class="column-5"><%=ligne.getId() %></td>
+							<td style="display: none" class="column-1"><%=ligne.getId() %></td>
 							<td class="column-2"><%=ligne.getArticleMagasin().getArticle().getLibelle()%></td>
-							<td class="column-3">€<%=ligne.getPrix_vente() %></td>
+							<td class="column-3"><%=ligne.getPrix_vente() %></td>
 							<td class="column-4">
 								<div class="flex-w bo5 of-hidden w-size17">
-									<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
+									<button   onclick="actualiserMoins(document.getElementById('<%=name%>'),document.getElementById('temp'));updateTablePanier(document.getElementById('MyTable'),document.getElementById('temp',document.getElementById('total')));" class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
 										<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
 									</button>
-                                                                     <%String max = "max='"+ligne.getArticleMagasin().getQuantite()+"'";%>
-                                                                     <input class="size8 m-text18 t-center num-product" onchange = "document.getElementById('temp').value = this.value;updateTablePanier(document.getElementById('MyTable'),document.getElementById('temp'));updateTotal(document.getElementById('MyTable'),document.getElementById('total'));" type="number" min="0" <%=max%> name="num-product1" value="1">
+                                                                     <%String max = "max='"+ligne.getArticleMagasin().getQuantite()+"'";
+                                                                      
+                                                                     %>
+                                                                     <input <%=id%> class="size8 m-text18 t-center num-product"  type="number" min="-1" <%=max%>  value="1">
                                                                      
-									<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
+                                                                     <button  onclick="actualiserPlus(document.getElementById('<%=name%>'),document.getElementById('temp'));updateTablePanier(document.getElementById('MyTable'),document.getElementById('temp'),document.getElementById('total'));" class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
 										<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
 									</button>
+                                                                         
 								</div>
 							</td>
 							<td class="column-5"><%=ligne.getPrix_vente()%></td>
-                                                        <td style="display: none" class="column-5">1</td>
+                                                        <td style="display: none" class="column-6">1</td>
                                                         
 						</tr>
                                                 <%}%>
@@ -173,12 +223,20 @@
 			<div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
 				<div class="size10 trans-0-4 m-t-10 m-b-10">
 					<!-- Button -->
-                                        <button onclick="chargerDonneesPanier(document.getElementById('MyTable'));document.getElementById('PanierForm').submit();" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-						Update Cart
-					</button>
+                                        <input type="submit"  class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+
 				</div>
+   
 			</div>
 
+                          <div class="form-group">
+                            <label for="date_p" class="control-label col-md-3 col-sm-3 col-xs-12">Date de Livraison souhaité</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="datepicker" class="form-control col-md-7 col-xs-12" type="Date"  name="datepicker2">
+                              <span class="form-control-feedback" aria-hidden="true"></span>
+                            </div>
+                           </div>               
+                                        
 			<!-- Total -->
 			<div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-l-auto p-lr-15-sm">
 				<h5 class="m-text20 p-b-24">
@@ -206,8 +264,9 @@
 			</div>
 		</div>
                 <%}}%>
+                </form>
 	</section>
-       </form>
+       
 
 
 	<!-- Footer -->
@@ -309,7 +368,7 @@
 			</a>
 
 			<div class="t-center s-text8 p-t-20">
-				Copyright © 2018 All rights reserved. | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+				Copyright © 2018 All rights reserved.
 			</div>
 		</div>
 	</footer>

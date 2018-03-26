@@ -170,7 +170,7 @@ HttpServletResponse response) throws ServletException, IOException
                              break;
      
                      }     
-              }
+              }else message = "Login et mdp n'existe pas";
             }
     }catch(Exception exe){
     message = exe.getMessage();
@@ -196,13 +196,15 @@ HttpServletResponse response) throws ServletException, IOException
         else {
         if (act.equals("EspaceEmploye"))
         {
+            message = "";
             jspClient = "/JSP_Pages/login.jsp";
-            //request.setAttribute( "message", message );
+            request.setAttribute( "message", message );
         }
         else if (act.equals("loginEmp"))
         {
             seConnecter(request,response);
             request.setAttribute( "message", message );
+            
         }
         else if (act.equals("GoToDirectionNational")){
             DoActPageDirectionNational(request,response);

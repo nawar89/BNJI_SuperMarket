@@ -354,10 +354,13 @@ HttpServletResponse response) throws ServletException, IOException
 {
    
     try{
-        //Construire requete SQL        
+        //Construire requete SQL
+             
              monPanier = (CommandeClientEnLigne)session.getAttribute("Panier");
              if (monPanier!=null){
                  if (monPanier.getLigneCommandeEnLignes()!=null){
+                      List<String> dates = new ArrayList<String>();
+                      request.setAttribute( "dates", dates );
                       session.setAttribute("Panier", monPanier);
                       session.setAttribute("ClientCo", clientConnecte);
                       jspClient = "/JSP_Client/MonPanier.jsp";
@@ -389,9 +392,16 @@ HttpServletResponse response) throws ServletException, IOException
     try{
         //Construire requete SQL        
              //monPanier = (CommandeClientEnLigne)session.getAttribute("Panier");
-             String res   = request.getParameter("res");
+             String res   = request.getParameter("vals");
+             String date   = request.getParameter("datepicker2");
+             
              ParserLigneCommandeVersLignesLivraison(res); 
              if (monPanier!=null){
+                if(!date.isEmpty()){
+                    Date dd = java.sql.Date.valueOf(date);
+                    clientSession.creerLivraisonClient(null, dd, monPanier);
+                
+                }
                 session.setAttribute("Panier", monPanier);
                 session.setAttribute("ClientCo", clientConnecte);
                  
@@ -450,7 +460,6 @@ public  void ParserLigneCommandeVersLignesLivraison(String input){
                 clientSession.supprimerCommandeEnLigne(monPanier);
                 monPanier = null;
             }
-            
          }catch(Exception exe){message = exe.getMessage();
             jspClient = "/JSP_Pages/Page_Message.jsp";
          }

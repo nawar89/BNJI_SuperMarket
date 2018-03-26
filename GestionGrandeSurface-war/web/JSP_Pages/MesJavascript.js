@@ -826,7 +826,8 @@ function verifierInputClient(d1,d2,d3) {
     /////////////////////////////////////////////////////
     
     
-    function updateTablePanier(table,temp) {
+    function updateTablePanier(table,temp,ch) {
+        ch.innerHTML = "0";
           var rows = table.getElementsByTagName("tr");
           var selectedVal = temp.value;
     for (i = 0; i < rows.length; i++) {
@@ -835,12 +836,15 @@ function verifierInputClient(d1,d2,d3) {
             function(row) 
             {
                 return function() { 
-                                 
-                                row.getElementsByTagName("td")[4].innerHTML = selectedVal;
-                                //console.log(row.getElementsByTagName("td")[1].innerHTML+" * "+selectedVal+" = "+ parseFloat(row.getElementsByTagName("td")[1].innerHTML) * parseInt(selectedVal);
-                                row.getElementsByTagName("td")[3].innerHTML = parseFloat(row.getElementsByTagName("td")[1].innerHTML) * parseInt(selectedVal);
+                                
+                                row.getElementsByTagName("td")[5].innerHTML = selectedVal;
+                                
+                                row.getElementsByTagName("td")[4].innerHTML = parseFloat(row.getElementsByTagName("td")[2].innerHTML) * parseInt(selectedVal);
                                 //row.getElementsByTagName("td")[3].innerHTML = 11;
-                                         
+                                 
+                                 ch.innerHTML = parseInt(ch.innerHTML)+parseInt(row.getElementsByTagName("td")[4].innerHTML);
+                                 console.log(ch.innerHTML); 
+                                 
                       };
             };
 
@@ -848,7 +852,7 @@ function verifierInputClient(d1,d2,d3) {
         
         
     }    
-          
+    ch.innerHTML ="€"+ch.innerHTML;
     }
    //////////////////////////////////////////// 
     function updateTotal(table,totalCh) {
@@ -856,7 +860,8 @@ function verifierInputClient(d1,d2,d3) {
     var total = 0;      
     for (var i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
-        total +=  parseFloat(rows[i].getElementsByTagName("td")[3].innerHTML);      
+        console.log(currentRow.getElementsByTagName("td")[4].innerHTML);    
+        //total +=  parseFloat(currentRow.getElementsByTagName("td")[4].innerHTML);      
         
     }    
      totalCh.innerHTML =  "€"+total;    
@@ -875,19 +880,19 @@ function verifierInputClient(d1,d2,d3) {
             var tableData = tr[i].getElementsByTagName("td");
             if (tableData.length > 0) {
               for (var j=0;j < tableData.length;j++){
-                 arrayOfThisRow.push(tableData[j].innerHTML);
+                 //arrayOfThisRow.push(tableData[j].innerHTML);
                  //alert(tableData[j].innerHTML);
                  
                  ok = true;
                  if(j===0  || j===5 )
-                 document.forms["PanierForm"]["res"].value= document.forms["PanierForm"]["res"].value + tableData[j].innerHTML+",";
+                 document.forms["PanierForm"]["vals"].value= document.forms["PanierForm"]["vals"].value + tableData[j].innerHTML+",";
 
               }
-            myTableArray.push(arrayOfThisRow);
+           // myTableArray.push(arrayOfThisRow);
              }
            }
           //document.forms["PanierForm"]["res"].value = "44";
-           console.log("lignes: " +document.forms["PanierForm"]["res"].value);
+           console.log("lignes: " +document.forms["PanierForm"]["vals"].value);
            //document.forms["CommandeForm"]["lignes"].value = "1";
          //myTableArray = myTableArray.join(", ");
         
@@ -896,5 +901,45 @@ function verifierInputClient(d1,d2,d3) {
 }
 //////////////////////////////////////////////////////////////////////////////////
     
+  function changetextbox(d1,d2)
+{
+  
+    console.log(d1.value);
+   if ((d1.value === "Chef de Rayon") || (d1.value === "Agent de Rayon")) {
+       console.log("ok");
+       d2.style.display = 'block';
+       
+   }else d2.style.display = 'none';
+}
+
+///////////////////////////////////////////////////////////////////////////////////
     
+function actualiserMoins(d1,d2)
+{
+  
+    if(d1.value==="0"){
+        d1.value = "0";
+        d2.value ="0";
+    }
+    else {
+        d2.value = parseInt(d1.value)-1;
     
+    }
+}
+////////////////////////////////
+
+    
+function actualiserPlus(d1,d2)
+{
+  
+    if(d1.value==="0"){
+        d1.value = "0";
+        d2.value ="0";
+    }
+    else {
+        d2.value = parseInt(d1.value)+1;
+    
+    }
+}
+
+///////////////////////////////////////////////////

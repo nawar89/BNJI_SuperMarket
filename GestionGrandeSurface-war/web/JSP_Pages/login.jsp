@@ -13,6 +13,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
 
     <title>Login</title>
 
@@ -36,6 +37,7 @@
 
       <div class="login_wrapper">
         <div class="animate form login_form">
+        <%=message%>
           <section class="login_content">
             <form method="post" action="ControleAdministration">
               <h1>Connectez-vous</h1>

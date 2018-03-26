@@ -78,7 +78,8 @@
                     <form name="MagasinForm" onsubmit="return validerCreationMagasin()" method="post" action="ControleAdministration">
                         
                         <div class="form-group">
-                        <label for="nom" >Magasin <span class="requis" >*</span></label>
+                        <label for="nom" class="control-label col-md-3 col-sm-3 col-xs-12" >Magasin <span class="requis" >*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
                         <select id = "mag" name="magasinselect" onchange="AffictuerMagasinInfo(this,document.getElementsByName('magasin'))">
                             <% List<Magasin> listeMag = magasins ;
                             if (!listeMag.isEmpty()){%>
@@ -88,6 +89,7 @@
                             <option value ="<%=mag.getId()%>"> <%=mag.getNom()%>  </option>
                             <% }%>
                           </select>
+                           </div>
                           </div>
 
                       <div class="form-group">
@@ -95,7 +97,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="nom" name="nom" required="required" class="form-control col-md-7 col-xs-12" placeholder="Saisir nom">
-                           <span class="fa fa-user form-control-feedback  right" aria-hidden="true"></span>
+                           <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
                         </div>
                           
                       </div>
@@ -104,13 +106,14 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="adresse" name="ville" required="required" class="form-control col-md-7 col-xs-12" placeholder="Saisir ville" >
+                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="adresse" class="control-label col-md-3 col-sm-3 col-xs-12">Adresse</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="telephone" class="form-control col-md-7 col-xs-12" type="text" name="adresse"  required="required" placeholder="Saisir adresse">
-                          <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
+                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
                          
                         </div>
                    
