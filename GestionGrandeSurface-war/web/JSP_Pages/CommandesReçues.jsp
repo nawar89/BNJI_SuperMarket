@@ -81,18 +81,10 @@
                   </div>
                   <div class="x_content">
                     <br />
+                   
                     <form method="post" action="ControleAdministration">
-                      <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="dataTables_length" id="datatable-checkbox_length">
-                                </div>
-                                    
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
+                        
+                       <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
                       <thead>
                         <tr role="row">
                             <th style="display : none"></th>
@@ -103,8 +95,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <% float total = 0.01f ;
+                        
+                       <% float total = 0.01f ;
                         List<BonCommande> lesCommandes = listCommandes;
+                        if (lesCommandes!=null)
                         for( BonCommande r : lesCommandes){ 
                         for (LigneCommande l : r.getLigneCommandes()) {
                             total = total + (l.getPrix_achat()*l.getQuantite()) ;}
@@ -119,27 +113,19 @@
                       </tr>
                         
                         <%;}%>
-                        
-                      </tbody>
-                    </table>
-                            </div>
-                      
-                        </div>
-                      <div class="row">
-                          <div class="col-sm-5">
-                                  
-                          </div>
-                          <div class="col-sm-7">
-                          </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
+                          
+                      </tbody> 
+                      </table> 
+                      <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <input type="hidden" name="action" value="GOTOCreerLivraison"/>
                           <button type="submit" class="btn btn-success">Livrer les commandes</button>
                         </div>
                       </div>
+                        
                     </form>
+                    
+                    
                   </div>
                 </div>
               </div>

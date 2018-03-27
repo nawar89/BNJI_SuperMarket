@@ -24,6 +24,7 @@
                     <ul class="nav child_menu">
                       <li><a href="ControleAdministration?action=GoToConsulterLvraison">Consulter livraison</a></li>
                       <li><a href="ControleAdministration?action=GOTOCreerLivraison">Creer Livraison</a></li>
+                       <li><a href="ControleAdministration?action=logout">Déconnexion</a></li>
                     </ul>
                   </li>
                   

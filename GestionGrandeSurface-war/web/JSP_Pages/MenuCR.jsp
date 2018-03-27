@@ -44,6 +44,7 @@
                       <li><a href="ControleAdministration?action=GoToCreationBonCommande">Creer Bon commande </a></li>
                     </ul>
                   </li>
+                   <li><a href="ControleAdministration?action=logout">Déconnexion</a></li>
                 </ul>
               </div>
              

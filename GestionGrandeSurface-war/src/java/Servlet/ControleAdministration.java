@@ -132,7 +132,7 @@ public class ControleAdministration extends HttpServlet {
 protected void seConnecter(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-    session.invalidate();
+   // session.invalidate();
     employeConnecte = null;
     fournisseurConnecte = null;
    HttpSession sess=request.getSession(true);
@@ -196,8 +196,8 @@ HttpServletResponse response) throws ServletException, IOException
    public void verifierConnexion(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         
-        employeConnecte = (Employe) session.getAttribute("employeCo");
-        
+        employeConnecte     = (Employe) session.getAttribute("employeCo");
+        fournisseurConnecte = (Fournisseur) session.getAttribute("FourCo");
         session.setAttribute("employeCo", employeConnecte);
         String act=request.getParameter("action");
         if (employeConnecte ==null && fournisseurConnecte==null && !act.equals("loginEmp") && !act.equals("loginFournisseur") && !act.equals("EspaceEmploye") && !act.equals("FromDirectionNational")){
@@ -295,7 +295,7 @@ HttpServletResponse response) throws ServletException, IOException
             GoTOLivraison(request,response); 
             request.setAttribute( "message", message );
         }
-        else if (act.equals("FromCreerLivraison")){
+        else if (act.equals("FromCreerLivraisonAgt")){
             FromLivraison(request,response); 
             request.setAttribute( "message", message );
         }  
@@ -345,27 +345,28 @@ HttpServletResponse response) throws ServletException, IOException
             switch(employeConnecte.getRole().getNom()){
                 case DirMag:
                              jspClient = "/JSP_Pages/MenuDirecteurMagasin.jsp";
-                             
+                             request.setAttribute( "message", message );
                              
                              break;
                          case DirNAT:
                              jspClient = "/JSP_Pages/AccueilDirectionNational.jsp";
-                             
+                             request.setAttribute( "message", message );
                              
                              break;
                          case ChefRayon:
                              
                              GoTOAccueilChefRayon(request,response);
+                             request.setAttribute( "message", message );
                              
                              break;
                          case agentRayon:
                              jspClient = "/JSP_Pages/MenuAgentRayon.jsp";
-                             
+                             request.setAttribute( "message", message );
                              
                              break;
                         case agentLivraison:
                              jspClient = "/JSP_Pages/AccueilAgentLivraison.jsp";
-                             
+                             request.setAttribute( "message", message );
                              
                              break;
             
@@ -435,6 +436,10 @@ HttpServletResponse response) throws ServletException, IOException
                 doActionLancerAnalyse(request,response);
                 
                 break;
+                case "CreerL" : 
+                 doActionCreerLivraison(request,response);
+                 request.setAttribute( "message", message );
+                 break;
              }
         
        
@@ -449,7 +454,7 @@ HttpServletResponse response) throws ServletException, IOException
      protected void seConnecterFour(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-        session.invalidate();
+        //session.invalidate();
         employeConnecte = null;
         fournisseurConnecte = null;
         HttpSession sess=request.getSession(true);
@@ -467,10 +472,10 @@ HttpServletResponse response) throws ServletException, IOException
               mesParam.add(p);
               List<Fournisseur> listeFour = administration.getFournisseur(requete, mesParam);
               if (listeFour != null && listeFour.size()== 1){
-              Fournisseur four = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
+              fournisseurConnecte = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
               jspClient = "/JSP_Pages/AccueilFournisseur.jsp";
-              sess.setAttribute("FourCo", four);
-              message = "Bonjour "+four.getNom();     
+              session.setAttribute("FourCo", fournisseurConnecte);
+              message = "Bonjour "+fournisseurConnecte.getNom();     
                 }     
         } catch(Exception exe){
     message = exe.getMessage();
@@ -530,8 +535,12 @@ HttpServletResponse response) throws ServletException, IOException
                 String tel     = request.getParameter( "telephone" );
                 String email   = request.getParameter( "email" );
                 String login   = Aide.GenererLogin(nom,prenom);
-                String mdp     = Aide.encrypterMdp(Aide.GenererMDP());
-                administration.creerEmployee(nom, prenom, adresse,tel, email,login,mdp,role, null);
+                String mdp = Aide.GenererMDP();
+                String enCmdp     = Aide.encrypterMdp(mdp);
+                administration.creerEmployee(nom, prenom, adresse,tel, email,login,enCmdp,role, null);
+                String [] to =  new String[1];
+                to[0]= email;
+                Aide.sendFromGMail("shopisa2018@gmail.com","projetfinetude",to,"new login and mdp","login :"+login+" mdp: "+mdp);
                //Aide.envoyerEmail(email);  il faut envoyer l'email 
                message = "Employe est créé";
                     
@@ -749,6 +758,11 @@ HttpServletResponse response) throws ServletException, IOException
                         
                        message = "Employe est créé";
                        jspClient = "/JSP_Pages/Page_message.jsp";
+                       
+                       String [] to =  new String[1];
+                        to[0]= email;
+                        Aide.sendFromGMail("shopisa2018@gmail.com","projetfinetude",to,"new login and mdp","login :"+login+" mdp: "+mdp);
+                       
                    }else {message = "magasin n'existe pas";
                             jspClient = "/JSP_Pages/Page_message.jsp";
                     }
@@ -1404,12 +1418,16 @@ HttpServletResponse response) throws ServletException, IOException
                Role roleEmploye =(Role)Aide.getObjectDeListe(resultInList.toArray());
                                       
                 String login   = Aide.GenererLogin(nom,prenom);
-                String mdp     = Aide.encrypterMdp(Aide.GenererMDP());
-                administration.creerEmployeMagasin(nom, prenom, adresse, tel, email, login, mdp, roleEmploye ,mag, listCat);
+                String mdp     = Aide.GenererMDP();
+                String EnCMdp  = Aide.encrypterMdp(mdp);
+                administration.creerEmployeMagasin(nom, prenom, adresse, tel, email, login, EnCMdp, roleEmploye ,mag, listCat);
                //Aide.envoyerEmail(email);  il faut envoyer l'email 
                message = "Employe est créé";
                sess.setAttribute("employeCo", employeCo);
                jspClient = "/JSP_Pages/MenuDirecteurMagasin.jsp";
+               String [] to =  new String[1];
+               to[0]= email;
+               Aide.sendFromGMail("shopisa2018@gmail.com","projetfinetude",to,"new login and mdp","login :"+login+" mdp: "+mdp);
                          
     }catch(Exception exe){
     message = exe.getMessage();
@@ -1858,8 +1876,8 @@ protected void doActionCreerA(HttpServletRequest request, HttpServletResponse re
        String adresse = request.getParameter("adresse");
        String telephone=request.getParameter("telephone");
        String email=request.getParameter("email");
-       String mdp= Aide.encrypterMdp(Aide.GenererMDP());
-   
+       String mdp= Aide.GenererMDP();
+       String encMdp = Aide.encrypterMdp(mdp);
        if ( nom.trim().isEmpty() || adresse.trim().isEmpty())
        {
           message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
@@ -1867,9 +1885,12 @@ protected void doActionCreerA(HttpServletRequest request, HttpServletResponse re
        } 
        else {
           
-          administration.creationFournisseur(nom, adresse, telephone, email,mdp);
+          administration.creationFournisseur(nom, adresse, telephone, email,encMdp);
            message = "Fournisseur créé avec succès !";  
            jspClient = "/JSP_Pages/Page_message.jsp";
+                String [] to =  new String[1];
+                to[0]= email;
+                Aide.sendFromGMail("shopisa2018@gmail.com","projetfinetude",to,"new login and mdp","login :"+email+" mdp: "+mdp);
         }
         }catch(Exception exe){ 
            message = exe.getMessage();
@@ -2203,7 +2224,37 @@ HttpServletResponse response) throws ServletException, IOException
     
 }
 
-    
+ protected void doActionCreerLivraison(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+       HttpSession sess=request.getSession(true);
+       String date_pr = request.getParameter( "date_pr" );
+       String commande = request.getParameter( "CommandeSelect" );
+       if ( date_pr.trim().isEmpty() || commande.trim().isEmpty())
+       {
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
+       } 
+       else 
+       {
+                Integer commandeID= Integer.parseInt(commande);
+                java.sql.Date d = java.sql.Date.valueOf(date_pr);
+                Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+               //Récupérer la commande
+                mesParam = new ArrayList<Parametre>();
+                requete= Requete.getCommandes+ " And b.id=:id";
+                Parametre s = new Parametre("id", "int", commandeID);
+                mesParam.add(s);
+                List<BonCommande> listeBonCommande=administration.getBonCommande(requete, mesParam);
+                administration.creationLivraison(null,d, fourCo,listeBonCommande.get(0),Etat_Livraison.ENCOURS);  
+                message = "Livraison créé avec succès !";  
+                jspClient = "/JSP_Pages/Page_message.jsp";
+        }
+        }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/JSP_Pages/Page_message.jsp";
+        }
+      }     
      
 
 

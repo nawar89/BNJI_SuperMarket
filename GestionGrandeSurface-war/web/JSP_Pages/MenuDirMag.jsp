@@ -30,6 +30,7 @@
                       <li><a href="ControleAdministration?action=loadCreationEmployeMagasin">Creer un Employé </a></li>
                       <li><a href="ControleAdministration?action=consulterCommandes">Consulter les Commandes</a></li>
                       <li><a href="ControleAdministration?action=consulterLivraisons">Consulter les Livraisons</a></li>
+                       <li><a href="ControleAdministration?action=logout">Déconnexion</a></li>
                     </ul>
                   </li>
                 </ul>

@@ -91,10 +91,17 @@
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Choisissez la commande à livrer</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control" id = "commandesel" name="CommandeSelect" onchange="ActualiserTableCommandeAlivrer(document.getElementById('tableCache'),document.getElementById('myTable'),this)">
-                        <% List<BonCommande> com = commandes ;
+                        <% String binID = "";
+                            List<BonCommande> com = commandes ;
                         //if (!emp.isEmpty())  {
                         //Employe e = emp.get(0);
-                        for(BonCommande b : com ){//if(b.getChefRyon().getId()==e.getId()){%>
+                        int io=0;
+                        for(BonCommande b : com ){//if(b.getChefRyon().getId()==e.getId())
+                           if (io==0){
+                              binID = ""+b.getId();
+                               
+                           }
+                        %>
                            <option class="filterOption" value ="<%= b.getId()%>"><%=b.getChefRyon().getMagasin().getNom()+"("+b.getDate_commande()+")" %> </option>
                             <% }%>
                         </select>
@@ -192,11 +199,11 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <a href="ControleAdministration?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
 		          <button class="btn btn-primary" type="reset">Reset</button>
-                          <input type="hidden" name="action" value="FromCreerLivraison"/>
+                          <input type="hidden" name="action" value="FromCreerLivraisonAgt"/>
                           <input type="hidden" name="acepte" class="form-control" />
                           <input type="hidden" name="dateTemp" class="form-control" />
                           <input type="hidden" name="ligneLivraisonQte" class="form-control" />
-                          <input type="hidden" name="bonCommande" class="form-control" />
+                          <input type="hidden" name="bonCommande" value="<%=binID%>" class="form-control" />
                           <button type="submit" class="btn btn-success">Créer</button>
                         </div>
                       </div>

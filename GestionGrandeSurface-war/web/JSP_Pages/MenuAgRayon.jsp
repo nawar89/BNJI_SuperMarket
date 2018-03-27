@@ -31,6 +31,7 @@
                       <li><a href="ControleAdministration?action=passerLaCasse">Passer la casse </a></li>
                       <li><a href="ControleAdministration?action=consulterCommandes">Consulter les Commandes</a></li>
                       <li><a href="ControleAdministration?action=consulterLivraisons">Consulter les Livraisons</a></li>
+                       <li><a href="ControleAdministration?action=logout">Déconnexion</a></li>
                     </ul>
                   </li>
                 </ul>

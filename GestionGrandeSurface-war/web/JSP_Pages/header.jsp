@@ -12,11 +12,14 @@
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <% EntityBean.Fournisseur fours=(EntityBean.Fournisseur)session.getAttribute("FourCo");
                        EntityBean.Employe emp=(EntityBean.Employe)session.getAttribute("employeCo");
-                     if(fours!=null ){ %>
+                     if(fours!=null ){
+                         if(fours.getId()!=null){%>
                       <img src="./Template/images/img.jpg" alt=""><%=fours.getNom()%> 
-                      <%}else if (emp!=null){%>
+                      <%}} if (emp!=null){
+                           if(emp.getId()!=null){
+                       %>
                       <img src="./Template/images/img.jpg" alt=""><%=emp.getPrenom()%> <%=emp.getNom()%>
-                      <%;}%>
+                      <%}}%>
                     
                     <span class=" fa fa-angle-down"></span>
                   </a>

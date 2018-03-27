@@ -92,7 +92,7 @@
 								<a href="contact.html">Mes commandes</a>
 							</li>
                                                         <li>
-								<a href="contact.html">Déconnexion</a>
+								<a href="controleClient?action=logout">Déconnexion</a>
 							</li>
 						</ul>
 					</nav>
