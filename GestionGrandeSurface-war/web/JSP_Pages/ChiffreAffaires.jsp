@@ -1,8 +1,3 @@
-<%-- 
-    Document   : ChiffreAffaires
-    Created on : Mar 25, 2018, 9:44:03 PM
-    Author     : Jihane
---%>
 
 
 <%@page import="java.util.ArrayList"%>

@@ -1,8 +1,4 @@
-<%-- 
-    Document   : MenuDirecteurMagasin
-    Created on : 12 mars 2018, 14:33:48
-    Author     : i.silvestre
---%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : DirectionNational
-    Created on : 8 mars 2018, 13:55:41
-    Author     : Nawar
---%>
 
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : PageCategorie
-    Created on : 9 mars 2018, 15:04:23
-    Author     : Nawar
---%>
 
 <%@page import="EntityBean.SousCategorie"%>
 <%@page import="EntityBean.Categorie"%>

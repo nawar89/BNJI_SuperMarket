@@ -1,8 +1,3 @@
-<%-- 
-    Document   : MenuAdmin
-    Created on : 9 mars 2018, 09:33:23
-    Author     : Nawar
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

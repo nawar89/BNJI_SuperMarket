@@ -1,8 +1,4 @@
-<%-- 
-    Document   : CommandesReçues
-    Created on : Mar 20, 2018, 2:15:23 PM
-    Author     : Jihane
---%>
+
 
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>

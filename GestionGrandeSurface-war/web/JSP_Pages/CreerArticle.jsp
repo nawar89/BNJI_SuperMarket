@@ -1,8 +1,4 @@
-<%-- 
-    Document   : Accueil
-    Created on : Mar 13, 2018, 11:34:11 AM
-    Author     : Jihane
---%>
+
 
 <%@page import="EntityBean.Fournisseur"%>
 <%@page import="EntityBean.SousCategorie"%>
@@ -188,6 +184,14 @@
                         </select>
                         </div>
                       </div>
+                        
+                        <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                             <input type="file" name="pic" multiple>
+                        </div>
+                      </div>
+                        
                         
                       <div class="ln_solid"></div>
                       <div class="form-group">

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : CreerLivraison
-    Created on : Mar 16, 2018, 9:55:21 AM
-    Author     : Jihane
---%>
 
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.BonCommande"%>

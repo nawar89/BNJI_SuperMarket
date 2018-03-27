@@ -1,8 +1,3 @@
-<%-- 
-    Document   : test
-    Created on : 8 mars 2018, 10:03:38
-    Author     : Nawar
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

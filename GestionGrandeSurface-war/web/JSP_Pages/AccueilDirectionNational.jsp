@@ -1,8 +1,4 @@
-<%-- 
-    Document   : AccueilAgentLivraison
-    Created on : 16 mars 2018, 15:22:09
-    Author     : Nawar
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 

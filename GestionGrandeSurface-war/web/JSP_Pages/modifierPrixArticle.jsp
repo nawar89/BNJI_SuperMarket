@@ -1,9 +1,4 @@
 
-<%-- 
-    Document   : Accueil
-    Created on : Mar 13, 2018, 11:34:11 AM
-    Author     : Jihane
---%>
 
 <%@page import="EntityBean.ArticleMagasin"%>
 <%@page import="EntityBean.Fournisseur"%>

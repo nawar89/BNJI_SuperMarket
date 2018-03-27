@@ -1,8 +1,4 @@
-<%-- 
-    Document   : ConsulterLivraison
-    Created on : 14 mars 2018, 15:58:47
-    Author     : i.silvestre
---%>
+
 
 <%@page import="EntityBean.Livraison"%>
 <%@page import="java.text.SimpleDateFormat"%>

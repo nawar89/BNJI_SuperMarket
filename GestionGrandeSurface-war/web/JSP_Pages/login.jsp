@@ -1,8 +1,3 @@
-<%-- 
-    Document   : login
-    Created on : Mar 12, 2018, 2:57:02 PM
-    Author     : Jihane
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

@@ -1,8 +1,4 @@
-<%-- 
-    Document   : Historique
-    Created on : Mar 21, 2018, 8:55:59 AM
-    Author     : Jihane
---%>
+
 <jsp:useBean id ="FourCo" scope="session" class="EntityBean.Fournisseur"></jsp:useBean>
 <%@page import="EntityBean.Livraison"%>
 <%@page import="java.text.SimpleDateFormat"%>

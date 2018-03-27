@@ -1,8 +1,3 @@
-<%-- 
-    Document   : CreateBonCommande
-    Created on : 14 mars 2018, 15:28:37
-    Author     : Nawar
---%>
 
 <%@page import="EntityBean.Article"%>
 <%@page import="java.util.List"%>

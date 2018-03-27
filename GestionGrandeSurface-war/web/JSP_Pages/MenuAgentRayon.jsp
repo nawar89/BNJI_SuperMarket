@@ -1,8 +1,3 @@
-<%-- 
-    Document   : MenuAgentRayon
-    Created on : 19 mars 2018, 09:28:31
-    Author     : i.silvestre
---%>
 
 <%@page import="EntityBean.Employe"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : AfficherDetailLivraison
-    Created on : 16 mars 2018, 15:35:42
-    Author     : i.silvestre
---%>
 
 <%@page import="EntityBean.Ligne_livraison"%>
 <%@page import="EntityBean.Livraison"%>

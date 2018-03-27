@@ -1,8 +1,3 @@
-<%-- 
-    Document   : MenuDirectionNational
-    Created on : 12 mars 2018, 09:01:43
-    Author     : Nawar
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

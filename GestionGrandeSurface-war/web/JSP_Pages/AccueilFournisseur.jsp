@@ -1,8 +1,4 @@
-<%-- 
-    Document   : AccueilFournisseur
-    Created on : Mar 16, 2018, 3:36:54 PM
-    Author     : Jihane
---%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>

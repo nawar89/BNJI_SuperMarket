@@ -1,8 +1,3 @@
-<%-- 
-    Document   : CreationCasse
-    Created on : 19 mars 2018, 13:19:04
-    Author     : i.silvestre
---%>
 
 <%@page import="EntityBean.ArticleMagasin"%>
 <%@page import="java.text.SimpleDateFormat"%>
