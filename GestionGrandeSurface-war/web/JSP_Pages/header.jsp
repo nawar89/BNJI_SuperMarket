@@ -10,7 +10,14 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="./Template/images/img.jpg" alt="">
+                    <% EntityBean.Fournisseur fours=(EntityBean.Fournisseur)session.getAttribute("FourCo");
+                       EntityBean.Employe emp=(EntityBean.Employe)session.getAttribute("employeCo");
+                     if(fours!=null ){ %>
+                      <img src="./Template/images/img.jpg" alt=""><%=fours.getNom()%> 
+                      <%}else if (emp!=null){%>
+                      <img src="./Template/images/img.jpg" alt=""><%=emp.getPrenom()%> <%=emp.getNom()%>
+                      <%;}%>
+                    
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -22,7 +29,7 @@
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="ControlChef"><i class="fa fa-sign-out pull-right"></i> Déconnexion</a></li>
                   </ul>
                 </li>
 

@@ -1,19 +1,24 @@
 <%-- 
-    Document   : ReclamationsReçues
-    Created on : Mar 21, 2018, 8:55:59 AM
+    Document   : CommandesReçues
+    Created on : Mar 20, 2018, 2:15:23 PM
     Author     : Jihane
 --%>
 
-<%@page import="EntityBean.Reclamation"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="EntityBean.LigneCommande"%>
 <%@page import="java.util.List"%>
+<%@page import="EntityBean.Employe"%>
+<%@page import="EntityBean.BonCommande"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="listReclamations" scope="request" class="java.util.List"></jsp:useBean>
+<jsp:useBean id ="FourCo" scope="session" class="EntityBean.Fournisseur"></jsp:useBean>
+ <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
 <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
+      
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -21,7 +26,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> </script>
     <link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
-    <title>Reclamations</title>
+    <title>Commandes</title>
     <!-- Bootstrap -->
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -32,6 +37,7 @@
     <link href="./Template/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="./Template/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    
     <!-- Custom Theme Style -->
     <link href="./Template/css/custom.min.css" rel="stylesheet">
     <!-- Datatables -->
@@ -53,12 +59,13 @@
           </div>
         </div>
               <%@include file="header.jsp" %>
+ 
         <!-- page content -->
         <div class="right_col" role="main">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Vos Reclamations reçues<small></small></h2>
+                    <h2>Vos Commandes reçues<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -78,7 +85,7 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form method="post" action="ControlChef">
+                    <form method="post" action="ControleAdministration">
                       <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
@@ -92,29 +99,31 @@
                                 <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
                       <thead>
                         <tr role="row">
-                           
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Type de réclamation : activer pour ordonner" style="width: 167px;">Type de réclamation</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Chef de Rayon et magasin : activer pour ordonner" style="width: 126px;">Chef de Rayon et magasin </th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de réclamation : activer pour ordonner" style="width: 124px;">Date de réclamation</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Détail : activer pour ordonner" style="width: 96px;">Détail</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Quantité livrée : activer pour ordonner" style="width: 96px;">Quantité livrée</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Quantité recue : activer pour ordonner" style="width: 96px;">Quantité Reçue</th>
+                            <th style="display : none"></th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">Nom du Chef de rayons</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Catégorie concernée</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date de la commande</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">Prix total</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <% 
-                        List<Reclamation> lesrecs = listReclamations;
-                        for( Reclamation r : lesrecs){ 
-                         %>
-                         <tr role="row" class="odd">
-                          <td><%= r.getEtat_Reclamation().name()%></td>
-                          <td><%=r.getLigneLivraison().getLivraison().getBonCommande().getChefRyon().getNom()%> : <%=r.getLigneLivraison().getLivraison().getBonCommande().getChefRyon().getMagasin().getNom()%></td>
-                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_reclamation()) %></td>
-                          <td><%=r.getReclamation() %></td>
-                          <td><%=r.getLigneLivraison().getQuantite_livree()%></td>
-                          <td><%=r.getLigneLivraison().getQuantite_accepte()%></td>
-                         </tr>
+                        <% float total = 0.01f ;
+                        List<BonCommande> lesCommandes = listCommandes;
+                        for( BonCommande r : lesCommandes){ 
+                        for (LigneCommande l : r.getLigneCommandes()) {
+                            total = total + (l.getPrix_achat()*l.getQuantite()) ;}
+                          total = total - 0.01f ;%>
+                          
+                      <tr role="row" class="odd">
+                          <td style="display : none"></td>
+                          <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
+                          <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
+                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
+                          <td><%=total %> € </td>
+                      </tr>
+                        
                         <%;}%>
+                        
                       </tbody>
                     </table>
                             </div>
@@ -128,7 +137,12 @@
                           </div>
                       </div>
                     </div>
-                    
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <input type="hidden" name="action" value="GOTOCreerLivraison"/>
+                          <button type="submit" class="btn btn-success">Livrer les commandes</button>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -139,6 +153,7 @@
         <%@include file="footer.jsp" %>
       </div>
     </div>
+
     <!-- jQuery -->
     <script src="./Template/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

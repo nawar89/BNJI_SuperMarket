@@ -1,8 +1,4 @@
-<%-- 
-    Document   : Page_message
-    Created on : Mar 13, 2018, 10:50:40 AM
-    Author     : Jihane
---%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,13 +36,13 @@
               <h2>BNJI SuperMarket - Platform by BNJI</h2>
               <p><%=message%><a href="#"></a>
               </p>
-              <form method="post" action="ControlChef">
+              <form method="post" action="ControleAdministration">
               <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                           <!-- <%--<%if(FourCo!=null){%>--%>
-                          <input type="hidden" name="action" value="AccueilFournisseur"/>-->
-                          <%if (employeCo!=null){%>
-                          <input type="hidden" name="action" value="Accueil"/>
+                           <% if(FourCo!=null) {%>
+                          <input type="hidden" name="action" value="AccueilFournisseur"/>
+                          <%} else if (employeCo!=null){%>
+                          <input type="hidden" name="action" value="Redirection"/>
                           <%}%>
                           <button type="submit" class="btn btn-success">Retour au Menu</button>
                         </div>

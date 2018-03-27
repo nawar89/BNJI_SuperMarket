@@ -1,16 +1,10 @@
-<%-- 
-    Document   : CommandesReçues
-    Created on : Mar 20, 2018, 2:15:23 PM
-    Author     : Jihane
---%>
 
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="EntityBean.LigneCommande"%>
+
+<%@page import="EntityBean.ArticleMagasin"%>
 <%@page import="java.util.List"%>
-<%@page import="EntityBean.Employe"%>
-<%@page import="EntityBean.BonCommande"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
- <jsp:useBean id="listCommandes" scope="request" class="java.util.List"></jsp:useBean>
+<jsp:useBean id ="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
+ <jsp:useBean id="articles" scope="request" class="java.util.List"></jsp:useBean>
 <jsp:useBean id="message" scope="request" class="String"></jsp:useBean>
 
 
@@ -24,8 +18,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script  type="text/javascript"   src="./JSP_Pages/MesJavascript.js"> </script>
-    <link rel="icon" href="Template/images/favicon.ico" type="image/ico" />
-    <title>Commandes</title>
+    <link rel="icon" href="./Template/images/favicon.ico" type="image/ico" />
+    <title>Articles</title>
     <!-- Bootstrap -->
     <link href="./Template/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -54,7 +48,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="Menu_Fournisseur.jsp" %>
+              <%@include file ="MenuCR.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>
@@ -62,10 +56,10 @@
         <!-- page content -->
         <div class="right_col" role="main">
               <div class="col-md-12 col-sm-12 col-xs-12">
+                   <h2> Bienvenu dans votre espace BNJI SuperMarket<small></small></h2>
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Vos Commandes reçues<small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
+                  <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                       <li class="dropdown">
@@ -83,9 +77,15 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <br />
-                    <form method="post" action="ControlChef">
-                      <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                      <% List<ArticleMagasin> lesars = articles; 
+                      if(lesars.size()==0) {%>
+                      <i class="fa fa-bell-slash-o"> Vous n'avez aucune notification</i>
+                      <%}else { %>
+                      <i class="fa fa-bell"> Nouvelle(s) Notification(s) : <%=lesars.size()%> article(s) à modifier</i>
+                      <br>
+                    <br>
+                    <form method="post" action="ControleAdministration">
+                      <div id="datatable-checkbox_wrapper" class=form-group dataTables_wrapper form-inline dt-bootstrap no-footer">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="dataTables_length" id="datatable-checkbox_length">
@@ -95,33 +95,36 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
+                      <table class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
                       <thead>
                         <tr role="row">
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">Nom du Chef de rayons</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Catégorie concernée</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Date de la commande</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="prix total : activer pour ordonner" style="width: 96px;">Prix total</th>
-                        </tr>
+                            <th style="display : none"></th>
+                                <th style="width: 167px;">Article</th>
+                                <th style="width: 126px;">Catégorie</th>
+                                <th style="width: 126px;">Sous catégorie</th>
+                                <th style="width: 126px;">Fournisseur</th>
+                                <th style="width: 126px;">Prix d'achat</th>
+                                <th style="width: 126px;">Votre Prix de vente</th>
+                             </tr>
                       </thead>
                       <tbody>
-                        <% float total = 0.01f ;
-                        List<BonCommande> lesCommandes = listCommandes;
-                        for( BonCommande r : lesCommandes){ 
-                        for (LigneCommande l : r.getLigneCommandes()) {
-                            total = total + (l.getPrix_achat()*l.getQuantite()) ;}
-                          total = total - 0.01f ;%>
-                          
-                      <tr role="row" class="odd">
-                           <td><%= r.getChefRyon().getPrenom()%> <%= r.getChefRyon().getNom()%></td>
-                          <td><%=r.getLigneCommandes().get(0).getArticle().getSousCategorie().getCategorie().getLibelle() %></td>
-                          <td><%= new SimpleDateFormat("yyyy-MM-dd").format(r.getDate_commande()) %></td>
-                          <td><%=total %> € </td>
-                      </tr>
-                        
-                        <%;}%>
+                         <% 
+                          for( ArticleMagasin a : lesars){ 
+                         %>
+                        <tr role="row" class="odd">
+                        <td style="display : none"></td>
+                        <td><%=a.getArticle().getLibelle()%></td>
+                        <td><%=a.getArticle().getSousCategorie().getCategorie().getLibelle()%></td>
+                        <td><%=a.getArticle().getSousCategorie().getLibelle()%></td>
+                        <td><%=a.getArticle().getFournisseur().getNom()%></td>
+                        <td><%=a.getArticle().getPrix_achat_actuel()%></td>
+                        <td>
+                        <input type="number" min="0" step="any" required id="prix" name="prix">
+                        </td>
+                        </tr>
                         
                       </tbody>
+                       <%;}%>
                     </table>
                             </div>
                       
@@ -134,13 +137,17 @@
                           </div>
                       </div>
                     </div>
-                    <div class="form-group">
+                    <div class="ln_solid"></div>
+                      <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <input type="hidden" name="action" value="CreerLivraison"/>
-                          <button type="submit" class="btn btn-success">Livrer les commandes</button>
+                          <a href="ControleAdministration?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
+		          <button class="btn btn-primary" type="reset">Reset</button>
+                          <input type="hidden" name="action" value="SetPrix"/>
+                          <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
                         </div>
                       </div>
                     </form>
+                    <% } %>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
-           <div class="navbar nav_title" style="border: 0;">
-              <a href="ControlChef?action=Accueil" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
-           </div>
+ <div class="navbar nav_title" style="border: 0;">
+              <a href="ControleAdministration?action=Accueil" class="site_title"><i class="fa fa-paw"></i> <span>BNJI SuperMarket</span></a>
+            </div>
 
             <div class="clearfix"></div>
 
@@ -9,9 +9,10 @@
               <div class="profile_pic">
                 <img src="./Template/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
-              <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>Fournisseur</h2>
+                 <div class="profile_info">
+                <%EntityBean.Employe e=(EntityBean.Employe)session.getAttribute("employeCo"); %>
+                <br>
+                <h2>Bienvenu, M/Mme <%=e.getNom()%></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -22,19 +23,25 @@
              <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=Accueil">Analyse des chiffres d'affaire</a></li>
+                      <li><a href="ControleAdministration?action=Accueil">Notifications</a></li>
+                      <li><a href="ControleAdministration?action=CA">Analyse des Ventes & CA</a></li>
                     </ul>
                   </li>
-                   <li><a><i class="fa fa-edit"></i>Commandes<span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i> Fournisseurs <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CommandeRecues">Consulter les commandes reçues</a></li>
-                      <li><a href="ControlChef?action=ReclamationsRecues">Consulter les réclamations reçues</a></li>
+                      <li><a href="ControleAdministration?action=CreerFour">Creer un Fournisseur </a></li>
+                      
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> Livraisons <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-desktop"></i> Articles <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ControlChef?action=CreerLivraison">Livrer une commande</a></li>
-                      <li><a href="ControlChef?action=ConsulterLivraisons">Consulter l'historique des livraisons</a></li>
+                      <li><a href="ControleAdministration?action=CreerArticle">Créer un Article</a></li>
+                      <li><a href="ControleAdministration?action=ModifierArticleMag">Modifier le prix de vente d'un article du magasin</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> Commandes <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="ControleAdministration?action=GoToCreationBonCommande">Creer Bon commande </a></li>
                     </ul>
                   </li>
                 </ul>

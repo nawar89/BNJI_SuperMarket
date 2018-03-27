@@ -7,6 +7,7 @@
 package Servlet;
 
 import BeanSession.AdministrationLocal;
+import BeanSession.ClientSessionLocal;
 import EntityBean.Article;
 import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
@@ -22,9 +23,11 @@ import EntityBean.Livraison;
 import EntityBean.Lot;
 import EntityBean.Magasin;
 import EntityBean.Promotion;
+import EntityBean.Reclamation;
 import EntityBean.Role;
 import EntityBean.SousCategorie;
 import EntityBean.Type_Reclamation;
+import EntityBean.ligneCommandeEnLigne;
 import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
@@ -55,7 +58,12 @@ import javax.servlet.http.HttpSession;
 public class ControleAdministration extends HttpServlet {
 
     @EJB
+    private ClientSessionLocal clientSession;
+
+    @EJB
     private AdministrationLocal administration;
+    
+    
     public String jspClient = null;
     public String message   = null; 
     public String requete   = null;
@@ -124,6 +132,9 @@ public class ControleAdministration extends HttpServlet {
 protected void seConnecter(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
+    session.invalidate();
+    employeConnecte = null;
+    fournisseurConnecte = null;
    HttpSession sess=request.getSession(true);
    mesParam = new ArrayList<Parametre>();
     try{
@@ -154,8 +165,9 @@ HttpServletResponse response) throws ServletException, IOException
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case ChefRayon:
-                             jspClient = "/Jihane_JSP/Accueil.jsp";
+                             //jspClient = "/JSP_Pages/AccueilCR.jsp";
                              sess.setAttribute("employeCo", emp);
+                             GoTOAccueilChefRayon(request,response);
                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                          case agentRayon:
@@ -174,7 +186,7 @@ HttpServletResponse response) throws ServletException, IOException
             }
     }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -188,7 +200,8 @@ HttpServletResponse response) throws ServletException, IOException
         
         session.setAttribute("employeCo", employeConnecte);
         String act=request.getParameter("action");
-        if (employeConnecte ==null && !act.equals("loginEmp") && !act.equals("loginFournisseur") && !act.equals("EspaceEmploye") && !act.equals("FromDirectionNational")){
+        if (employeConnecte ==null && fournisseurConnecte==null && !act.equals("loginEmp") && !act.equals("loginFournisseur") && !act.equals("EspaceEmploye") && !act.equals("FromDirectionNational")){
+            session.invalidate();
             jspClient="/JSP_Pages/Accueil.jsp";
         
         }
@@ -212,7 +225,7 @@ HttpServletResponse response) throws ServletException, IOException
         }
         else if (act.equals("FromDirectionNational")){
             DirectionNational(request,response); 
-            jspClient = "/JSP_Pages/Page_Message.jsp";
+            jspClient = "/JSP_Pages/Page_message.jsp";
             request.setAttribute( "message", message );
             
         } else if (act.equals("GoToCartegorie")){
@@ -292,10 +305,7 @@ HttpServletResponse response) throws ServletException, IOException
             request.setAttribute( "message", message );
         }
         
-        else if (act.equals("FromCreerArticle")){
-            doActionCreerA(request,response); 
-            request.setAttribute( "message", message );
-        }
+        
         else if (act.equals("loadCreationEmployeMagasin"))
         {
             chargerPageCreationEmployeMagasin(request, response);
@@ -328,12 +338,159 @@ HttpServletResponse response) throws ServletException, IOException
             finaliserLigneCasse(request,response);
         }else if (act.equals("enregistreLigneCasse")){
             enregistrerLigneCasse(request,response);
+        } else if (act.equals("logout")){
+            LogOut(request,response);
+        }
+        else if (act.equals("Redirection")){
+            switch(employeConnecte.getRole().getNom()){
+                case DirMag:
+                             jspClient = "/JSP_Pages/MenuDirecteurMagasin.jsp";
+                             
+                             
+                             break;
+                         case DirNAT:
+                             jspClient = "/JSP_Pages/AccueilDirectionNational.jsp";
+                             
+                             
+                             break;
+                         case ChefRayon:
+                             
+                             GoTOAccueilChefRayon(request,response);
+                             
+                             break;
+                         case agentRayon:
+                             jspClient = "/JSP_Pages/MenuAgentRayon.jsp";
+                             
+                             
+                             break;
+                        case agentLivraison:
+                             jspClient = "/JSP_Pages/AccueilAgentLivraison.jsp";
+                             
+                             
+                             break;
+            
+            }
         }
         
         
+        
+        switch (act) {
+        case "CreerFour":
+                    jspClient="/JSP_Pages/CreerFournisseur.jsp";
+                    break;
+                case "CreerF":
+                    doActionCreerF(request,response);
+                    request.setAttribute( "message", message );
+                    break;
+                case "Accueil":
+                    // get notification
+                     GoTOAccueilChefRayon(request,response);
+                     request.setAttribute( "message", message );
+                    break;
+                    
+                case "AccueilFournisseur":
+                    jspClient="/JSP_Pages/AccueilFournisseur.jsp";
+                    break;
+                
+                case "CreerA":
+                    doActionCreerA(request,response);
+                    request.setAttribute( "message", message );
+                    break;
+                
+            case "ModifierArticleMag" :
+                 GoTOArticleMag(request,response);
+                 break;
+            
+            case "ModifA" : 
+                 doActionModifArticleMag(request,response);
+                 request.setAttribute( "message", message );
+                 break;
+           
+            case "loginFournisseur" : 
+                 seConnecterFour(request,response);
+                 request.setAttribute( "message", message );
+                 break;
+            
+            case "CommandeRecues":
+               doActionCommandeRecues(request,response); 
+               request.setAttribute( "message", message );
+               break;
+            case "ReclamationsRecues":
+               doActionReclamationsRecues(request,response); 
+               request.setAttribute( "message", message );
+               break; 
+            case "ConsulterLivraisons":
+                doActionGetLivraisons(request,response); 
+               request.setAttribute( "message", message );
+               break;
+            case "SetPrix":
+               doActionSetPrix(request,response); 
+               request.setAttribute( "message", message );
+               break; 
+            case "CA" : 
+                jspClient="/JSP_Pages/choixDimension.jsp";
+               
+               break; 
+            case "AnalyseCA":
+                doActionLancerAnalyse(request,response);
+                
+                break;
+             }
+        
+       
+        
+        
+        
       }
-    }
-    
+ }
+   
+   /////////////////////////////////////////////////////////////////////////////////
+   
+     protected void seConnecterFour(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+        session.invalidate();
+        employeConnecte = null;
+        fournisseurConnecte = null;
+        HttpSession sess=request.getSession(true);
+
+
+    try{
+            
+              mesParam = new ArrayList<Parametre>();
+              String email  = request.getParameter( "login" );
+              String mdp     = request.getParameter( "mdp" );
+              requete = Requete.getFournisseurs+ " and f.email=:email and f.mdp=:mdp";
+              Parametre p = new Parametre("email", "String", email);
+              mesParam.add(p);
+              p = new Parametre("mdp", "String", mdp);
+              mesParam.add(p);
+              List<Fournisseur> listeFour = administration.getFournisseur(requete, mesParam);
+              if (listeFour != null && listeFour.size()== 1){
+              Fournisseur four = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
+              jspClient = "/JSP_Pages/AccueilFournisseur.jsp";
+              sess.setAttribute("FourCo", four);
+              message = "Bonjour "+four.getNom();     
+                }     
+        } catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Pages/Page_message.jsp";
+}
+}
+   
+   
+   
+   ///////////////////////////////////////////////////////////////////////////////
+   
+protected void LogOut(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    session.invalidate();
+    jspClient="/JSP_Pages/Accueil.jsp";
+  
+}
+   
+   
             
 protected void DirectionNational(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
@@ -401,7 +558,7 @@ HttpServletResponse response) throws ServletException, IOException
               jspClient = "/JSP_Pages/DirectionNational.jsp";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 } 
@@ -425,7 +582,7 @@ HttpServletResponse response) throws ServletException, IOException
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 } 
@@ -463,7 +620,7 @@ HttpServletResponse response) throws ServletException, IOException
                     
                     
                 }else  {message = "Categorie n'existe pas";
-                     jspClient = "/JSP_Pages/Page_Message.jsp";
+                     jspClient = "/JSP_Pages/Page_message.jsp";
                 }
                //nouveau categorie
               }else {
@@ -495,7 +652,7 @@ HttpServletResponse response) throws ServletException, IOException
               
     }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -523,7 +680,7 @@ HttpServletResponse response) throws ServletException, IOException
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -561,9 +718,9 @@ HttpServletResponse response) throws ServletException, IOException
                         
                         administration.employeModifierRole(emp,role);  
                         message = "Employe Modifié";
-                        jspClient = "/JSP_Pages/Page_Message.jsp";
+                        jspClient = "/JSP_Pages/Page_message.jsp";
                      }else {message = "Employe n'existe pas";
-                            jspClient = "/JSP_Pages/Page_Message.jsp";
+                            jspClient = "/JSP_Pages/Page_message.jsp";
                     }
                 }else{
                 
@@ -591,17 +748,17 @@ HttpServletResponse response) throws ServletException, IOException
                         administration.creerEmployee(nom, prenom, adresse,tel, email,login,EncryptedMdp,role, ma);
                         
                        message = "Employe est créé";
-                       jspClient = "/JSP_Pages/Page_Message.jsp";
+                       jspClient = "/JSP_Pages/Page_message.jsp";
                    }else {message = "magasin n'existe pas";
-                            jspClient = "/JSP_Pages/Page_Message.jsp";
+                            jspClient = "/JSP_Pages/Page_message.jsp";
                     }
                 }else {
-                    jspClient = "/JSP_Pages/Page_Message.jsp";
+                    jspClient = "/JSP_Pages/Page_message.jsp";
                     message = "il faut choisir magasin";}
                     
             }
      }else {
-             jspClient = "/JSP_Pages/Page_Message.jsp";
+             jspClient = "/JSP_Pages/Page_message.jsp";
              message = "Role "+DirMag+" n'existe pas";}
     
 }catch(Exception exe){
@@ -629,7 +786,7 @@ HttpServletResponse response) throws ServletException, IOException
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -671,7 +828,7 @@ HttpServletResponse response) throws ServletException, IOException
               
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -702,7 +859,7 @@ HttpServletResponse response) throws ServletException, IOException
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -758,11 +915,11 @@ HttpServletResponse response) throws ServletException, IOException
                    }
                   
               }else message = "il faut choisir un article";
-              jspClient = "/JSP_Pages/Page_Message.jsp";
+              jspClient = "/JSP_Pages/Page_message.jsp";
               
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -785,7 +942,7 @@ HttpServletResponse response) throws ServletException, IOException
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -814,11 +971,11 @@ HttpServletResponse response) throws ServletException, IOException
                         }
                     }
               
-              jspClient = "/JSP_Pages/Page_Message.jsp";
+              jspClient = "/JSP_Pages/Page_message.jsp";
              
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -866,7 +1023,7 @@ public  List<LigneCommande> ParserLignesCommandes(String input,BonCommande com){
                 
             }
          }catch(Exception exe){message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";
+            jspClient = "/JSP_Pages/Page_message.jsp";
          }
          return lignes;
      }
@@ -897,7 +1054,7 @@ HttpServletResponse response) throws ServletException, IOException
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -926,14 +1083,14 @@ HttpServletResponse response) throws ServletException, IOException
                     }
               }else {
                 message = "il y pas de livraison";
-                 jspClient = "/JSP_Pages/Page_Message.jsp";
+                 jspClient = "/JSP_Pages/Page_message.jsp";
               }
              
              
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -949,18 +1106,18 @@ HttpServletResponse response) throws ServletException, IOException
               String ligneslivraison = request.getParameter("livlignes");
               if (!ligneslivraison.isEmpty()){
                         ParserLignesLivraison(ligneslivraison);
-                        jspClient = "/JSP_Pages/Page_Message.jsp";
+                        jspClient = "/JSP_Pages/Page_message.jsp";
                     }
               else {
                 message = "il y pas de ligne de livraison";
-                 jspClient = "/JSP_Pages/Page_Message.jsp";
+                 jspClient = "/JSP_Pages/Page_message.jsp";
               }
              
              
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -1068,7 +1225,7 @@ public  void ParserLignesLivraison(String input){
                 
             }
          }catch(Exception exe){message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";
+            jspClient = "/JSP_Pages/Page_message.jsp";
          }
         
      }
@@ -1082,18 +1239,19 @@ protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse res
           
           try{
 
-             // Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
-              //long fourID = fourCo.getId();
+              Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+              long fourID = fourCo.getId();
               requete=Requete.getCommandesParFournisseurLivr + " And f.id=:id";
               mesParam= new ArrayList<Parametre>();
-              Parametre c = new Parametre("id", "long", 1);
+              Parametre c = new Parametre("id", "long", fourID);
               mesParam.add(c);
               List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
               if (listec == null){
               listec = new ArrayList<>(); 
               }
               request.setAttribute( "commandes", listec );
-              jspClient="/JSP_Pages/creerLivrasionNawar.jsp";
+              jspClient="/JSP_Pages/modifierLivrasion.jsp";
+              //jspClient="/JSP_Pages/creerLivrasion.jsp";
               message = "";
             }catch(Exception exe){
              message = exe.getMessage();
@@ -1127,18 +1285,18 @@ protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse res
                            
                             }else message = "Bon Commande n'existe pas ";
                             
-                            jspClient = "/JSP_Pages/Page_Message.jsp";
+                            jspClient = "/JSP_Pages/Page_message.jsp";
                         }
                   else {
                     message = "il y pas de ligne de livraison";
-                     jspClient = "/JSP_Pages/Page_Message.jsp";
+                     jspClient = "/JSP_Pages/Page_message.jsp";
                   }
 
 
                   message = "";
     }catch(Exception exe){
         message = exe.getMessage();
-        jspClient = "/JSP_Pages/Page_Message.jsp";
+        jspClient = "/JSP_Pages/Page_message.jsp";
     }
 
 }
@@ -1194,7 +1352,7 @@ public  void ParserLigneCommandeVersLignesLivraison(String input,Livraison liv){
                 message = "livraison est créé";
             }
          }catch(Exception exe){message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";
+            jspClient = "/JSP_Pages/Page_message.jsp";
          }
         
      }
@@ -1255,7 +1413,7 @@ HttpServletResponse response) throws ServletException, IOException
                          
     }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -1285,7 +1443,7 @@ HttpServletResponse response) throws ServletException, IOException
                         
     }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 
 }
@@ -1309,7 +1467,7 @@ HttpServletResponse response) throws ServletException, IOException
             message = "";
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/JSP_Pages/Page_message.jsp";   
         }
 
    
@@ -1346,7 +1504,7 @@ HttpServletResponse response) throws ServletException, IOException
             }
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/JSP_Pages/Page_message.jsp";   
         }
 
    
@@ -1383,7 +1541,7 @@ HttpServletResponse response) throws ServletException, IOException
             }
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/JSP_Pages/Page_message.jsp";   
         }
 
    
@@ -1409,7 +1567,7 @@ HttpServletResponse response) throws ServletException, IOException
             message = "";
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/JSP_Pages/Page_message.jsp";   
         }
 }
       /////////////////////////////////////////////////////////////
@@ -1493,7 +1651,7 @@ HttpServletResponse response) throws ServletException, IOException
             }
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/JSP_Pages/Page_message.jsp";   
         }  
 }
             /////////////////////////////////////////////////////////////
@@ -1530,7 +1688,7 @@ HttpServletResponse response) throws ServletException, IOException
             message = "";
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/JSP_Pages/Page_message.jsp";   
         }  
 }
       
@@ -1576,7 +1734,7 @@ HttpServletResponse response) throws ServletException, IOException
             request.setAttribute("message", message);   
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/JSP_Pages/Page_message.jsp";   
         }  
 }
 
@@ -1606,11 +1764,11 @@ protected void GoTOArticle(HttpServletRequest request, HttpServletResponse respo
               listeFour = new ArrayList<>(); 
               }
               request.setAttribute( "fournisseurs", listeFour );
-              jspClient="/Jihane_JSP/CreerArticle.jsp";
+              jspClient="/JSP_Pages/CreerArticle.jsp";
               message = "";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/Jihane_JSP/Page_message.jsp";
+    jspClient = "/JSP_Pages/Page_message.jsp";
 }
 }  
 
@@ -1682,13 +1840,373 @@ protected void doActionCreerA(HttpServletRequest request, HttpServletResponse re
                    break;
                   }
                 message = "Article créé avec succès !";  
-                jspClient = "/Jihane_JSP/Page_message.jsp";
+                jspClient = "/JSP_Pages/Page_message.jsp";
         }
          }catch(Exception exe){ 
            message = exe.getMessage();
-           jspClient = "/Jihane_JSP/Page_message.jsp";
+           jspClient = "/JSP_Pages/Page_message.jsp";
          }
       } 
+
+
+ protected void doActionCreerF(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+           
+       String nom= request.getParameter("nom");
+       String adresse = request.getParameter("adresse");
+       String telephone=request.getParameter("telephone");
+       String email=request.getParameter("email");
+       String mdp= Aide.encrypterMdp(Aide.GenererMDP());
+   
+       if ( nom.trim().isEmpty() || adresse.trim().isEmpty())
+       {
+          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
+          jspClient = "/JSP_Pages/Page_message.jsp";
+       } 
+       else {
+          
+          administration.creationFournisseur(nom, adresse, telephone, email,mdp);
+           message = "Fournisseur créé avec succès !";  
+           jspClient = "/JSP_Pages/Page_message.jsp";
+        }
+        }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/JSP_Pages/Page_message.jsp";
+         }
+      }
+ 
+ 
+ 
+  protected void GoTOArticleMag(HttpServletRequest request, HttpServletResponse response) 
+              throws ServletException, IOException
+      {
+          
+          try{
+              // Get article magasin du chefrayon connecté 
+              HttpSession sess=request.getSession(true);
+              Employe employe = (Employe) sess.getAttribute("employeCo");
+              long emID = employe.getId();
+              requete=Requete.getArticleMagasinParChefRayon + " And emp.id= ?1";
+              mesParam= new ArrayList<Parametre>();
+              Parametre c = new Parametre("1", "long", emID);
+              mesParam.add(c);
+              List<ArticleMagasin> listeart = administration.getArticleMagasin(requete, mesParam);
+              if (listeart == null){
+              listeart = new ArrayList<>(); 
+              }
+              request.setAttribute( "articles", listeart );
+              jspClient="/JSP_Pages/modifierPrixArticle.jsp";
+              message = "";
+            }catch(Exception exe){
+             message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_message.jsp";
+            }
+
+     } 
+  
+  
+   protected void doActionModifArticleMag(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+           
+       String prix= request.getParameter("nouveauPrix");
+       String article= request.getParameter("ArticleSelect");
+       if ( prix.trim().isEmpty())
+       {
+          message = "Erreur ‐ Le champs : nouveau prix est obligatoire !! ";
+          jspClient = "/JSP_Pages/Page_message.jsp";
+       } 
+       else {
+          Float newPrice = Float.parseFloat(prix);
+          Integer articleID = Integer.parseInt(article);
+          System.out.println(articleID);
+           requete= Requete.getArticleMagasin + " And a.id=:id";
+           Parametre a = new Parametre("id", "int", articleID);
+           mesParam = new ArrayList<Parametre>();
+           mesParam.add(a);
+           List<ArticleMagasin> listearticle=administration.getArticleMagasin(requete, mesParam);
+           administration.modifierPrixVente(listearticle.get(0), newPrice);
+           message = "Prix modifié avec succès !";  
+           jspClient = "/JSP_Pages/Page_message.jsp";
+        }
+        }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/JSP_Pages/Page_message.jsp";
+         }
+      }
+   
+   
+   
+          protected void doActionCommandeRecues(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+       
+    try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+            long fourID = fourCo.getId();
+            requete=Requete.getCommandesParFournisseurLivr + " And f.id=:id";
+            mesParam= new ArrayList<Parametre>();
+            Parametre c = new Parametre("id", "long", fourID);
+            mesParam.add(c);
+            List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
+            if (listec == null){
+            listec = new ArrayList<>(); 
+            }
+            request.setAttribute("listCommandes", listec);
+            message = "redirection....";
+            jspClient = "/JSP_Pages/CommandesReçues.jsp"; 
+            
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_message.jsp";   
+        }
+
+   
+    
+}
+          
+          
+          protected void doActionReclamationsRecues(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+       
+    try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+            long fourID = fourCo.getId();
+            requete=Requete.getReclamationParFournisseur+ " And f.id = ?1";
+            mesParam= new ArrayList<Parametre>();
+            Parametre c = new Parametre("1", "long", fourID);
+            mesParam.add(c);
+            List<Reclamation> lister=administration.getReclamations(requete, mesParam);
+            if (lister == null){
+            lister = new ArrayList<>(); 
+            }
+            request.setAttribute("listReclamations", lister);
+            message = "redirection....";
+            jspClient = "/JSP_Pages/ReclamationsReçues.jsp"; 
+            
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_message.jsp";   
+        }
+}
+          
+protected void doActionGetLivraisons(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+       
+    try {
+            HttpSession sess=request.getSession(true);
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+            long fourID = fourCo.getId();
+            requete=Requete.getLivraisonsParFournisseur + " And f.id =:id" ;
+            mesParam= new ArrayList<Parametre>();
+            Parametre c = new Parametre("id", "long", fourID);
+            mesParam.add(c);
+            List<Livraison> listel=administration.getLivraisons(requete, mesParam);
+            if (listel == null){
+            listel = new ArrayList<>(); 
+            }
+            request.setAttribute("listLivraisons", listel);
+            message = "redirection....";
+            jspClient = "/JSP_Pages/HistoriqueLivraison.jsp"; 
+            
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_message.jsp";   
+        }
+
+   
+    
+}
+   
+   
+      protected void GoTOAccueilChefRayon(HttpServletRequest request, HttpServletResponse response) 
+              throws ServletException, IOException
+      {
+            try {
+              // Get article magasin du chefrayon connecté et qui n'ont pas de prix de vente
+
+              HttpSession sess=request.getSession(true);
+              float prix=0.0f;
+              Employe employe = (Employe) sess.getAttribute("employeCo");
+              long emID = employe.getId();
+              requete=Requete.getArticleMagasinParChefRayon + " And emp.id= ?1 And a.prix_vente_actuel= ?2 ";
+              mesParam= new ArrayList<Parametre>();
+              Parametre c = new Parametre("1", "long", emID);
+              mesParam.add(c);
+              Parametre p = new Parametre("2", "float", prix);
+              mesParam.add(p);
+              List<ArticleMagasin> listeart = administration.getArticleMagasin(requete, mesParam);
+              if (listeart == null){
+              listeart = new ArrayList<>(); 
+              }
+              request.setAttribute( "articles", listeart );
+              jspClient="/JSP_Pages/AccueilCR.jsp";
+              message = "";
+            }catch(Exception exe){
+             message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_message.jsp";
+            }
+
+     } 
+      
+      
+  protected void doActionSetPrix(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+       HttpSession sess=request.getSession(true);  
+       String values[]=request.getParameterValues("prix");
+       float prix=0.0f;
+       Employe employe = (Employe) sess.getAttribute("employeCo");
+       long emID = employe.getId();
+       requete=Requete.getArticleMagasinParChefRayon + " And emp.id= ?1 And a.prix_vente_actuel= ?2 ";
+       mesParam= new ArrayList<Parametre>();
+       Parametre c = new Parametre("1", "long", emID);
+       mesParam.add(c);
+       Parametre p = new Parametre("2", "float", prix);
+       mesParam.add(p);
+       List<ArticleMagasin> listeart = administration.getArticleMagasin(requete, mesParam);
+       if (listeart == null){
+       listeart = new ArrayList<>(); 
+       }
+       else
+       {
+           if (listeart.size()==values.length)
+           {
+           for (ArticleMagasin a : listeart)
+           {
+               administration.modifierPrixVente(a, Float.parseFloat(values[listeart.indexOf(a)]));
+           }
+           }
+       }
+           message = "Les prix ont été modifiés avec succés";  
+           jspClient = "/JSP_Pages/Page_message.jsp";
+        
+        }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/JSP_Pages/Page_message.jsp";
+        }  
+      }
+   
+    protected void doActionLancerAnalyse(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+       
+    try {
+            HttpSession sess=request.getSession(true);
+            //Récupérer le choix de l'employé : 
+            String OuSelect = request.getParameter( "OuSelect" );
+            String critere = request.getParameter( "critereSelect" );
+            String date_d = request.getParameter( "date_d" );
+            String date_f = request.getParameter( "date_f" );
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Employe employeCo = (Employe) sess.getAttribute("employeCo");
+            long empID = employeCo.getId();
+            long magId = employeCo.getMagasin().getId();
+            switch (OuSelect)
+            {
+                case "0":
+                    switch(critere)
+                    {
+                        case "0":
+                                //Article par magasin
+                                requete=Requete.getArticleMagasinParChefRayon + " And emp.id =:id" ;
+                                mesParam= new ArrayList<Parametre>();
+                                Parametre c = new Parametre("id", "long", empID);
+                                mesParam.add(c);
+                                List<ArticleMagasin> listea=administration.getArticleMagasin(requete, mesParam);
+                                if (listea == null){
+                                listea = new ArrayList<>(); 
+                                }
+                                request.setAttribute("listarticlemagasin", listea);
+                                message = "redirection....";
+                                jspClient = "/JSP_Pages/ChiffreAffaires.jsp"; 
+                        break;
+                        case "1":
+                        
+                        //Catégorie
+                              requete=Requete.getCommandeClientParmag + " And m.id=:id" ;
+                              mesParam= new ArrayList<Parametre>();
+                              Parametre param = new Parametre("id", "long", magId);
+                              mesParam.add(param);
+                              List<ligneCommandeEnLigne> listecomm=clientSession.getLigneCommandeEnligne(requete, mesParam);
+                              if (listecomm == null){
+                              listecomm = new ArrayList<>(); 
+                              }
+                              request.setAttribute("comParcat", listecomm);
+                              //message = "redirection....";
+                              jspClient = "/JSP_Pages/ChiffreAffaires.jsp"; 
+                             
+                              break;
+                   
+                        case "2":
+                        //Période par magasin
+
+                            requete=Requete.getCommandeClient + " And lc.date_commande_client >= ?1 And lc.date_commande_client <= ?2 And m.id= ?3" ;
+                            mesParam= new ArrayList<Parametre>();
+                            java.sql.Date debut = java.sql.Date.valueOf(date_d);
+                            Parametre d = new  Parametre("1","TemporalType.DATE",debut);
+                            mesParam.add(d);
+                            java.sql.Date fin = java.sql.Date.valueOf(date_f);
+                            Parametre f = new  Parametre("2","TemporalType.DATE",fin);
+                            mesParam.add(f);
+                            Parametre m = new Parametre("3", "long", magId);
+                            mesParam.add(m);
+                            List<ligneCommandeEnLigne> listecom=clientSession.getLigneCommandeEnligne(requete, mesParam);
+                            if (listecom == null){
+                            listecom = new ArrayList<>(); 
+                            }
+                            request.setAttribute("comPardate", listecom);
+                            //message = "redirection....";
+                            jspClient = "/JSP_Pages/ChiffreAffaires.jsp"; 
+                            break;
+                    
+                    }
+                    break;
+                case "1" :
+                    switch(critere)
+                    {
+                        case "0":
+                            //Article par rayon
+                        break;
+                        case "1":
+                            // Sous catégorie par rayon 
+                        break;
+                        case "2":
+                            //Période par rayon
+                        break; 
+                    }
+                    break;
+            }
+            
+            
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/JSP_Pages/Page_message.jsp";   
+        }
+
+   
+    
+}
+
+    
+     
+
+
  //////////////////////////////////////////////////////////////////////////
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -8,9 +8,11 @@ package servletChefRayon;
 import BeanFacade.FournisseurFacadeLocal;
 import BeanSession.AdministrationLocal;
 import BeanSession.ChefRayonLocal;
+import BeanSession.ClientSessionLocal;
 import EntityBean.ArticleMagasin;
 import EntityBean.BonCommande;
 import EntityBean.Categorie;
+import EntityBean.CommandeClientEnLigne;
 import EntityBean.Employe;
 import EntityBean.Etat_Livraison;
 import EntityBean.Fournisseur;
@@ -18,6 +20,7 @@ import EntityBean.Livraison;
 import EntityBean.Reclamation;
 import EntityBean.Role;
 import EntityBean.SousCategorie;
+import EntityBean.ligneCommandeEnLigne;
 import Structure.Aide;
 import Structure.Parametre;
 import Structure.Requete;
@@ -41,10 +44,14 @@ import javax.servlet.http.HttpSession;
 public class ControlChef extends HttpServlet {
 
     @EJB
+    private ClientSessionLocal clientSession;
+
+    @EJB
     private AdministrationLocal administration;
 
     @EJB
     private ChefRayonLocal chefRayon;
+    
     
      public String jspClient="";
      public String message   = ""; 
@@ -57,6 +64,7 @@ public class ControlChef extends HttpServlet {
             throws ServletException, IOException {
         try 
         {
+        HttpSession sess=request.getSession(true);
         String act=request.getParameter("action");
         if(null!=act){
             switch (act) {
@@ -71,8 +79,11 @@ public class ControlChef extends HttpServlet {
                     request.setAttribute( "message", message );
                     break;
                 case "Accueil":
-                    jspClient="/Jihane_JSP/Accueil.jsp";
+                    // get notification
+                     GoTOAccueilChefRayon(request,response);
+                     request.setAttribute( "message", message );
                     break;
+                    
                 case "AccueilFournisseur":
                     jspClient="/Jihane_JSP/AccueilFournisseur.jsp";
                     break;
@@ -85,7 +96,7 @@ public class ControlChef extends HttpServlet {
                     break;
                 
             case "ModifierArticleMag" :
-                GoTOArticleMag(request,response);
+                 GoTOArticleMag(request,response);
                  break;
             
             case "ModifA" : 
@@ -116,13 +127,25 @@ public class ControlChef extends HttpServlet {
                request.setAttribute( "message", message );
                break; 
             case "ConsulterLivraisons":
-                doActionLivraisons(request,response); 
+                doActionGetLivraisons(request,response); 
                request.setAttribute( "message", message );
                break;
+            case "SetPrix":
+               doActionSetPrix(request,response); 
+               request.setAttribute( "message", message );
+               break; 
+            case "CA" : 
+                jspClient="/Jihane_JSP/choixDimension.jsp";
+               //jspClient="/Jihane_JSP/ChiffreAffaires.jsp";
+               break; 
+            case "AnalyseCA":
+                doActionLancerAnalyse(request,response);
+                //request.setAttribute( "message", message );
+                break; 
             }
            }
         else {
-            //jspClient="/Jihane_JSP/Accueil.jsp";
+           sess.invalidate();
            jspClient="/Jihane_JSP/login.jsp";
            
         }        
@@ -137,9 +160,11 @@ public class ControlChef extends HttpServlet {
     protected void seConnecterFour(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
-   HttpSession sess=request.getSession(true);
+        HttpSession sess=request.getSession(true);
+
 
     try{
+            
               mesParam = new ArrayList<Parametre>();
               String email  = request.getParameter( "login" );
               String mdp     = request.getParameter( "mdp" );
@@ -153,7 +178,7 @@ HttpServletResponse response) throws ServletException, IOException
               Fournisseur four = (Fournisseur)Aide.getObjectDeListe(listeFour.toArray());
               jspClient = "/Jihane_JSP/AccueilFournisseur.jsp";
               sess.setAttribute("FourCo", four);
-               message = "Bonjour "+four.getNom();     
+              message = "Bonjour "+four.getNom();     
                 }     
         } catch(Exception exe){
     message = exe.getMessage();
@@ -179,9 +204,9 @@ HttpServletResponse response) throws ServletException, IOException
                   Employe emp = (Employe)Aide.getObjectDeListe(listeEmp.toArray());
                      switch (emp.getRole().getNom()){
                          case ChefRayon:
-                             jspClient = "/Jihane_JSP/Accueil.jsp";
                              sess.setAttribute("employeCo", emp);
-                             message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
+                             GoTOAccueilChefRayon(request,response);
+                              message = "Bonjour "+emp.getPrenom()+" "+emp.getNom() ;
                              break;
                         
                      }     
@@ -211,6 +236,7 @@ HttpServletResponse response) throws ServletException, IOException
        if ( nom.trim().isEmpty() || adresse.trim().isEmpty())
        {
           message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
+          jspClient = "/Jihane_JSP/Page_message.jsp";
        } 
        else {
           
@@ -258,8 +284,15 @@ HttpServletResponse response) throws ServletException, IOException
       {
           
           try{
-              requete=Requete.getArticleMagasin;
-              List<ArticleMagasin> listeart = chefRayon.getArticleMagasin(requete, null);
+              // Get article magasin du chefrayon connecté 
+              HttpSession sess=request.getSession(true);
+              Employe employe = (Employe) sess.getAttribute("employeCo");
+              long emID = employe.getId();
+              requete=Requete.getArticleMagasinParChefRayon + " And emp.id= ?1";
+              mesParam= new ArrayList<Parametre>();
+              Parametre c = new Parametre("1", "long", emID);
+              mesParam.add(c);
+              List<ArticleMagasin> listeart = chefRayon.getArticleMagasin(requete, mesParam);
               if (listeart == null){
               listeart = new ArrayList<>(); 
               }
@@ -290,6 +323,7 @@ HttpServletResponse response) throws ServletException, IOException
        if ( libelle.trim().isEmpty() || reference.trim().isEmpty() || prix.trim().isEmpty())
        {
           message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires.";
+          jspClient = "/Jihane_JSP/Page_message.jsp";
        } 
        else 
        {
@@ -346,6 +380,7 @@ HttpServletResponse response) throws ServletException, IOException
          }
       } 
         
+       
          protected void doActionModifArticleMag(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        try
@@ -355,13 +390,16 @@ HttpServletResponse response) throws ServletException, IOException
        String article= request.getParameter("ArticleSelect");
        if ( prix.trim().isEmpty())
        {
-          message = "Erreur ‐ Vous n'avez pas rempli tous les champs obligatoires. ";
+          message = "Erreur ‐ Le champs : nouveau prix est obligatoire !! ";
+          jspClient = "/Jihane_JSP/Page_message.jsp";
        } 
        else {
           Float newPrice = Float.parseFloat(prix);
           Integer articleID = Integer.parseInt(article);
+          System.out.println(articleID);
            requete= Requete.getArticleMagasin + " And a.id=:id";
            Parametre a = new Parametre("id", "int", articleID);
+           mesParam = new ArrayList<Parametre>();
            mesParam.add(a);
            List<ArticleMagasin> listearticle=chefRayon.getArticleMagasin(requete, mesParam);
            chefRayon.modifierPrixVente(listearticle.get(0), newPrice);
@@ -373,6 +411,7 @@ HttpServletResponse response) throws ServletException, IOException
            jspClient = "/Jihane_JSP/Page_message.jsp";
          }
       }
+        
          
         //Go to livraison ou il faut récupérer les employe dont le role est chefRayon + les commande de ce chef de rayon 
          
@@ -383,23 +422,7 @@ HttpServletResponse response) throws ServletException, IOException
              HttpSession sess=request.getSession(true);
           
           try{
-             //Récupérer le rôle chef de rayon 
-             /* int roleID= 6;
-              requete= Requete.getEmployeParRole + " And r.id =:role";
-              mesParam = new ArrayList<Parametre>();
-              Parametre role = new Parametre("role","int",roleID);
-              mesParam.add(role);
-              List<Employe> emp = administration.getEmploye(requete,mesParam);
-              if (emp == null){
-              emp = new ArrayList<>(); 
-              }
-              request.setAttribute( "employes", emp );*/
-              //Réupérer les commandes du fournisseur connecté et qui n'ont pas encore été livrées :
-              /*requete=Requete.getLivraisons;
-              List<Livraison> listl=chefRayon.getLivraison(requete, null);
-              if (listl == null){
-              listl = new ArrayList<>(); 
-              }*/
+            
               Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
               long fourID = fourCo.getId();
               requete=Requete.getCommandesParFournisseurLivr + " And f.id=:id";
@@ -446,10 +469,10 @@ HttpServletResponse response) throws ServletException, IOException
                 message = "Livraison créé avec succès !";  
                 jspClient = "/Jihane_JSP/Page_message.jsp";
         }
-         }catch(Exception exe){ 
+        }catch(Exception exe){ 
            message = exe.getMessage();
            jspClient = "/Jihane_JSP/Page_message.jsp";
-         }
+        }
       } 
          
           protected void doActionCommandeRecues(HttpServletRequest request,
@@ -476,7 +499,7 @@ HttpServletResponse response) throws ServletException, IOException
             
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/Jihane_JSP/Page_message.jsp";   
         }
 
    
@@ -508,13 +531,10 @@ HttpServletResponse response) throws ServletException, IOException
             
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/Jihane_JSP/Page_message.jsp";   
         }
-
-   
-    
 }
-          protected void doActionLivraisons(HttpServletRequest request,
+          protected void doActionGetLivraisons(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
        
@@ -538,7 +558,177 @@ HttpServletResponse response) throws ServletException, IOException
             
         } catch (Exception exe) {
             message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";   
+            jspClient = "/Jihane_JSP/Page_message.jsp";   
+        }
+
+   
+    
+}
+          
+           protected void GoTOAccueilChefRayon(HttpServletRequest request, HttpServletResponse response) 
+              throws ServletException, IOException
+      {
+            try {
+              // Get article magasin du chefrayon connecté et qui n'ont pas de prix de vente
+
+              HttpSession sess=request.getSession(true);
+              float prix=0.0f;
+              Employe employe = (Employe) sess.getAttribute("employeCo");
+              long emID = employe.getId();
+              requete=Requete.getArticleMagasinParChefRayon + " And emp.id= ?1 And a.prix_vente_actuel= ?2 ";
+              mesParam= new ArrayList<Parametre>();
+              Parametre c = new Parametre("1", "long", emID);
+              mesParam.add(c);
+              Parametre p = new Parametre("2", "float", prix);
+              mesParam.add(p);
+              List<ArticleMagasin> listeart = chefRayon.getArticleMagasin(requete, mesParam);
+              if (listeart == null){
+              listeart = new ArrayList<>(); 
+              }
+              request.setAttribute( "articles", listeart );
+              jspClient="/Jihane_JSP/Accueil.jsp";
+              message = "";
+            }catch(Exception exe){
+             message = exe.getMessage();
+            jspClient = "/Jihane_JSP/Page_message.jsp";
+            }
+
+     } 
+  
+            protected void doActionSetPrix(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       try
+       {
+       HttpSession sess=request.getSession(true);  
+       String values[]=request.getParameterValues("prix");
+       float prix=0.0f;
+       Employe employe = (Employe) sess.getAttribute("employeCo");
+       long emID = employe.getId();
+       requete=Requete.getArticleMagasinParChefRayon + " And emp.id= ?1 And a.prix_vente_actuel= ?2 ";
+       mesParam= new ArrayList<Parametre>();
+       Parametre c = new Parametre("1", "long", emID);
+       mesParam.add(c);
+       Parametre p = new Parametre("2", "float", prix);
+       mesParam.add(p);
+       List<ArticleMagasin> listeart = chefRayon.getArticleMagasin(requete, mesParam);
+       if (listeart == null){
+       listeart = new ArrayList<>(); 
+       }
+       else
+       {
+           if (listeart.size()==values.length)
+           {
+           for (ArticleMagasin a : listeart)
+           {
+               chefRayon.modifierPrixVente(a, Float.parseFloat(values[listeart.indexOf(a)]));
+           }
+           }
+       }
+           message = "Les prix ont été modifiés avec succés";  
+           jspClient = "/Jihane_JSP/Page_message.jsp";
+        
+        }catch(Exception exe){ 
+           message = exe.getMessage();
+           jspClient = "/Jihane_JSP/Page_message.jsp";
+        }  
+      }
+            
+protected void doActionLancerAnalyse(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+       
+    try {
+            HttpSession sess=request.getSession(true);
+            //Récupérer le choix de l'employé : 
+            String OuSelect = request.getParameter( "OuSelect" );
+            String critere = request.getParameter( "critereSelect" );
+            String date_d = request.getParameter( "date_d" );
+            String date_f = request.getParameter( "date_f" );
+            mesParam = new ArrayList<Parametre>();
+            Parametre p = null;
+            Employe employeCo = (Employe) sess.getAttribute("employeCo");
+            long empID = employeCo.getId();
+            long magId = employeCo.getMagasin().getId();
+            switch (OuSelect)
+            {
+                case "0":
+                    switch(critere)
+                    {
+                        case "0":
+                                //Article par magasin
+                                requete=Requete.getArticleMagasinParChefRayon + " And emp.id =:id" ;
+                                mesParam= new ArrayList<Parametre>();
+                                Parametre c = new Parametre("id", "long", empID);
+                                mesParam.add(c);
+                                List<ArticleMagasin> listea=administration.getArticleMagasin(requete, mesParam);
+                                if (listea == null){
+                                listea = new ArrayList<>(); 
+                                }
+                                request.setAttribute("listarticlemagasin", listea);
+                                message = "redirection....";
+                                jspClient = "/Jihane_JSP/ChiffreAffaires.jsp"; 
+                        break;
+                        case "1":
+                        
+                        //Catégorie
+                              requete=Requete.getCommandeClientParmag + " And m.id=:id" ;
+                              mesParam= new ArrayList<Parametre>();
+                              Parametre param = new Parametre("id", "long", magId);
+                              mesParam.add(param);
+                              List<ligneCommandeEnLigne> listecomm=clientSession.getLigneCommandeEnligne(requete, mesParam);
+                              if (listecomm == null){
+                              listecomm = new ArrayList<>(); 
+                              }
+                              request.setAttribute("comParcat", listecomm);
+                              //message = "redirection....";
+                              jspClient = "/Jihane_JSP/ChiffreAffaires.jsp"; 
+                             
+                              break;
+                   
+                        case "2":
+                        //Période par magasin
+
+                            requete=Requete.getCommandeClient + " And lc.date_commande_client >= ?1 And lc.date_commande_client <= ?2 And m.id= ?3" ;
+                            mesParam= new ArrayList<Parametre>();
+                            java.sql.Date debut = java.sql.Date.valueOf(date_d);
+                            Parametre d = new  Parametre("1","TemporalType.DATE",debut);
+                            mesParam.add(d);
+                            java.sql.Date fin = java.sql.Date.valueOf(date_f);
+                            Parametre f = new  Parametre("2","TemporalType.DATE",fin);
+                            mesParam.add(f);
+                            Parametre m = new Parametre("3", "long", magId);
+                            mesParam.add(m);
+                            List<ligneCommandeEnLigne> listecom=clientSession.getLigneCommandeEnligne(requete, mesParam);
+                            if (listecom == null){
+                            listecom = new ArrayList<>(); 
+                            }
+                            request.setAttribute("comPardate", listecom);
+                            //message = "redirection....";
+                            jspClient = "/Jihane_JSP/ChiffreAffaires.jsp"; 
+                            break;
+                    
+                    }
+                    break;
+                case "1" :
+                    switch(critere)
+                    {
+                        case "0":
+                            //Article par rayon
+                        break;
+                        case "1":
+                            // Sous catégorie par rayon 
+                        break;
+                        case "2":
+                            //Période par rayon
+                        break; 
+                    }
+                    break;
+            }
+            
+            
+        } catch (Exception exe) {
+            message = exe.getMessage();
+            jspClient = "/Jihane_JSP/Page_message.jsp";   
         }
 
    

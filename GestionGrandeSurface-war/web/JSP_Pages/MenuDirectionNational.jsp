@@ -27,6 +27,7 @@
                       <li><a href="ControleAdministration?action=GoToCreationDirecteurMagasin">Creation Directeur Magasin</a></li>
                       <li><a href="ControleAdministration?action=GoToMagasin">Creation Magasin</a></li>
                       <li><a href="ControleAdministration?action=GoToPromotion">Creation Promotion</a></li>
+                      <li><a href="ControleAdministration?action=logout">Déconnexion</a></li>
                     </ul>
                   </li>
                   

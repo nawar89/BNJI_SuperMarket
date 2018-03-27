@@ -158,11 +158,22 @@ public class controleClient extends HttpServlet {
             validerPanier(request,response);
             request.setAttribute( "message", message );
         }
+        else if (act.equals("logout")){
+            LogOut(request,response);
+            request.setAttribute( "message", message );
+        }
+        
       }
     }
     
-    
-    
+ ////////////////////////////////////////////////////////////////:   
+    protected void LogOut(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+    session.invalidate();
+    jspClient="/JSP_Pages/Accueil.jsp";
+  
+}
     
     ////////////////////////////////////////////////////////////////////////////////
     

@@ -9,6 +9,7 @@
 <%@page import="java.util.List"%>
 <%@page import="EntityBean.Categorie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+ <jsp:useBean id ="employeCo" scope="session" class="EntityBean.Employe"></jsp:useBean>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +49,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
                
-              <%@include file ="Menu.jsp" %>
+              <%@include file ="MenuCR.jsp" %>
           </div>
         </div>
               <%@include file="header.jsp" %>
@@ -82,7 +83,7 @@
                       <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Type d'article</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" id ="typeselect" name="TypeSelect">
+                            <select class="form-control" id ="typeselect" name="TypeSelect" onChange="changetextbox();">
                                 <option value ="0">Articles Frais</option>
                                 <option value ="1">Vêtement</option>
                                 <option value ="2">Electromenager</option>
@@ -109,7 +110,7 @@
                       <div class="form-group">
                         <label for="prix_achat_actuel" class="control-label col-md-3 col-sm-3 col-xs-12">Prix d'achat</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="prix_achat_actuel" class="form-control col-md-7 col-xs-12" type="text" name="prix_achat_actuel">
+                          <input id="prix_achat_actuel" class="form-control col-md-7 col-xs-12" type="number" min="0" step="any" name="prix_achat_actuel">
                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                       </div>
@@ -123,35 +124,33 @@
                        <div class="form-group">
                         <label for="taille" class="control-label col-md-3 col-sm-3 col-xs-12">Taille</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="taille" class="form-control col-md-7 col-xs-12" type="text" name="taille">
+                          <input id="taille" class="form-control col-md-7 col-xs-12" type="text" name="taille" disabled="true">
                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                       </div>
                         <div class="form-group">
                         <label for="coloris" class="control-label col-md-3 col-sm-3 col-xs-12">Coloris</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="coloris" class="form-control col-md-7 col-xs-12" type="text" name="coloris">
+                          <input id="coloris" class="form-control col-md-7 col-xs-12" type="text" name="coloris" disabled="true">
                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                         </div>
                         <div class="form-group">
                         <label for="period_garantie" class="control-label col-md-3 col-sm-3 col-xs-12">Période de garantie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="period_garantie" class="form-control col-md-7 col-xs-12" type="text" name="period_garantie">
+                          <input id="period_garantie" class="form-control col-md-7 col-xs-12" type="number" min="0" name="period_garantie" disabled="true">
                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                         </div>
                       <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Catégorie</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" id = "catsel" name="CategorieSelect" onchange="RefreshComboBoxArticle(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
+                        <select class="form-control" id = "catsel" name="CategorieSelect" onchange="RefreshComboBoxArticle(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
                             <% List<Categorie> listeCat = categories ;
                             for(Categorie cat : listeCat) {%>
                             <option value ="<%=cat.getId()%>"> <%=cat.getLibelle() %>  </option>
                             <% }%>
-                            </select>
-                            
-                            
+                         </select>
                         </div>
                        </div>
                             
@@ -176,7 +175,6 @@
                             </tr>
                          <% }}}%>
                          </table>
-                        
                        </div>
                        </div>
                        <div class="form-group">
@@ -188,23 +186,15 @@
                         <option value ="<%=four.getId()%>"> <%=four.getNom() %>  </option>
                         <% }%>
                         </select>
-                        
-                        </div>
-                      </div>
-                        <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-
-                        <input type="file" name="pic" accept="image/*">
                         </div>
                       </div>
                         
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <a href="ControlChef?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
+                          <a href="ControleAdministration?action=Accueil" class="btn btn-primary" role="button">Annuler</a>
 		          <button class="btn btn-primary" type="reset">Reset</button>
-                          <input type="hidden" name="action" value="FromCreerArticle"/>
+                          <input type="hidden" name="action" value="CreerA"/>
                           <button type="submit" class="btn btn-success">Créer</button>
                         </div>
                       </div>
@@ -235,6 +225,33 @@
                 }
             }      
     } 
+    </script>
+    <script>
+    function changetextbox()
+{
+    if ((document.getElementById("typeselect").value === "0")||(document.getElementById("typeselect").value === "3")) {
+        document.getElementById("coloris").value='';
+        document.getElementById("taille").value='';
+        document.getElementById("period_garantie").value='';
+        document.getElementById("coloris").disabled='true';
+        document.getElementById("taille").disabled='true';
+        document.getElementById("period_garantie").disabled='true';
+    } else if (document.getElementById("typeselect").value === "1")
+    {
+       document.getElementById("coloris").disabled='';
+       document.getElementById("taille").disabled='';
+       document.getElementById("period_garantie").value='';
+       document.getElementById("period_garantie").disabled='true';
+       
+    } else if (document.getElementById("typeselect").value === "2")
+    {
+        document.getElementById("period_garantie").disabled='';
+        document.getElementById("coloris").value='';
+        document.getElementById("taille").value=''; 
+        document.getElementById("coloris").disabled='true';
+        document.getElementById("taille").disabled='true'; 
+    }
+}
   </script>
     <!-- Bootstrap -->
     <script src="./Template/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -246,6 +263,6 @@
     <script src="./Template/iCheck/icheck.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="./Template/js/custom.min.js"></script>
-	
+   
   </body>
 </html>
