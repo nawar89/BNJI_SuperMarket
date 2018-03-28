@@ -51,20 +51,15 @@
 				<div class="wrap_menu">
 					<nav class="menu">
 						<ul class="main_menu">
-							<li class="sale-noti">
-								<a href="#">Accueil</a>
+							<li>
+								<a href="index.html">Accueil</a>
 								
 							</li>
 
 							<li>
-								<a href="controleClient?action=login">Espace Client</a>
+								<a href="product.html">Espace Client</a>
 							</li>
-
-							<li >
-								<a href="ControleAdministration?action=EspaceEmploye">Intranet</a>
-							</li>
-
-							<li>
+                            <li>
 								<a href="about.html">About</a>
 							</li>
 						</ul>
@@ -89,7 +84,7 @@
 
 						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="zoomIn">
 							<!-- Button -->
-							<a href="controleClient?action=login" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+							<a href="#" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
 								Shop Now
 							</a>
 						</div>
@@ -108,7 +103,7 @@
 
 						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="slideInUp">
 							<!-- Button -->
-							<a href="controleClient?action=login" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+							<a href="#" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
 								Shop Now
 							</a>
 						</div>
@@ -127,7 +122,7 @@
 
 						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="rotateIn">
 							<!-- Button -->
-							<a href="controleClient?action=login" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+							<a href="#" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
 								Shop Now
 							</a>
 						</div>
@@ -136,6 +131,33 @@
 
 			</div>
 		</div>
+	</section>
+	<section class="banner bgwhite p-t-40 p-b-40">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
+					<!-- block1 -->
+					<div class="flex-sb-m flex-w p-b-35">
+					    <form>
+						<div class="form-group">
+		                  <label for="sel1">Selectionnez un magasin :</label>
+						  <select class="form-control" id="sel1">
+							<option>Carefour</option>
+							<option>Monoprix</option>
+                          </select>
+						  
+						  </div>
+						 
+                            <a href="#" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4">
+								Choisir ce magasin
+							</a>
+						 
+						</form>
+						</div>
+					</div>
+				</div>
+				</div>
+				</div>
 	</section>
 	<!-- Footer -->
 	<footer class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">

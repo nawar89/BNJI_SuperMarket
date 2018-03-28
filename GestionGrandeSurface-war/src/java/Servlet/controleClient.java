@@ -35,10 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Nawar
- */
+
 @WebServlet(name = "controleClient", urlPatterns = {"/controleClient"})
 public class controleClient extends HttpServlet {
 
@@ -196,7 +193,7 @@ HttpServletResponse response) throws ServletException, IOException
                   
                   GOHOME(request,response);
                   message = "Bonjour "+clientConnecte.getPrenom()+" "+clientConnecte.getNom() ;
-                   jspClient = "/JSP_Pages/Accueil.jsp";  
+                   jspClient = "/JSP_Client/ChoixMag.jsp";  
               }        
     }catch(Exception exe){
     message = exe.getMessage();

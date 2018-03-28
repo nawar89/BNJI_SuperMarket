@@ -608,10 +608,10 @@ function creerReclamationLigneLivraison(table,ddl1,div) {
         //console.log('GGGGGGG' + rows.length);
         if (currentRow.getElementsByTagName("td")[1].innerHTML === document.getElementsByName('ligneLivraisonID').value){
             console.log('ddd'+ document.getElementById('recText').value);
-            currentRow.getElementsByTagName("td")[6].innerHTML = document.getElementById('recText').value;
+            currentRow.getElementsByTagName("td")[7].innerHTML = document.getElementById('recText').value;
             var selectedValue = ddl1.options[ddl1.selectedIndex].value;
             var selectedText = ddl1.options[ddl1.selectedIndex].text;
-            currentRow.getElementsByTagName("td")[5].innerHTML = selectedText;
+            currentRow.getElementsByTagName("td")[6].innerHTML = selectedText;
             document.getElementsByName('ligneLivraisonID').value = "";
             document.getElementById('recText').value = "";
             div.style.display = "none";
@@ -642,15 +642,15 @@ function doSaveLivraisonLigneAgent(table) {
                  //alert(tableData[j].innerHTML);
                  
                  ok = true;
-                 if (j===1 || j===5 || j===6)
+                 if (j===1 || j===2 || j===6 || j===7)
                  {
                       document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[j].innerHTML+",";
                  }else
-                 if (j===7){
+                 if (j===8){
                      if (tableData[j].innerHTML !== ""){
                          
                        document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[j].innerHTML+",";   
-                     }else document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[3].innerHTML+",";   
+                     }else document.forms["LivraisonForm"]["livlignes"].value= document.forms["LivraisonForm"]["livlignes"].value + tableData[4].innerHTML+",";   
                     
                  }
                 
@@ -763,6 +763,7 @@ function chargerDonnees(table) {
             document.forms["demo-form2"]["ligneLivraisonQte"].value = "";
             var myTableArray = [];
             var tr = table.getElementsByTagName("tr");
+            console.log("taille "+tr.length);
             for (var i = 0; i < tr.length; i++) {
             //document.getElementsByName('lignes').innerHTML = document.getElementsByName('lignes').innerHTML+"Ligne,"
             var arrayOfThisRow = [];
@@ -771,11 +772,11 @@ function chargerDonnees(table) {
               for (var j=0;j < tableData.length;j++){
                  arrayOfThisRow.push(tableData[j].innerHTML);
                  //alert(tableData[j].innerHTML);
-                 
+                 console.log("current: "+" j "+j +" "+tableData[j].innerHTML);
                  ok = true;
-                 if(j===0 || j===1 || j===4 || j===5 )
+                 //if(j===0 || j===1 || j===4 || j===5 )
                  document.forms["demo-form2"]["ligneLivraisonQte"].value= document.forms["demo-form2"]["ligneLivraisonQte"].value + tableData[j].innerHTML+",";
-                 
+                 console.log("lignes: " +document.forms["demo-form2"]["ligneLivraisonQte"].value);
                 
                  
               }
@@ -783,7 +784,7 @@ function chargerDonnees(table) {
              }
            }
           
-           console.log("lignes: " +document.forms["demo-form2"]["ligneLivraisonQte"].value);
+           
            //document.forms["CommandeForm"]["lignes"].value = "1";
          //myTableArray = myTableArray.join(", ");
         

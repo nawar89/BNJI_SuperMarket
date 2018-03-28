@@ -1150,15 +1150,19 @@ public  void ParserLignesLivraison(String input){
             String reclamationType = "";
             String rec = "";
             Ligne_livraison ligne = null;
+            
+            Article art = null;
             Ligne_livraison l = new Ligne_livraison();
             for (int i=0;i<temp.length;i++){
-                if ((i)%4==0 || i==0){
+                if ((i)%5==0 || i==0){
                     count = 1;
                     reclamationType = "";
                     rec = "";
+                    ligne = null;
+                     art = null;
                 }
                 if(count==1){
-                    
+                    mesParam = new ArrayList<Parametre>();
                     Integer ligneID = Integer.parseInt(temp[i]);
                     Parametre p = new Parametre("id", "int", ligneID);
                       mesParam.add(p);
@@ -1168,21 +1172,35 @@ public  void ParserLignesLivraison(String input){
                         ligne = (Ligne_livraison)Aide.getObjectDeListe(listelignes.toArray());
                     }
                 }
-                else if (count==4){
+                else if(count ==2){
+                    Integer ii = Integer.valueOf(temp[i]);
+                       mesParam = new ArrayList<Parametre>();
+                       Parametre p = new Parametre("id", "int", ii);
+                       mesParam.add(p);
+                       requete = Requete.getArticles+" and a.id=:id";
+                       List<Article> listeArts = administration.getArticle(requete, mesParam);
+                        if (listeArts !=null){
+                          art = (Article)Aide.getObjectDeListe(listeArts.toArray());
+                        }
+                }
+                else if (count==5){
                        quantiteAccepte = Integer.parseInt(temp[i]); 
                        administration.modifierLigneLivraison(ligne, quantiteAccepte);
                        //Article magasin treatement
-                       mesParam = new ArrayList<Parametre>();
-                       Parametre p = new Parametre("article", "Article", ligne.getArticle());
+                        mesParam = new ArrayList<Parametre>();
+                       Parametre p = new Parametre("article", "Article", art);
                        mesParam.add(p);
                        requete = Requete.getArticleMagasin+" and a.article=:article";
-                       List<ArticleMagasin> listeArts = administration.getArticleMagasin(requete, mesParam);
-                       ArticleMagasin artMag = null;
-                       if (listeArts !=null){
+                       List<Article> listeArts = administration.getArticle(requete, mesParam);
+                       ArticleMagasin artMag= null;
+                       if (listeArts!=null){
                            artMag = (ArticleMagasin)Aide.getObjectDeListe(listeArts.toArray());
+                       }
+                       if (artMag !=null){
+                           
                            administration.ajouterQuantite(artMag, quantiteAccepte);
                        }else{
-                           artMag = administration.creerArticleMag(quantiteAccepte, 0.0f, ligne.getArticle(), employeConnecte.getMagasin());
+                           artMag = administration.creerArticleMag(quantiteAccepte, 0.0f, art, employeConnecte.getMagasin());
                        }
                        //Lot tratement
                        if(ligne.getDate_de_peremption()!=null){
@@ -1225,10 +1243,10 @@ public  void ParserLignesLivraison(String input){
                     
                     message = "Livraison est bien traité";
                        
-                 }else if (count==3){
+                 }else if (count==4){
                      if (!temp[i].isEmpty())
                        rec = temp[i];
-                 }else if (count==2){
+                 }else if (count==3){
                         //creerLigneCommande
                         if (!temp[i].isEmpty())
                            reclamationType =  temp[i];
@@ -1285,8 +1303,9 @@ protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse res
                   if (!ligneslivraison.isEmpty()){
                             String DatePrevu = request.getParameter("date_pr");
                             String bon = request.getParameter("bonCommande");
+                            Integer binID = Integer.valueOf(bon);
                             mesParam = new ArrayList<Parametre>();
-                            Parametre p = new Parametre("id", "int", bon);
+                            Parametre p = new Parametre("id", "int", binID);
                             mesParam.add(p);
                             requete = Requete.getBonCommandes+" and b.id=:id";
                             List<BonCommande> listebons = administration.getBonCommande(requete, mesParam);
@@ -1351,12 +1370,14 @@ public  void ParserLigneCommandeVersLignesLivraison(String input,Livraison liv){
                     quantiteLivree =   Integer.parseInt(temp[i]); 
                 
                 }
-                else if (count==4){
-                    if (!temp[i].isEmpty()){
+                 if (count==4 ){
+                    if (!temp[i].isEmpty() && !temp[i].equals("no")){
                         datePermertion = java.sql.Date.valueOf(temp[i]);
-                    }
+                    } 
                    administration.creerLigneLivraison(quantiteLivree, 0, art, liv, datePermertion);
                    
+                }else if (i+1 == temp.length){
+                    administration.creerLigneLivraison(quantiteLivree, 0, art, liv, null);
                 }
  
                  count++;   

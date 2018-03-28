@@ -90,7 +90,7 @@
                        <div class="form-group">
                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Choisissez la commande à livrer</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" id = "commandesel" name="CommandeSelect" onchange="ActualiserTableCommandeAlivrer(document.getElementById('tableCache'),document.getElementById('myTable'),this)">
+                        <select class="form-control" id = "commandesel" name="CommandeSelect" onchange="ActualiserTableCommandeAlivrer(document.getElementById('tableCache'),document.getElementById('myTable'),this)">
                         <% String binID = "";
                             List<BonCommande> com = commandes ;
                         //if (!emp.isEmpty())  {
@@ -135,7 +135,7 @@
                       <td><%=ligne.getArticle().getLibelle() %></td>
                       <td><%=ligne.getQuantite()%></td>
                       <td><input type="text" onkeyup="document.getElementsByName('acepte').value = this.value;refrechQuantiteLivree(document.getElementById('myTable'));" name="nom" class="form-control" value ="<%=ligne.getQuantite()%>" /></td>
-                      <td><input id="date_pr" class="form-control col-md-7 col-xs-12" type="date" name="date_p"></td>
+                      <td><input id="date_pr" class="form-control col-md-7 col-xs-12" type="date" name="date_p" ></td>
                       <td style="display: none"><%=ligne.getQuantite()%></td>
                       <td style="display: none"></td>
                             
@@ -157,8 +157,6 @@
                             
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom chef de rayon : activer pour ordonner" style="width: 167px;">#</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">ID Article</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Quantité commandée</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité livrée</th> 
                         </tr>
                       </thead>
@@ -169,8 +167,7 @@
                         %>
                       <td><%=ligne.getBonCommande().getId() %></td>
                       <td><%=ligne.getArticle().getId() %></td>
-                      <td><%=ligne.getArticle().getLibelle() %></td>
-                      <td><%=ligne.getQuantite()%></td>
+                      
                      
                       <td ><%=ligne.getQuantite()%></td>
                        <td></td>
