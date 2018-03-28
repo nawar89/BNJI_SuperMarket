@@ -159,6 +159,11 @@ public class controleClient extends HttpServlet {
             LogOut(request,response);
             request.setAttribute( "message", message );
         }
+                
+       else if (act.equals("magasinSelect")){
+            GOHOME(request, response);
+            request.setAttribute( "message", message );
+        }
         
       }
     }
@@ -185,14 +190,21 @@ HttpServletResponse response) throws ServletException, IOException
               requete = Requete.getClients+ " and c.login=:login and c.mdp=:mdp";
               Parametre p = new Parametre("login", "String", login);
               mesParam.add(p);
-              p = new Parametre("mdp", "String", mdp);
+              String enCmdp = Aide.encrypterMdp(mdp);
+              p = new Parametre("mdp", "String", enCmdp);
               mesParam.add(p);
               List<Client> listeClients = clientSession.getClients(requete, mesParam);
               if (listeClients != null && listeClients.size()== 1){
                   clientConnecte  = (Client)Aide.getObjectDeListe(listeClients.toArray());
-                  
-                  GOHOME(request,response);
-                  message = "Bonjour "+clientConnecte.getPrenom()+" "+clientConnecte.getNom() ;
+                  session.setAttribute("ClientCo", clientConnecte);
+                  requete = Requete.getMagasins;
+                  List<Magasin> mags = administration.getMagasins(requete, null);
+                  if (mags==null){
+                      mags = new ArrayList<Magasin>();
+                  }
+                   
+                  request.setAttribute( "mags", mags );
+                  //message = "Bonjour "+clientConnecte.getPrenom()+" "+clientConnecte.getNom() ;
                    jspClient = "/JSP_Client/ChoixMag.jsp";  
               }        
     }catch(Exception exe){
@@ -217,7 +229,7 @@ HttpServletResponse response) throws ServletException, IOException
               String naissance     = request.getParameter( "naissance" );
               String encryptedMdp = Aide.encrypterMdp(mdp);
               Date d = java.sql.Date.valueOf(naissance);
-              clientConnecte = clientSession.creerClient(nom, prenom, adresee, email, prenom, email, mdp, date, true);
+              clientConnecte = clientSession.creerClient(nom, prenom, adresee, email, prenom, email, encryptedMdp, date, true);
               session.setAttribute("ClientCo", clientConnecte);
               jspClient = "/JSP_Pages/Accueil.jsp";
               message = "Bonjour "+clientConnecte.getPrenom()+" "+clientConnecte.getNom() ;
@@ -237,16 +249,23 @@ HttpServletResponse response) throws ServletException, IOException
    
     try{
         //Construire requete SQL
+              String mag = request.getParameter( "magSelect" );
               monPanier = null;
               requete = Requete.getPromotions;
               List<Promotion> listeP = administration.getPromotions(requete, null);
               if (listeP == null){
               listeP = new ArrayList<Promotion>(); 
               }
-              requete = Requete.getMagasins;
-              List<Magasin> listm = administration.getMagasins(requete, null);
+              mesParam = new ArrayList<Parametre>();
+              Integer magID = Integer.valueOf(mag);
+              Parametre p = new Parametre("id", "int",magID);
+              mesParam.add(p);
+              requete = Requete.getMagasins+" and m.id=:id";
+              List<Magasin> listm = administration.getMagasins(requete, mesParam);
               Magasin m = null;
-              m =listm.get(0);
+              if (listm!=null){
+                m = (Magasin)Aide.getObjectDeListe(listm.toArray());
+              }
               requete = Requete.getCategories;
               List<Categorie> listc = administration.getCategories(requete, null);
               if (listc == null){

@@ -8,7 +8,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 
-<jsp:useBean id ="comPardate" scope="request" class="java.util.List"></jsp:useBean>
+<jsp:useBean id ="comParcat" scope="request" class="java.util.List"></jsp:useBean>
 
 <%@page import="EntityBean.ligneCommandeEnLigne"%>
 <%@page import="java.util.List"%>
@@ -56,7 +56,7 @@
               <%@include file="header.jsp" %>
              
               <%   
-                   List<ligneCommandeEnLigne> listcomPardate = comPardate;
+                   List<ligneCommandeEnLigne> listcomPardate = comParcat;
                     List<Float> Ventes = new ArrayList<Float>();
                     List<String> dates = new ArrayList<String>();
                     List<String> categories = new ArrayList<String>();
@@ -117,10 +117,11 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                <canvas id="per" width="256" height="256"></canvas>
+                <canvas id="cat" width="256" height="256"></canvas>
                   </div>
                 </div>
               </div>
+                  
             </div>
           </div>
         </div>
@@ -153,8 +154,8 @@
                 return total + num;
             }
                 
-          
-            var cty = $("#per").get(0).getContext("2d");
+            var ctx = $("#cat").get(0).getContext("2d");
+            
             
             var tabPrixVentes = new Array;
             var tabColors = new Array;
@@ -168,17 +169,18 @@
                tabDates.push(<%=dates%>[i] + " " + <%=Ventes%>[i]+"€, %");
             }
             
-             datadate = {
+            
+            data = {
                 datasets: [{
                 data : tabPrixVentes,
                 backgroundColor: tabColors
                 }],
-                labels: tabDates
+                labels: tabNomProduits
             };
-                
-                var myPieChartdate = new Chart(ctx,{
+             
+              var myPieChartcat = new Chart(ctx,{
                 type: 'pie',
-                data: datadate
+                data: data
                 //options: options
                 });
                 });

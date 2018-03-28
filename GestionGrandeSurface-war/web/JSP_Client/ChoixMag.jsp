@@ -1,4 +1,8 @@
+<%@page import="java.util.List"%>
+<%@page import="EntityBean.Magasin"%>
 <!DOCTYPE html>
+<jsp:useBean id ="ClientCo" scope="session" class="EntityBean.Client"></jsp:useBean>
+<jsp:useBean id="mags" scope="request" class="java.util.List"></jsp:useBean>
 <html lang="en">
 <head>
 	<title>Home</title>
@@ -59,8 +63,8 @@
 							<li>
 								<a href="product.html">Espace Client</a>
 							</li>
-                            <li>
-								<a href="about.html">About</a>
+                                                       <li>
+								<a href="controleClient?action=logout">Déconnexion</a>
 							</li>
 						</ul>
 					</nav>
@@ -138,19 +142,26 @@
 				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
 					<!-- block1 -->
 					<div class="flex-sb-m flex-w p-b-35">
-					    <form>
+					     <form name="PanierForm"  method="post" action="controleClient">
+                                                  <input type="hidden" name="action" value="magasinSelect">
 						<div class="form-group">
 		                  <label for="sel1">Selectionnez un magasin :</label>
-						  <select class="form-control" id="sel1">
-							<option>Carefour</option>
-							<option>Monoprix</option>
-                          </select>
+                                        <select name ="magSelect" class="form-control" id="sel1">
+                                                <% List<Magasin> listMags = mags;
+                                                    if (listMags!=null){
+                                                    for (Magasin mag:listMags){
+                                                %>
 						  
+                                                      <option  value="<%=mag.getId()%>"><%=mag.getNom()%></option>
+							
+                                                 
+                                             <%}}%>
+                                             </select>
 						  </div>
 						 
-                            <a href="#" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4">
+                                             <button onclick="this.form.submit()" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4">
 								Choisir ce magasin
-							</a>
+                                             </button>
 						 
 						</form>
 						</div>

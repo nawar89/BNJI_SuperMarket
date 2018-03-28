@@ -65,7 +65,7 @@
 				</div>
                                 <div class="topbar-child2">
 					<span class="topbar-email">
-						Client_connecté@example.com
+						<%=ClientCo.getAdresse() %>
 					</span>
                                </div>
 			</div>
@@ -73,7 +73,7 @@
 			<div class="wrap_header">
 				<!-- Logo -->
 				<a href="index.html" class="logo">
-					<img src="./TemplateClient/images/icons/logo.png" alt="IMG-LOGO">
+					<img src="./TemplateClient/images/logo.png" alt="IMG-LOGO">
 				</a>
 
 				<!-- Menu -->
@@ -235,12 +235,12 @@
 								<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
                                                                     <% String img = "./TemplateClient/images/item-12.jpg";
                                                                       if (artMag.getArticle()!=null){
-                                                                          if (artMag.getArticle().getImg()!="" && artMag.getArticle().getImg()!=null){
-                                                                              img =artMag.getArticle().getImg();
+                                                                          if (!artMag.getArticle().getImg().isEmpty()){
+                                                                              img ="./TemplateClient/images/"+artMag.getArticle().getImg();
                                                                           }
                                                                       }
                                                                     %>
-                                                                    <img src="./TemplateClient/images/item-12.jpg" alt="IMG-PRODUCT">
+                                                                    <img src="<%=img%>" alt="IMG-PRODUCT">
 
 									<div class="block2-overlay trans-0-4">
 										<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">

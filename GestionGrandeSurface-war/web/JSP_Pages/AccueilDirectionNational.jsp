@@ -46,7 +46,9 @@
        <div class="col-md-12 col-sm-12 col-xs-12">
           Bienvenu dans votre espace BNJI SuperMarket     
        </div>
-            
+           <iframe width="1200" height="900" src="https://app.powerbi.com/view?r=eyJrIjoiYTY0MTE5YjQtYjcyNS00MDAzLWJiYjEtMWNkNDViMjUxM2Y1IiwidCI6IjAwMzJhZjMyLTBhZTAtNDMwMC1iZjY3LTgwOWM2MjA4NGU2NiIsImMiOjh9" frameborder="0" allowFullScreen="true">
+                
+            </iframe> 
         </div>
         <%@include file="footer.jsp" %>
       </div>

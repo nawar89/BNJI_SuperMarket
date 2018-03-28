@@ -148,7 +148,9 @@ HttpServletResponse response) throws ServletException, IOException
               requete = Requete.getEmployes+ " and e.login=:login and e.mdp=:mdp";
               Parametre p = new Parametre("login", "String", login);
               mesParam.add(p);
-              p = new Parametre("mdp", "String", mdp);
+              //String enCmdp     = Aide.encrypterMdp(mdp);
+              String enCmdp     = mdp;
+              p = new Parametre("mdp", "String", enCmdp);
               mesParam.add(p);
               List<Employe> listeEmp = administration.getEmploye(requete, mesParam);
               if (listeEmp != null && listeEmp.size()== 1){
@@ -468,7 +470,8 @@ HttpServletResponse response) throws ServletException, IOException
               requete = Requete.getFournisseurs+ " and f.email=:email and f.mdp=:mdp";
               Parametre p = new Parametre("email", "String", email);
               mesParam.add(p);
-              p = new Parametre("mdp", "String", mdp);
+              String enCmdp = Aide.encrypterMdp(mdp);
+              p = new Parametre("mdp", "String", enCmdp);
               mesParam.add(p);
               List<Fournisseur> listeFour = administration.getFournisseur(requete, mesParam);
               if (listeFour != null && listeFour.size()== 1){
@@ -2162,43 +2165,43 @@ HttpServletResponse response) throws ServletException, IOException
             switch (OuSelect)
             {
                 case "0":
-                    switch(critere)
+                   switch(critere)
                     {
                         case "0":
-                                //Article par magasin
-                                requete=Requete.getArticleMagasinParChefRayon + " And emp.id =:id" ;
-                                mesParam= new ArrayList<Parametre>();
-                                Parametre c = new Parametre("id", "long", empID);
-                                mesParam.add(c);
-                                List<ArticleMagasin> listea=administration.getArticleMagasin(requete, mesParam);
-                                if (listea == null){
-                                listea = new ArrayList<>(); 
-                                }
-                                request.setAttribute("listarticlemagasin", listea);
-                                message = "redirection....";
-                                jspClient = "/JSP_Pages/ChiffreAffaires.jsp"; 
+                              //Article par magasin
+                              requete=Requete.getCommandeClientParmag + " And m.id=:id" ;
+                              mesParam= new ArrayList<Parametre>();
+                              Parametre param = new Parametre("id", "long", magId);
+                              mesParam.add(param);
+                              List<ligneCommandeEnLigne> listecommm=clientSession.getLigneCommandeEnligne(requete, mesParam);
+                              if (listecommm == null){
+                              listecommm = new ArrayList<>(); 
+                              }
+                              request.setAttribute("comPararticle", listecommm);
+                              //message = "redirection....";
+                              jspClient = "/JSP_Pages/ChiffreAffairesArticle.jsp"; 
                         break;
                         case "1":
                         
                         //Catégorie
                               requete=Requete.getCommandeClientParmag + " And m.id=:id" ;
                               mesParam= new ArrayList<Parametre>();
-                              Parametre param = new Parametre("id", "long", magId);
-                              mesParam.add(param);
+                              Parametre paramm = new Parametre("id", "long", magId);
+                              mesParam.add(paramm);
                               List<ligneCommandeEnLigne> listecomm=clientSession.getLigneCommandeEnligne(requete, mesParam);
                               if (listecomm == null){
                               listecomm = new ArrayList<>(); 
                               }
                               request.setAttribute("comParcat", listecomm);
                               //message = "redirection....";
-                              jspClient = "/JSP_Pages/ChiffreAffaires.jsp"; 
+                              jspClient = "/JSP_Pages/ChiffreAffairesCommande.jsp"; 
                              
                               break;
                    
                         case "2":
                         //Période par magasin
 
-                            requete=Requete.getCommandeClient + " And lc.date_commande_client >= ?1 And lc.date_commande_client <= ?2 And m.id= ?3" ;
+                            requete=Requete.getCommandeClientParmag + " And lc.date_commande_client >= ?1 And lc.date_commande_client <= ?2 And m.id= ?3" ;
                             mesParam= new ArrayList<Parametre>();
                             java.sql.Date debut = java.sql.Date.valueOf(date_d);
                             Parametre d = new  Parametre("1","TemporalType.DATE",debut);
@@ -2218,6 +2221,7 @@ HttpServletResponse response) throws ServletException, IOException
                             break;
                     
                     }
+                    
                     break;
                 case "1" :
                     switch(critere)

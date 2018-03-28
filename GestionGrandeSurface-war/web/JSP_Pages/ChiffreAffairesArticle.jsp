@@ -8,7 +8,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 
-<jsp:useBean id ="comPardate" scope="request" class="java.util.List"></jsp:useBean>
+<jsp:useBean id ="comPararticle" scope="request" class="java.util.List"></jsp:useBean>
 
 <%@page import="EntityBean.ligneCommandeEnLigne"%>
 <%@page import="java.util.List"%>
@@ -56,27 +56,28 @@
               <%@include file="header.jsp" %>
              
               <%   
-                   List<ligneCommandeEnLigne> listcomPardate = comPardate;
+                   List<ligneCommandeEnLigne> listcomPardate = comPararticle;
                     List<Float> Ventes = new ArrayList<Float>();
-                    List<String> dates = new ArrayList<String>();
-                    List<String> categories = new ArrayList<String>();
-               
+                    List<String> articles = new ArrayList<String>();
+                    
                    for (ligneCommandeEnLigne l : listcomPardate) 
                    {
-                      Ventes.add(l.getQuantite()*l.getPrix_vente());
-                      dates.add("\""+l.getCommandeClient().getDate_commande_client().toString()+"\"");
-                      categories.add("\""+l.getArticleMagasin().getArticle().getSousCategorie().getLibelle()+"\"");
+                       boolean artExt = false;
+                      for (String x:articles){
+                          if (x.equals(l.getArticleMagasin().getArticle().getLibelle())){
+                              artExt = true;
+                              break;
+                          }
+                      }
+                      if (!artExt){
+                        articles.add("\""+l.getArticleMagasin().getArticle().getLibelle()+"\"");
+                        Ventes.add(l.getQuantite()*l.getPrix_vente());
+                      }
+                      
+                     
+                      
                    }
-               
-              
-                
-              
-              
-              
-              
-              
-              
-              %>
+               %>
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
@@ -117,10 +118,11 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                <canvas id="per" width="256" height="256"></canvas>
+                <canvas id="ar" width="256" height="256"></canvas>
                   </div>
                 </div>
               </div>
+                  
             </div>
           </div>
         </div>
@@ -153,8 +155,8 @@
                 return total + num;
             }
                 
-          
-            var cty = $("#per").get(0).getContext("2d");
+            var ctx = $("#ar").get(0).getContext("2d");
+            
             
             var tabPrixVentes = new Array;
             var tabColors = new Array;
@@ -164,21 +166,22 @@
             for(var i=0; i<<%=Ventes%>.length; i++){
                tabPrixVentes.push(((<%=Ventes%>[i]/totalPrixVentes)*100).toFixed(2));
                tabColors.push('#' + (Math.random().toString(16) + "000000").substring(2,8));
-               tabNomProduits.push(<%=categories%>[i] + " " + <%=Ventes%>[i]+"€, %");
-               tabDates.push(<%=dates%>[i] + " " + <%=Ventes%>[i]+"€, %");
+               tabNomProduits.push(<%=articles%>[i] + " " + <%=Ventes%>[i]+"€, %");
+            
             }
             
-             datadate = {
+            
+            data = {
                 datasets: [{
                 data : tabPrixVentes,
                 backgroundColor: tabColors
                 }],
-                labels: tabDates
+                labels: tabNomProduits
             };
-                
-                var myPieChartdate = new Chart(ctx,{
+            
+              var myPieChartcat = new Chart(ctx,{
                 type: 'pie',
-                data: datadate
+                data: data
                 //options: options
                 });
                 });
