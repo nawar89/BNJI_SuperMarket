@@ -65,7 +65,7 @@
 				</div>
                                 <div class="topbar-child2">
 					<span class="topbar-email">
-						<%=ClientCo.getAdresse() %>
+						<%=ClientCo.getEmail()%>
 					</span>
                                </div>
 			</div>

@@ -109,7 +109,7 @@
 			<div class="wrap_header">
 				<!-- Logo -->
 				<a href="index.html" class="logo">
-					<img src="./TemplateClient/images/icons/logo.png" alt="IMG-LOGO">
+					<img src="./TemplateClient/images/logo.png" alt="IMG-LOGO">
 				</a>
 
 				<!-- Menu -->

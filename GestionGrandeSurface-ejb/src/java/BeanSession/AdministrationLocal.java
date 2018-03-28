@@ -137,5 +137,7 @@ public interface AdministrationLocal {
  List<Electromenager> getElectro(String query, ArrayList<Parametre> params) throws Exception;
  
  void creationLivraison(Date date_livraison, Date date_livraison_prevu, Fournisseur fournisseur, BonCommande bon_commande, Etat_Livraison mension) throws Exception ;
+ 
+ List<LigneCommande> getLigneCommandes(String query, ArrayList<Parametre> params) throws Exception;
     
 }

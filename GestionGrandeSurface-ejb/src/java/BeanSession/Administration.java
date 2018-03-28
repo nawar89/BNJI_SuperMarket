@@ -433,7 +433,10 @@ public class Administration implements AdministrationLocal {
        livraisonFacade.creerLivraison(date_livraison, date_livraison_prevu, fournisseur, bon_commande, mension);
     }
    
-   
+    @Override
+    public List<LigneCommande> getLigneCommandes(String query, ArrayList<Parametre> params) throws Exception{
+        return ligneCommandeFacade.getLigneCommandes(query, params);
+    }
     
     
     

@@ -79,37 +79,36 @@
                     
                      <form name="CommandeForm" onsubmit="return doSave(document.getElementById('myTable'))" method="post" action="ControleAdministration">
                    
-                        <div class="form-group">
+                        
                           
                              <label for="nom" class="control-label col-md-3 col-sm-3 col-xs-12">Fournisseur <span class="requis" >*</span></label>
-                              <div class="col-md-6 col-sm-6 col-xs-12">
+                              <br>
                                 <select class="form-control" id = "forsel" name="FourniSelect" class="form-control" onchange="RefreshComboBoxTable(this,document.getElementById('artsel'),document.getElementById('artseltemp'))">
                                 <% List<Fournisseur> listefor = fournisseurs ;
                                 for(Fournisseur cat : listefor) {%>
                                      <option value ="<%=cat.getId()%>"> <%=cat.getNom()%>  </option>
                                 <% }%>
                                  </select>
-                               </div>
-                          </div>
-                            <div class="form-group">
-
+ 
+                                 
+                             <br>   
                               <label for="l" class="control-label col-md-3 col-sm-3 col-xs-12">Article<span class="requis" >*</span></label>
-                              
-                               <div class="col-md-6 col-sm-6 col-xs-12">
-                               <select class="form-control"  id = "artsel" name="articleSelect" class="form-control">
+                               
+                                <br>   
+                               <select class="form-control"  id = "artsel" name="articleSelect" >
 
-                             <% if (!listefor.isEmpty())  {
-                                 Fournisseur f = listefor.get(0);
+                                <% List<Fournisseur> listefors = fournisseurs ;
+                                 if (!listefor.isEmpty())  {
+                                 Fournisseur f = listefors.get(0);
                                  for(Article a : f.getArticles() ) {%>
-                                 <option class="filterOption" value ="<%= a.getId()%>"> <%=a.getLibelle() %>  </option>
+                                 <option  value ="<%= a.getId()%>"> <%=a.getLibelle() %>  </option>
                                  <% }}%>
 
                               </select>
                                  <br>
                                  <button type="button" class="btn btn-success" onclick="AjouterDansTable(document.getElementById('artsel'),document.getElementById('myTable'),document.getElementById('artseltemp'))">Ajouter!</button>
-                                 
-                            </div>  
-                            </div>  
+                       
+                            
             
                 
                             <table id="artseltemp"  style="display: none">
@@ -150,7 +149,7 @@
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Nom fournisseur : activer pour ordonner" style="width: 277px;">Article</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="catégorie d'articles : activer pour ordonner" style="width: 126px;">Prix achat</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Quantité</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Prix total</th>
+                            <th style="display: none" class="sorting" tabindex="0" aria-controls="datatable-checkbox" rowspan="1" colspan="1" aria-label="Date de la commande : activer pour ordonner" style="width: 124px;">Prix total</th>
                             
                         </tr>
                       </thead>

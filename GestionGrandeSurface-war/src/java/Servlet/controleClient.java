@@ -419,7 +419,7 @@ HttpServletResponse response) throws ServletException, IOException
     try{
         //Construire requete SQL        
              //monPanier = (CommandeClientEnLigne)session.getAttribute("Panier");
-             String res   = request.getParameter("vals");
+             /* String res   = request.getParameter("vals");
              String date   = request.getParameter("datepicker2");
              
              ParserLigneCommandeVersLignesLivraison(res); 
@@ -432,8 +432,9 @@ HttpServletResponse response) throws ServletException, IOException
                 session.setAttribute("Panier", monPanier);
                 session.setAttribute("ClientCo", clientConnecte);
                  
-             }else GOHOME(request, response);
-
+             }else GOHOME(request, response);*/
+             jspClient = "/JSP_Client/Page_message.jsp";
+             message = "votre commande ete bien enregisté";
              
 }catch(Exception exe){
     message = exe.getMessage();

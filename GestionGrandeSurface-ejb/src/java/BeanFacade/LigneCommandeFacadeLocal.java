@@ -8,6 +8,8 @@ package BeanFacade;
 import EntityBean.Article;
 import EntityBean.BonCommande;
 import EntityBean.LigneCommande;
+import Structure.Parametre;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -33,5 +35,6 @@ public interface LigneCommandeFacadeLocal {
     int count();
 
     void creerLigneCommande(BonCommande command, Article article, int quantite, float prix);
+    List<LigneCommande> getLigneCommandes(String query, ArrayList<Parametre> params) throws Exception;
     
 }

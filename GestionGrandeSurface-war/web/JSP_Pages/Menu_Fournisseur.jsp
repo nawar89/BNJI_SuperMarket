@@ -38,6 +38,10 @@
                       <li><a href="ControleAdministration?action=ConsulterLivraisons">Consulter l'historique des livraisons</a></li>
                     </ul>
                   </li>
+                  
+                  <li><a href="ControleAdministration?action=logout"><i class="fa fa-desktop"></i> Deconnextion <span class="fa fa-chevron-down"></span></a>
+                  
+                  </li>     
                 </ul>
               </div>
              

@@ -148,8 +148,8 @@ HttpServletResponse response) throws ServletException, IOException
               requete = Requete.getEmployes+ " and e.login=:login and e.mdp=:mdp";
               Parametre p = new Parametre("login", "String", login);
               mesParam.add(p);
-              //String enCmdp     = Aide.encrypterMdp(mdp);
-              String enCmdp     = mdp;
+              String enCmdp     = Aide.encrypterMdp(mdp);
+              //String enCmdp     = mdp;
               p = new Parametre("mdp", "String", enCmdp);
               mesParam.add(p);
               List<Employe> listeEmp = administration.getEmploye(requete, mesParam);
@@ -494,6 +494,8 @@ protected void LogOut(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
 {
     session.invalidate();
+    employeConnecte = null;
+    fournisseurConnecte = null;
     jspClient="/JSP_Pages/Accueil.jsp";
   
 }
@@ -1062,6 +1064,18 @@ HttpServletResponse response) throws ServletException, IOException
               p = new Parametre("3", "Etat_livraison", Etat_Livraison.RECEPTIONNE);
               mesParam.add(p);
               List<Livraison> listelivs = administration.getLivraisons(requete, mesParam);
+              if (listelivs!=null){
+               for(int i=0;i<listelivs.size();i++){
+                   mesParam = new ArrayList<Parametre>();
+                   requete = Requete.getLigneLivraisons+" and l.livraison=:livraison";
+                   Parametre pp = new Parametre("livraison", "Livraison", listelivs.get(i));
+                   mesParam.add(pp);
+                   List<Ligne_livraison> listLigne = administration.getLignesLivraison(requete, mesParam);
+                   if (listLigne!=null){
+                      listelivs.get(i).setLigne_livraisons(listLigne);
+                   }
+               }
+              }
               if (listelivs == null){
               listelivs = new ArrayList<Livraison>(); 
               }
@@ -1095,6 +1109,18 @@ HttpServletResponse response) throws ServletException, IOException
                     if (listelivs!=null){
                         Livraison liv = (Livraison)Aide.getObjectDeListe(listelivs.toArray());
                         administration.modifierLivraison(new Date(), Etat_Livraison.RECEPTIONNE, liv,employeConnecte);
+                         
+                            for(int i=0;i<listelivs.size();i++){
+                                mesParam = new ArrayList<Parametre>();
+                                requete = Requete.getLigneLivraisons+" and l.livraison=:livraison";
+                                Parametre pp = new Parametre("livraison", "Livraison", listelivs.get(i));
+                                mesParam.add(pp);
+                                List<Ligne_livraison> listLigne = administration.getLignesLivraison(requete, mesParam);
+                                if (listLigne!=null){
+                                   listelivs.get(i).setLigne_livraisons(listLigne);
+                                }
+               }
+              
                         request.setAttribute( "livraison", liv );
                         jspClient = "/JSP_Pages/LivraisonDetail.jsp";
                     }
@@ -1281,6 +1307,19 @@ protected void GoTOLivraison(HttpServletRequest request, HttpServletResponse res
               Parametre c = new Parametre("id", "long", fourID);
               mesParam.add(c);
               List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
+              if (listec!=null){
+             for (int i=0;i< listec.size();i++){
+                mesParam = new ArrayList<Parametre>();
+               requete=Requete.getLignesCommande + " And l.bonCommande=:bonCommande";
+               mesParam= new ArrayList<Parametre>();
+               Parametre d = new Parametre("bonCommande", "BonCommande", listec.get(i));
+               mesParam.add(d);
+                List<LigneCommande> listLignes = administration.getLigneCommandes(requete, mesParam);
+                if(listLignes!=null){
+                   listec.get(i).setLigneCommandes(listLignes);
+                }
+            }}
+           
               if (listec == null){
               listec = new ArrayList<>(); 
               }
@@ -1990,18 +2029,31 @@ HttpServletResponse response) throws ServletException, IOException
 {
        
     try {
-            HttpSession sess=request.getSession(true);
+            //HttpSession sess=request.getSession(true);
             mesParam = new ArrayList<Parametre>();
             Parametre p = null;
-            Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
-            long fourID = fourCo.getId();
+            //Fournisseur fourCo = (Fournisseur) sess.getAttribute("FourCo");
+            long fourID = fournisseurConnecte.getId();
             requete=Requete.getCommandesParFournisseurLivr + " And f.id=:id";
             mesParam= new ArrayList<Parametre>();
             Parametre c = new Parametre("id", "long", fourID);
             mesParam.add(c);
             List<BonCommande> listec=administration.getBonCommande(requete, mesParam);
+            if (listec!=null){
+             for (int i=0;i< listec.size();i++){
+                mesParam = new ArrayList<Parametre>();
+               requete=Requete.getLignesCommande + " And l.bonCommande=:bonCommande";
+               mesParam= new ArrayList<Parametre>();
+               Parametre d = new Parametre("bonCommande", "BonCommande", listec.get(i));
+               mesParam.add(d);
+                List<LigneCommande> listLignes = administration.getLigneCommandes(requete, mesParam);
+                if(listLignes!=null){
+                   listec.get(i).setLigneCommandes(listLignes);
+                }
+            }}
+           
             if (listec == null){
-            listec = new ArrayList<>(); 
+            listec = new ArrayList<BonCommande>(); 
             }
             request.setAttribute("listCommandes", listec);
             message = "redirection....";

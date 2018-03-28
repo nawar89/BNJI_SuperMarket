@@ -8,9 +8,14 @@ package BeanFacade;
 import EntityBean.Article;
 import EntityBean.BonCommande;
 import EntityBean.LigneCommande;
+import Structure.Aide;
+import Structure.Parametre;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -39,6 +44,26 @@ public class LigneCommandeFacade extends AbstractFacade<LigneCommande> implement
         ligne.setQuantite(quantite);
         ligne.setPrix_achat(prix);
         em.persist(ligne);
+    }
+    
+   
+    
+     @Override
+    public List<LigneCommande> getLigneCommandes(String query, ArrayList<Parametre> params) throws Exception{
+        List<LigneCommande> articles = null;
+        try{
+         
+            Query q = em.createQuery(query);
+            if (params !=null){
+                for (Parametre p : params){
+                    Aide.Casting(p.type,p.valeur);
+                    q.setParameter(p.nom,p.valeur );
+                }
+            }
+            articles = q.getResultList();
+        }catch(Exception exe){//throw exe;
+        }
+        return articles;
     }
     
     

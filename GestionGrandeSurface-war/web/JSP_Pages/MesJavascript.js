@@ -423,6 +423,7 @@ function AjouterDansTable(ddl1,table,tableTemp) {
                 cell3.innerHTML = 0;
                 cell4.innerHTML = 1;
                 cell5.innerHTML = 0;
+                cell5.style.display = 'none';
                 cell4.contentEditable = true;
                 cell4.addEventListener("onchange", function(){
                     //document.getElementById("demo").innerHTML = "Hello World";
@@ -812,7 +813,7 @@ function RefreshComboBoxArticle(ddl1,ddl2,table) {
 
   
     
-function verifierInputClient(d1,d2,d3) {
+function verifierInputClient(d1,d2,d3,d4) {
             console.log(d1.value+" "+d2.value)
            if (d1.value !== d2.value){
                
@@ -820,7 +821,7 @@ function verifierInputClient(d1,d2,d3) {
                d3.classList.toggle("show");
                return false;
                
-           }else
+           }
            return true;
     }
     

@@ -134,7 +134,7 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form id="demo-form2" onsubmit="return verifierInputClient(document.getElementById('mot'),document.getElementById('cmot'),document.getElementById('myPopup'))" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="controleClient">
+                    <form id="demo-form2" onsubmit="return verifierInputClient(document.getElementById('mot'),document.getElementById('cmot'),document.getElementById('myPopup'),document.getElementById('myPopup2'))" data-parsley-validate class="form-horizontal form-label-left"  method="post" action="controleClient">
                       
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="libelle">Nom <span class="required">*</span>
@@ -190,6 +190,12 @@
                         </div>
                         <div class="popup" >
                                 <span class="popuptext" id="myPopup">Mdp et confirmer mdp ne correpondent pas</span>
+                               
+                        </div>
+                         <div class="popup" >
+                          <span class="popuptext" id="myPopup2">les informations recueillies par isaShop à partir de ce formulaire font l’objet d’un traitement informatique destiné aux services marketing et comptabilité de isaShop, dans la finalité de traitement de vos commandes, de gestion de votre compte client, d’études marketing et statistiques. Ces opérations ont pour but de vous fournir les offres les plus adaptées, un suivi de qualité de nos services et une protection commerciales. Ces données seront conservées au maximum 3 ans à compter de la date de création de votre compte”
+                            Conformément à la loi “informatique et libertés” du 6 Janvier 1978 modifiée, vous disposez d’un droit d’accès et de rectification aux informations qui vous concernent.
+                            Vous pouvez accéder aux informations vous concernant en vous adressant à: contact@isaShop.com</span>
                         </div>
                       </div>
                        

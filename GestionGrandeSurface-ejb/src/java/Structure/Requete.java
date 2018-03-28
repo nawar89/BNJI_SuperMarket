@@ -44,6 +44,8 @@ public abstract class Requete {
     public static String getArticleMagasinParChefRayon = "SELECT a FROM ArticleMagasin AS a join a.magasin m join m.employes emp WHERE 1=1";
     public static String getCommandeClient= "Select l From ligneCommandeEnLigne as l join l.commandeClient lc join l.articleMagasin ar join ar.magasin m WHERE 1=1";
     public static String getCommandeClientParmag= "Select l From ligneCommandeEnLigne as l join l.commandeClient lc join l.articleMagasin ar join ar.magasin m WHERE 1=1";
+    public static String getLignesCommande = "SELECT l FROM LigneCommande AS l WHERE 1=1";
+    
     
     
 }
