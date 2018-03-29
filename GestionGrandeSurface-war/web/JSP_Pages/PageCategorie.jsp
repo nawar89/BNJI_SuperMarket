@@ -1,4 +1,3 @@
-
 <%@page import="EntityBean.SousCategorie"%>
 <%@page import="EntityBean.Categorie"%>
 <%@page import="java.util.List"%>
@@ -41,43 +40,60 @@
     <link href="./Template/css/custom.min.css" rel="stylesheet">
   </head>
 
-  <body class="nav-md">
+ <body class="nav-md">
      
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
+              <%@include file ="/JSP_Pages/MenuDirectionNational.jsp" %>
               
-              
-              
-                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-              <div class="menu_section">
-               <%@include file ="/JSP_Pages/MenuDirectionNational.jsp" %>
-              </div>
-             
-
-            </div>
-              
-              
-              
-          </div>
+         </div>
         </div>
               <%@include file="/JSP_Pages/header.jsp" %>
               <h2><%=message%></h2>
         <!-- page content -->
         <div class="right_col" role="main">
-            <form name="CategorieForm" onsubmit="return validerCreationCategory()" method="post" action="ControleAdministration">
-            
-                              <label for="nom" >Categorie <span class="requis" >*</span></label>
-                             <select id = "catsel" name="CategorieSelect" onchange="RefreshComboBox(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
-                            <% List<Categorie> listeCat = categories ;
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                    <h2>Création de catégories<small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                         <li><a href="#">Settings 1</a>
+                         </li>
+                         <li><a href="#">Settings 2</a>
+                         </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                    <div class="x_content">
+                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" name="CategorieForm" onsubmit="return validerCreationCategory()" method="post" action="ControleAdministration">
+                            
+                             <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12">Catégorie</label>
+                             <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" id = "catsel" name="CategorieSelect" onchange="RefreshComboBox(this,document.getElementById('souscatsel'),document.getElementById('souscatseltemp'))">
+                                <% List<Categorie> listeCat = categories ;
                             for(Categorie cat : listeCat) {%>
                                  <option value ="<%=cat.getId()%>"> <%=cat.getLibelle() %>  </option>
                             <% }%>
-                             </select>
-                             
-                             <label for="nom" >Sous Categorie <span class="requis" >*</span></label>
-                            <select id = "souscatsel" name="SousCategorieSelect">
+                            </select>
+                               </div>
+                              </div>
+                            
+                            <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Sous-Catégorie</label>
+                             <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" id = "souscatsel" name="SousCategorieSelect">
 
                           <% if (!listeCat.isEmpty())  {
                               Categorie cat = listeCat.get(0);
@@ -85,8 +101,10 @@
                               <option class="filterOption" value ="<%= cat.getId()%>"> <%=s.getLibelle() %>  </option>
                               <% }}%>
                            </select>
-                           
-                            <select id = "souscatseltemp" style="display: none" >
+                             </div>
+                            </div>
+                            
+                             <select id = "souscatseltemp" style="display: none" >
            
                                 <% if (!listeCat.isEmpty())  {
                                     for (Categorie cat : listeCat){
@@ -95,17 +113,42 @@
                                     <% }}}%>
 
                              </select>
-                                    <br/>
-                                    <input type="text" id = "catnom" name="Categorienom"  onkeyup="LectureSeulCategorie('catsel',this); LectureSeulCategorie('souscatsel',this);" class="form-control col-md-7 col-xs-12" placeholder="Saisir nom Categorie" />
-                                    <br/>
-                                     <input type="text" id = "souscatnom" name="souscatnom"  class="form-control col-md-7 col-xs-12" placeholder="Saisir nom Sous Categorie" />
-                                     <br/>
-                              
-                                    <input type="hidden" name="category" class="form-control" />
-                                    <input type="hidden" name="action" value="FromCategorie">
-                                    <input type="submit"  class="btn btn-primary" value="Valider" />
-                                    <input type="reset"   class="btn btn-primary"  value="Remettre à zéro" /> <br />
-            </form>
+                                    <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="libelle">Nom catégorie <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                      <input type="text" id = "catnom" name="Categorienom"  onkeyup="LectureSeulCategorie('catsel',this); LectureSeulCategorie('souscatsel',this);" class="form-control col-md-7 col-xs-12" placeholder="Saisir nom Categorie">
+                                       <span class="form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+
+                                  </div>
+                                    
+                                     <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="libelle">Nom sous-catégorie <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                      <input type="text" id = "souscatnom" name="souscatnom"  class="form-control col-md-7 col-xs-12" placeholder="Saisir nom Sous Categorie">
+                                       <span class="form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+
+                                  </div>
+                             
+                                   <div class="ln_solid"></div>
+                                   <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    
+                                      <input type="hidden"  name="category" class="form-control" />
+                                       <input type="hidden" name="action" value="FromCategorie">
+                                      <button type="submit" class="btn btn-success">Valider</button>
+                                    <input type="reset"   class="btn btn-primary"  value="Remettre à zéro" />
+                                    </div>
+                                  </div>
+                                    
+                                    
+                        </form>      
+                    </div>
+                </div>  
+            </div> 
                              
         </div>
         <%@include file="/JSP_Pages/footer.jsp" %>

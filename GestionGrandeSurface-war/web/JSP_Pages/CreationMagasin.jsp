@@ -74,83 +74,81 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <br />
-                    <form name="MagasinForm" onsubmit="return validerCreationMagasin()" method="post" action="ControleAdministration">
-                        
-                        <div class="form-group">
-                        <label for="nom" class="control-label col-md-3 col-sm-3 col-xs-12" >Magasin <span class="requis" >*</span></label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select id = "mag" name="magasinselect" onchange="AffictuerMagasinInfo(this,document.getElementsByName('magasin'))">
-                            <% List<Magasin> listeMag = magasins ;
-                            if (!listeMag.isEmpty()){%>
-                               <option value ="<%=0%>"> <%= "" %>  </option>
-                             <% }%>
-                            <%for(Magasin mag : listeMag) {%>
-                            <option value ="<%=mag.getId()%>"> <%=mag.getNom()%>  </option>
-                            <% }%>
-                          </select>
-                           </div>
-                          </div>
-
+                      <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" name="MagasinForm" onsubmit="return validerCreationMagasin()" method="post" action="ControleAdministration">
                       <div class="form-group">
+                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Type d'article</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" id = "mag" name="magasinselect" onchange="AffictuerMagasinInfo(this,document.getElementsByName('magasin'))">
+                             <% List<Magasin> listeMag = magasins; 
+                             if (!listeMag.isEmpty()){%>
+                             <option value ="<%=0%>"> <%= "" %> </option>
+                             <% }%>
+                             <%for(Magasin mag : listeMag) {%>
+                             <option value ="<%=mag.getId()%>"> <%=mag.getNom()%>  </option>
+                             <% }%>
+                             
+                            </select>
+                        </div>
+                       </div>
+                            
+                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nom">Nom <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="nom" name="nom" required="required" class="form-control col-md-7 col-xs-12" placeholder="Saisir nom">
-                           <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
+                          <input type="text" id="libelle" name="nom" required="required" class="form-control col-md-7 col-xs-12"  placeholder="Saisir nom">
+                           <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
-                          
-                      </div>
-                      <div class="form-group">
+                        </div>
+                             
+                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ville">Ville <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="adresse" name="ville" required="required" class="form-control col-md-7 col-xs-12" placeholder="Saisir ville" >
-                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
+                          <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                       </div>
-                      <div class="form-group">
+                       
+                        <div class="form-group">
                         <label for="adresse" class="control-label col-md-3 col-sm-3 col-xs-12">Adresse</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="telephone" class="form-control col-md-7 col-xs-12" type="text" name="adresse"  required="required" placeholder="Saisir adresse">
-                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
-                         
+                        <input id="telephone" class="form-control col-md-7 col-xs-12" type="text" name="adresse"  required="required" placeholder="Saisir adresse">
+                        <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
-                   
-                      </div>
-                      <div class="form-group">
+                        </div>
+                        <div class="form-group">
                          <label for="code" class="control-label col-md-3 col-sm-3 col-xs-12">code potal</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="code" class="form-control col-md-7 col-xs-12" type="text" required="required" name="code" placeholder="Saisir code">
-                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
+                          <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
-                      </div>
-                          
-                          <div class="form-group">
-                         <label for="ho" class="control-label col-md-3 col-sm-3 col-xs-12">Horaire ouverteure</label>
+                       </div> 
+                        
+                        <div class="form-group">
+                        <label for="ho" class="control-label col-md-3 col-sm-3 col-xs-12">Horaire ouverteure</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="ho" class="form-control col-md-7 col-xs-12" required="required"  type="text" name="ho" placeholder="Saisir Horaire ouverteure">
-                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
+                          <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
-                         </div>
-                          
-                          
-                          <div class="form-group">
+                        </div>
+                             
+                        <div class="form-group">
                          <label for="ho" class="control-label col-md-3 col-sm-3 col-xs-12">Horaire Fermeture</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="hf" class="form-control col-md-7 col-xs-12" type="text" name="hf" placeholder="Saisir Horaire Fermeture">
-                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
+                          <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
                          </div>
-                          
-                          <div class="form-group">
-                         <label for="ho" class="control-label col-md-3 col-sm-3 col-xs-12">Gps</label>
+                             
+                        <div class="form-group">
+                        <label for="ho" class="control-label col-md-3 col-sm-3 col-xs-12">Gps</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="gps" class="form-control col-md-7 col-xs-12" type="text" name="gps" placeholder="Saisir gps">
-                          <span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
+                          <span class="form-control-feedback" aria-hidden="true"></span>
                         </div>
-                         </div>
-                         <table id="myTable" style="display: none">
+                        </div>
+                             
+                             <table id="myTable" style="display: none">
                             <tbody style="cursor:pointer">
                           <tr class="header">
                             <th >ID</th>
@@ -178,20 +176,21 @@
                                </tr>
                         <% }%>
                          </tbody>
-                        </table>  
-                          
+                        </table> 
+                         
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <a href="JSP_Pages/MenuDirectionNational.jsp" class="btn btn-primary" role="button">Annuler</a>
+                          <a href="JSP_Pages/MenuDirectionNational.jsp" class="btn btn-danger" role="button">Annuler</a>
 		          <input type="hidden"  name="magasin" class="form-control" />
                           <input type="hidden" name="action" value="FromMagasin">
-                          <input type="submit"  class="btn btn-primary" value="Valider" />
+                          <button type="submit" class="btn btn-success">Créer</button>
                         <input type="reset"   class="btn btn-primary"  value="Remettre à zéro" />
                         </div>
                       </div>
-
-                    </form>
+                      </form>
+                    
+                      
                   </div>
                 </div>
               </div>
