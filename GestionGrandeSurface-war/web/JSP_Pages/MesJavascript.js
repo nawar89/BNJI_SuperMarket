@@ -918,7 +918,7 @@ function verifierInputClient(d1,d2,d3,d4) {
     
 function actualiserMoins(d1,d2)
 {
-  
+  console.log(d1.value);
     if(d1.value==="0"){
         d1.value = "0";
         d2.value ="0";

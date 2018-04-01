@@ -63,7 +63,9 @@
 							<li >
 								<a href="ControleAdministration?action=EspaceEmploye">Intranet</a>
 							</li>
-
+                                                        <li>
+								<a href="controleClient?action=NosProduits">Consulter Produits</a>
+							</li>
 							<li>
 								<a href="about.html">About</a>
 							</li>

@@ -72,8 +72,8 @@ public class controleClient extends HttpServlet {
             String act=request.getParameter("action");
             if ((act == null)||(act.equals("null")))
             {
-                // jspClient="/JSP_Pages/MenuDirectionNational.jsp";
-                jspClient="/JSP_Pages/Accueil.jsp";
+                // jspClient="/JSP_Client/MenuDirectionNational.jsp";
+                jspClient="/JSP_Client/Accueil.jsp";
             }else {  
 
                   verifierConnexion(request, response);
@@ -116,9 +116,9 @@ public class controleClient extends HttpServlet {
         session.setAttribute("ClientCo", clientConnecte);
         
         String act=request.getParameter("action");
-        if (clientConnecte ==null && !act.equals("loginClient") && !act.equals("login") && !act.equals("FromCreerClient")&& !act.equals("GoTOCreerClient")){
+        if (clientConnecte ==null && !act.equals("loginClient") && !act.equals("login") && !act.equals("FromCreerClient")&& !act.equals("GoTOCreerClient")  && !act.equals("NosProduits")){
             
-            jspClient="/JSP_Pages/Accueil.jsp";
+            jspClient="/JSP_Client/Accueil.jsp";
         
         }else {
         
@@ -162,6 +162,10 @@ public class controleClient extends HttpServlet {
                 
        else if (act.equals("magasinSelect")){
             GOHOME(request, response);
+            request.setAttribute( "message", message );
+        }
+        else if (act.equals("NosProduits")){
+            NosProd(request, response);
             request.setAttribute( "message", message );
         }
         
@@ -209,7 +213,7 @@ HttpServletResponse response) throws ServletException, IOException
               }        
     }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Client/Page_message.jsp";
 }
 
 }
@@ -231,17 +235,57 @@ HttpServletResponse response) throws ServletException, IOException
               Date d = java.sql.Date.valueOf(naissance);
               clientConnecte = clientSession.creerClient(nom, prenom, adresee, email, prenom, email, encryptedMdp, date, true);
               session.setAttribute("ClientCo", clientConnecte);
-              jspClient = "/JSP_Pages/Accueil.jsp";
+              jspClient = "/JSP_Client/Accueil.jsp";
               message = "Bonjour "+clientConnecte.getPrenom()+" "+clientConnecte.getNom() ;
                 
     }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Client/Page_message.jsp";
 }
 
 }
     
 //////////////////////////////////////////////////////////////////////////////////    
+
+
+protected void NosProd(HttpServletRequest request,
+HttpServletResponse response) throws ServletException, IOException
+{
+   
+    try{
+        //Construire requete SQL
+              
+              mesParam = new ArrayList<Parametre>();
+              requete = Requete.getArticles;
+              List<Article> liseArt = administration.getArticle(requete, null);
+              
+              if (liseArt!=null){
+                liseArt = new ArrayList<Article>();
+              }
+              requete = Requete.getCategories;
+              List<Categorie> listc = administration.getCategories(requete, null);
+              if (listc == null){
+              listc = new ArrayList<Categorie>(); 
+              }
+           
+        
+             request.setAttribute( "articles", listc );
+             
+             request.setAttribute( "cats", listc );
+             
+              jspClient = "/JSP_Client/NosProduits.jsp";
+}catch(Exception exe){
+    message = exe.getMessage();
+    jspClient = "/JSP_Client/Page_message.jsp";
+}
+
+} 
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////       
     
 protected void GOHOME(HttpServletRequest request,
 HttpServletResponse response) throws ServletException, IOException
@@ -281,7 +325,7 @@ HttpServletResponse response) throws ServletException, IOException
               jspClient = "/JSP_Client/Home.jsp";
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Client/Page_message.jsp";
 }
 
 } 
@@ -364,13 +408,13 @@ HttpServletResponse response) throws ServletException, IOException
                  jspClient = "/JSP_Client/Home.jsp";
              }else {
                  message = "Article du magasin n'existe pas";
-                 jspClient = "/JSP_Pages/Page_Message.jsp";
+                 jspClient = "/JSP_Client/Page_message.jsp";
              }
              
              
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Client/Page_message.jsp";
 }
 
 } 
@@ -394,17 +438,17 @@ HttpServletResponse response) throws ServletException, IOException
                  
                  }else {
                       message = "Vous n'avez aucune produit dans votre panier";
-                      jspClient = "/JSP_Pages/Page_Message.jsp";
+                      jspClient = "/JSP_Client/Page_message.jsp";
                  }
              
              }else {
                   message = "Vous n'avez aucune produit dans votre panier";
-                  jspClient = "/JSP_Pages/Page_Message.jsp";
+                  jspClient = "/JSP_Client/Page_message.jsp";
              } 
              
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Client/Page_message.jsp";
 }
 
 } 
@@ -418,8 +462,8 @@ HttpServletResponse response) throws ServletException, IOException
    
     try{
         //Construire requete SQL        
-             //monPanier = (CommandeClientEnLigne)session.getAttribute("Panier");
-             /* String res   = request.getParameter("vals");
+             monPanier = (CommandeClientEnLigne)session.getAttribute("Panier");
+              String res   = request.getParameter("vals");
              String date   = request.getParameter("datepicker2");
              
              ParserLigneCommandeVersLignesLivraison(res); 
@@ -432,13 +476,13 @@ HttpServletResponse response) throws ServletException, IOException
                 session.setAttribute("Panier", monPanier);
                 session.setAttribute("ClientCo", clientConnecte);
                  
-             }else GOHOME(request, response);*/
+             }else GOHOME(request, response);
              jspClient = "/JSP_Client/Page_message.jsp";
              message = "votre commande ete bien enregisté";
              
 }catch(Exception exe){
     message = exe.getMessage();
-    jspClient = "/JSP_Pages/Page_Message.jsp";
+    jspClient = "/JSP_Client/Page_message.jsp";
 }
 
 }
@@ -457,7 +501,9 @@ public  void ParserLigneCommandeVersLignesLivraison(String input){
             int quantite = 0;
             for (int i=0;i<temp.length;i++){
                 if ((i)%2==0 || i==0){
-                    count = 1;   
+                    count = 1;  
+                    ligne = null;
+                    quantite = 0;
                 }
                 if (count==1){
                        Integer LigneID = Integer.parseInt(temp[i]); 
@@ -474,13 +520,14 @@ public  void ParserLigneCommandeVersLignesLivraison(String input){
                        }else message = "un article n'existe pas";
                 }
                 else if (count==2){
+                    if(ligne!=null){
                     quantite = Integer.parseInt(temp[i]); 
                     if (quantite==0){
                         supprimerCommande = false;
                         clientSession.supprimerLigneCommandeEnLigne(ligne);
                         
                     }else clientSession.modifierLigneCommandeEnLigne(ligne, quantite); 
-                   
+                    } 
                 }
                  count++;    
             }
@@ -489,7 +536,7 @@ public  void ParserLigneCommandeVersLignesLivraison(String input){
                 monPanier = null;
             }
          }catch(Exception exe){message = exe.getMessage();
-            jspClient = "/JSP_Pages/Page_Message.jsp";
+            jspClient = "/JSP_Client/Page_message.jsp";
          }
         
  }

@@ -182,7 +182,7 @@
                     </div>
                         <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                            <button style="display: non" id="send" type="submit" class="btn btn-success">Consulter le détail d'une commande</button>
+                            
                             <input type="hidden" name="action" value="FromConsulterLivraison">
                           <input type="hidden" name="livraison" class="form-control" />
                         </div>

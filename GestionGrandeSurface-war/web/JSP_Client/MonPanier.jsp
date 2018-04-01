@@ -116,19 +116,9 @@
 				<div class="wrap_menu">
 					<nav class="menu">
 						<ul class="main_menu">
-							<li>
-								<a href="index.html">Commander</a>
-							</li>
-
-							<li>
-								<a href="product.html">Panier</a>
-                                                        </li>
-
-							<li>
-								<a href="contact.html">Mes commandes</a>
-							</li>
+							
                                                         <li>
-								<a href="contact.html">Déconnexion</a>
+								<a href="controleClient?action=logout">Déconnexion</a>
 							</li>
 						</ul>
 					</nav>
@@ -196,7 +186,7 @@
 							<td class="column-3"><%=ligne.getPrix_vente() %></td>
 							<td class="column-4">
 								<div class="flex-w bo5 of-hidden w-size17">
-									<button   onclick="actualiserMoins(document.getElementById('<%=name%>'),document.getElementById('temp'));updateTablePanier(document.getElementById('MyTable'),document.getElementById('temp',document.getElementById('total')));" class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
+									<button   onclick="actualiserMoins(document.getElementById('<%=name%>'),document.getElementById('temp'));updateTablePanier(document.getElementById('MyTable'),document.getElementById('temp'),document.getElementById('total'));" class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
 										<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
 									</button>
                                                                      <%String max = "max='"+ligne.getArticleMagasin().getQuantite()+"'";

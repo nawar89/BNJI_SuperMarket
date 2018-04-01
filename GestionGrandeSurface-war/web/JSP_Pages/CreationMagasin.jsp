@@ -76,7 +76,7 @@
                   <div class="x_content">
                       <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" name="MagasinForm" onsubmit="return validerCreationMagasin()" method="post" action="ControleAdministration">
                       <div class="form-group">
-                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Type d'article</label>
+                       <label class="control-label col-md-3 col-sm-3 col-xs-12">Choisir un magasin pour modifier</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control" id = "mag" name="magasinselect" onchange="AffictuerMagasinInfo(this,document.getElementsByName('magasin'))">
                              <% List<Magasin> listeMag = magasins; 
