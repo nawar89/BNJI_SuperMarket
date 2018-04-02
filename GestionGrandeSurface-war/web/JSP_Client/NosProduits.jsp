@@ -12,10 +12,10 @@
 <html>
 <head>
     
-        
+       
         <jsp:useBean id ="cats" scope="request" class="List"></jsp:useBean>
         <jsp:useBean id ="articles" scope="request" class="List"></jsp:useBean>
-       
+        <jsp:useBean id ="promotions" scope="request" class="List"></jsp:useBean>
         
 	<title>Product</title>
 	<meta charset="UTF-8">
@@ -81,15 +81,18 @@
 					<nav class="menu">
 						<ul class="main_menu">
 							
+                                                      <li>
+								<a href="controleClient?action=login">Espace Client</a>
+							</li>
+                                                        
                                                         <li>
-								<a href="controleClient?action=logout">Déconnexion</a>
+								<a href="about.html">About</a>
 							</li>
 						</ul>
 					</nav>
 				</div>
 
-				<!-- Header Icon -->
-				
+	
 			</div>
 		</div>
               
@@ -97,83 +100,62 @@
 
         <!-- Content page -->
 	<section class="bgwhite p-t-55 p-b-65">
-                <div class="wrap-slick1">
-			<div class="slick1">
-				<div class="item-slick1 item1-slick1" style="background-image: url(./TemplateClient/images/Vetement.png);">
-					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-						<span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="fadeInDown">
-							Women Collection 2018
-						</span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+					<div class="leftbar p-r-20 p-r-0-sm">
+						<!--  -->
+						<h4 class="m-text14 p-b-7">
+							Categories
+						</h4>
 
-						<h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37" data-appear="fadeInUp">
-							Be ready For an Awesome Summer
-						</h2>
+						<ul class="p-b-54">
+                                                <% List<Categorie> lcat = cats;
+                                                   for (Categorie c:lcat){
+                                                %>
+							<li class="p-t-4">
+								<a href="#" class="s-text13 active1">
+							            <%=c.getLibelle() %>
+								</a>
+							</li>
+                                                    <%}%>
+							
+						</ul>
 
-						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="zoomIn">
-							<!-- Button -->
-							<a href="controleClient?action=login" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
-								Shop Now
-							</a>
+						<div class="search-product pos-relative bo4 of-hidden">
+							<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
+
+							<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
+								<i class="fs-12 fa fa-search" aria-hidden="true"></i>
+							</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="item-slick1 item2-slick1" style="background-image: url(./TemplateClient/images/easter-craft.jpg);">
-					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-						<span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="rollIn">
-						Nouvelles Promotions
+				<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
+					<!--  -->
+					<div class="flex-sb-m flex-w p-b-35">
+						
+
+						<span class="s-text8 p-t-5 p-b-5">
+                                                    <% String numC = "0";
+                                                    List<Article> art = articles;
+                                                    if(art!=null)
+                                                        
+                                                             numC=""+art.size(); %>
+                                                        Showing 1?12 of <%=numC%> results
 						</span>
-
-						<h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37" data-appear="lightSpeedIn">
-					    Find all the chocolate you need
-						</h2>
-
-						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="slideInUp">
-							<!-- Button -->
-							<a href="controleClient?action=login" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
-								Shop Now
-							</a>
-						</div>
 					</div>
-				</div>
 
-				<div class="item-slick1 item3-slick1" style="background-image: url(./TemplateClient/images/bio.jpg);">
-					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-						<span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="rotateInDownLeft">
-							Meuilleur selection bio
-						</span>
-
-						<h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37" data-appear="rotateInUpRight">
-                            Organic is the new black
-						</h2>
-
-						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="rotateIn">
-							<!-- Button -->
-							<a href="controleClient?action=login" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
-								Shop Now
-							</a>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-    
-	</section>
-        
-        
-        <section class="banner bgwhite p-t-40 p-b-40">
-            
-            <div class="container">
-                    
-                
-                <form name="PanierForm" onsubmit="" method="post" action="controleClient">
-                                            
+					<!-- Product -->
+                                        <form name="PanierForm" onsubmit="" method="post" action="controleClient">
+                                            <input type="hidden" name="action" value="login">
+                                           
 					<div class="row">
                                            
-                                            <% List<Article> listeart = articles;
-                                                if (listeart!=null){
-                                               for (Article artMag:listeart) {
+                                            <% List<Promotion> listePro = promotions;
+                                                if (art!=null){
+                                               for (Article artMag:art) {
                                                 
                                                
                                             %>
@@ -199,7 +181,9 @@
 										<div class="block2-btn-addcart w-size1 trans-0-4">
 											<!-- Button -->
                                                                                         
-                                                                                        
+                                                                                        <button  onclick="document.getElementById('PanierForm').submit();" value = "<%=artMag.getId()%>" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+												Shop now
+											</button>
 										</div>
 									</div>
 								</div>
@@ -209,17 +193,39 @@
 										<%=artMag.getLibelle() %>
 									</a>
                                                                         
-                                                                       
+                                                                         <% String prix_promo = "";
+                                                                            if (listePro!=null){
+                                                                           for (Promotion p:listePro){  
+                                                                               if (p.getArticle().getId()==artMag.getId() && p.getDate_fin().compareTo(new Date()) > 0){
+                                                                                   prix_promo = ""+p.getPrix_prmotion();
+         
+                                                                        }}} %>
+                                                                        <% if (prix_promo!=""){%>
+                                                                            <span class="block2-oldprice m-text7 p-r-5">
+                                                                                    €Old_prix
+                                                                            </span>
+                                                                            <span class="block2-newprice m-text8 p-r-5">
+										$<%=prix_promo%>
+                                                                            </span>
+                                                                        <%}else {%>
+                                                                               
+                                                                            <span  class="block2-price m-text6 p-r-5">
+                                                                                    
+                                                                            </span>
+                                                                        <%}%>
+
+									
 								</div>
 							</div>
 						</div>
                                                 <%}}%>
-		            </div>
-                 </form>
-                
-            </div>
-            
-        </section>
+					</div>
+                                    </form>
+				</div>
+			</div>
+		</div>
+	</section>
+
 
 	<!-- Footer -->
 	<footer class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">

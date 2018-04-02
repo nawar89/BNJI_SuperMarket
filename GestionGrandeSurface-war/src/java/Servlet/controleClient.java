@@ -259,7 +259,7 @@ HttpServletResponse response) throws ServletException, IOException
               requete = Requete.getArticles;
               List<Article> liseArt = administration.getArticle(requete, null);
               
-              if (liseArt!=null){
+              if (liseArt==null){
                 liseArt = new ArrayList<Article>();
               }
               requete = Requete.getCategories;
@@ -267,11 +267,16 @@ HttpServletResponse response) throws ServletException, IOException
               if (listc == null){
               listc = new ArrayList<Categorie>(); 
               }
-           
+              requete = Requete.getPromotions;
+              List<Promotion> listp = administration.getPromotions(requete, null);
+              if (listp == null){
+              listp = new ArrayList<Promotion>(); 
+              }
         
-             request.setAttribute( "articles", listc );
+             request.setAttribute( "articles", liseArt );
              
              request.setAttribute( "cats", listc );
+             request.setAttribute( "promotions", listp );
              
               jspClient = "/JSP_Client/NosProduits.jsp";
 }catch(Exception exe){
