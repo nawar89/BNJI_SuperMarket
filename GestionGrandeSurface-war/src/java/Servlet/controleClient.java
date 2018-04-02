@@ -109,7 +109,7 @@ public class controleClient extends HttpServlet {
     ////////////////////////////////////////////////////////////////////////////////
     
        public void verifierConnexion(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+        throws ServletException, IOException, Exception {
         
         clientConnecte = (Client) session.getAttribute("ClientCo");
         
@@ -339,7 +339,7 @@ HttpServletResponse response) throws ServletException, IOException
 ////////////////////////////////////////////////////////////////////////////////
 
 protected void FromHOME(HttpServletRequest request,
-HttpServletResponse response) throws ServletException, IOException
+HttpServletResponse response) throws ServletException, IOException, Exception
 {
    
     try{
@@ -363,11 +363,12 @@ HttpServletResponse response) throws ServletException, IOException
                             monPanier = clientSession.creerCommandeEnligne(date, Etat_Commande.EN_TRAITEMENT, clientConnecte);
                  }
                  mesParam = new ArrayList<Parametre>();
-                 requete = Requete.getPromotions+ " and p.article = :article and b.date_debut < :date AND b.date_fin > :date";
+                 //requete = Requete.getPromotions+ " and p.article = :article and b.date_debut < :date AND b.date_fin > :date";
+                 requete = Requete.getPromotions+ " and p.article = :article";
                  p = new Parametre("article", "Article", art.getArticle());
                  mesParam.add(p);
-                 p = new Parametre("date", "Date", date);
-                 mesParam.add(p);
+                 //p = new Parametre("date", "Date", date);
+                 //mesParam.add(p);
                  boolean ajoute = true;
                  if (monPanier.getLigneCommandeEnLignes()!=null){
                     for (ligneCommandeEnLigne lig:monPanier.getLigneCommandeEnLignes() ){
@@ -379,9 +380,13 @@ HttpServletResponse response) throws ServletException, IOException
                     ligneCommandeEnLigne ligne = null;
                     List<Promotion> listeP = administration.getPromotions(requete, mesParam);
                     if (listeP != null){
-                        Promotion pro = (Promotion)Aide.getObjectDeListe(listeP.toArray());
-                             ligne = clientSession.creerLigneCommandeEnligne(monPanier, art,1,pro.getPrix_prmotion(),true);
-                    }else {
+                        for(Promotion pro:listeP){
+                            if (pro.getDate_debut().compareTo(date)<0 && pro.getDate_fin().compareTo(date) >0)
+                                  ligne = clientSession.creerLigneCommandeEnligne(monPanier, art,1,pro.getPrix_prmotion(),true);
+                       
+                        
+                             
+                    }}else {
                              ligne = clientSession.creerLigneCommandeEnligne(monPanier, art,1,art.getPrix_vente_actuel(), false);
 
                     }
